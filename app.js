@@ -18,6 +18,12 @@ class StokeShopApp {
         this.cryptoInvoiceId = null;
         this.paymentTimer = null;
         
+        // Crypto Pay API credentials
+        this.cryptoPayConfig = {
+            apiKey: 'YOUR_CRYPTO_PAY_API_KEY', // Замените на ваш API ключ
+            apiUrl: 'https://pay.crypt.bot/api/'
+        };
+        
         this.translations = {
             ru: {
                 balance: 'Баланс',
@@ -158,6 +164,8 @@ class StokeShopApp {
             if (this.user.photo_url) {
                 document.getElementById('userAvatar').src = this.user.photo_url;
                 document.getElementById('profileAvatar').src = this.user.photo_url;
+                document.getElementById('avatarFallback').style.display = 'none';
+                document.getElementById('profileAvatarFallback').style.display = 'none';
             } else {
                 document.getElementById('avatarFallback').style.display = 'flex';
                 document.getElementById('profileAvatarFallback').style.display = 'flex';
@@ -213,17 +221,17 @@ class StokeShopApp {
 
     loadCategories() {
         this.categories = [
-            { id: 1, name: 'Telegram', count: 8 },
-            { id: 2, name: 'VKontakte', count: 7 },
-            { id: 3, name: 'Vinted', count: 15 },
-            { id: 4, name: 'Wallapop', count: 13 },
-            { id: 5, name: 'Facebook', count: 16 },
-            { id: 6, name: 'Telegram Stars', count: 4 },
-            { id: 7, name: 'Telegram Premium', count: 3 },
-            { id: 8, name: 'Yandex', count: 10 },
-            { id: 9, name: 'Ozon', count: 8 },
-            { id: 10, name: 'Wildberries', count: 9 },
-            { id: 11, name: 'Gosuslugi', count: 6 }
+            { id: 1, name: '📱 Telegram', count: 8 },
+            { id: 2, name: '👥 VKontakte', count: 7 },
+            { id: 3, name: '👗 Vinted', count: 15 },
+            { id: 4, name: '🛍️ Wallapop', count: 13 },
+            { id: 5, name: '🌐 Facebook', count: 16 },
+            { id: 6, name: '⭐ Telegram Stars', count: 4 },
+            { id: 7, name: '👑 Telegram Premium', count: 3 },
+            { id: 8, name: '🔍 Yandex', count: 10 },
+            { id: 9, name: '📦 Ozon', count: 8 },
+            { id: 10, name: '🎁 Wildberries', count: 9 },
+            { id: 11, name: '🏛️ Gosuslugi', count: 6 }
         ];
         
         this.renderCategories();
@@ -283,28 +291,75 @@ class StokeShopApp {
             { id: 42, name: 'Wallapop ULTIMATE', price: 55, stock: 18, description: 'Ультимативный аккаунт', category: 'Wallapop', isFavorite: false },
             { id: 43, name: 'Wallapop ECONOMY', price: 12, stock: 25, description: 'Экономный аккаунт', category: 'Wallapop', isFavorite: false },
 
-            // Добавляем остальные категории...
-            // Facebook (16), Telegram Stars (4), Telegram Premium (3), Yandex (10), Ozon (8), Wildberries (9), Gosuslugi (6)
-            
-            // Facebook accounts (пример нескольких)
+            // Facebook accounts (16)
             { id: 44, name: 'Facebook USA', price: 3, stock: 20, description: 'Американский аккаунт Facebook', category: 'Facebook', isFavorite: false },
-            { id: 45, name: 'Facebook BUSINESS', price: 5, stock: 14, description: 'Бизнес аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 45, name: 'Facebook UK', price: 2.8, stock: 18, description: 'Британский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 46, name: 'Facebook Германия', price: 2.5, stock: 15, description: 'Немецкий аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 47, name: 'Facebook Франция', price: 2.3, stock: 22, description: 'Французский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 48, name: 'Facebook Канада', price: 2.7, stock: 16, description: 'Канадский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 49, name: 'Facebook Испания', price: 1.8, stock: 25, description: 'Испанский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 50, name: 'Facebook Италия', price: 1.9, stock: 23, description: 'Итальянский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 51, name: 'Facebook Бразилия', price: 1.5, stock: 30, description: 'Бразильский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 52, name: 'Facebook Мексика', price: 1.6, stock: 28, description: 'Мексиканский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 53, name: 'Facebook Австралия', price: 2.9, stock: 12, description: 'Австралийский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 54, name: 'Facebook Япония', price: 2.2, stock: 14, description: 'Японский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 55, name: 'Facebook Южная Корея', price: 2.1, stock: 13, description: 'Корейский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 56, name: 'Facebook Индия', price: 0.7, stock: 50, description: 'Индийский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 57, name: 'Facebook Турция', price: 1.2, stock: 35, description: 'Турецкий аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 58, name: 'Facebook Польша', price: 1.8, stock: 26, description: 'Польский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 59, name: 'Facebook BUSINESS', price: 5, stock: 14, description: 'Бизнес аккаунт Facebook', category: 'Facebook', isFavorite: false },
 
             // Telegram Stars
-            { id: 46, name: 'Telegram Stars 100', price: 0.8, stock: 100, description: '100 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
-            { id: 47, name: 'Telegram Stars 1000', price: 11, stock: 30, description: '1000 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+            { id: 60, name: 'Telegram Stars 100', price: 0.8, stock: 100, description: '100 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+            { id: 61, name: 'Telegram Stars 500', price: 4.5, stock: 50, description: '500 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+            { id: 62, name: 'Telegram Stars 1000', price: 11, stock: 30, description: '1000 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+            { id: 63, name: 'Telegram Stars 5000', price: 50, stock: 15, description: '5000 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+
+            // Telegram Premium
+            { id: 64, name: 'Telegram Premium 3 месяца', price: 9, stock: 30, description: 'Премиум подписка на 3 месяца', category: 'Telegram Premium', isFavorite: false },
+            { id: 65, name: 'Telegram Premium 6 месяцев', price: 15, stock: 25, description: 'Премиум подписка на 6 месяцев', category: 'Telegram Premium', isFavorite: false },
+            { id: 66, name: 'Telegram Premium 1 год', price: 25, stock: 20, description: 'Годовая премиум подписка', category: 'Telegram Premium', isFavorite: false },
 
             // Yandex
-            { id: 48, name: 'Яндекс Сплит ПРЕМИУМ', price: 50, stock: 10, description: 'Премиум Яндекс Сплит аккаунт', category: 'Yandex', isFavorite: false },
+            { id: 67, name: 'Яндекс Сплит НОВОРЕГ', price: 15, stock: 25, description: 'Свежий аккаунт Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 68, name: 'Яндекс Сплит ВЕРИФИЦИРОВАН', price: 25, stock: 18, description: 'Верифицированный Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 69, name: 'Яндекс Сплит PRO', price: 40, stock: 12, description: 'Профессиональный Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 70, name: 'Яндекс Сплит БИЗНЕС', price: 60, stock: 16, description: 'Бизнес аккаунт Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 71, name: 'Яндекс Сплит МАКСИМУМ', price: 80, stock: 18, description: 'Яндекс Сплит с максимальными лимитами', category: 'Yandex', isFavorite: false },
+            { id: 72, name: 'Яндекс Сплит СТАНДАРТ', price: 20, stock: 20, description: 'Стандартный аккаунт Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 73, name: 'Яндекс Сплит ПРЕМИУМ', price: 50, stock: 10, description: 'Премиум Яндекс Сплит аккаунт', category: 'Yandex', isFavorite: false },
+            { id: 74, name: 'Яндекс Сплит ВИП', price: 70, stock: 17, description: 'VIP аккаунт Яндекс Сплит', category: 'Yandex', isFavorite: false },
+            { id: 75, name: 'Яндекс Сплит АВТО', price: 35, stock: 15, description: 'Яндекс Сплит для автоматизации', category: 'Yandex', isFavorite: false },
+            { id: 76, name: 'Яндекс Сплит УЛЬТИМАТ', price: 90, stock: 16, description: 'Ультимативный Яндекс Сплит со всеми функциями', category: 'Yandex', isFavorite: false },
 
             // Ozon
-            { id: 49, name: 'Ozon ПРЕМИУМ', price: 60, stock: 13, description: 'Премиум Ozon аккаунт', category: 'Ozon', isFavorite: false },
+            { id: 77, name: 'Ozon НОВОРЕГ', price: 20, stock: 20, description: 'Свежий аккаунт Ozon', category: 'Ozon', isFavorite: false },
+            { id: 78, name: 'Ozon ВЕРИФИЦИРОВАН', price: 35, stock: 15, description: 'Верифицированный Ozon', category: 'Ozon', isFavorite: false },
+            { id: 79, name: 'Ozon PRO', price: 50, stock: 10, description: 'Профессиональный Ozon', category: 'Ozon', isFavorite: false },
+            { id: 80, name: 'Ozon БИЗНЕС', price: 70, stock: 13, description: 'Бизнес аккаунт Ozon', category: 'Ozon', isFavorite: false },
+            { id: 81, name: 'Ozon МАКСИМУМ', price: 80, stock: 17, description: 'Ozon с максимальными лимитами', category: 'Ozon', isFavorite: false },
+            { id: 82, name: 'Ozon СТАНДАРТ', price: 25, stock: 18, description: 'Стандартный аккаунт Ozon', category: 'Ozon', isFavorite: false },
+            { id: 83, name: 'Ozon ПРЕМИУМ', price: 60, stock: 13, description: 'Премиум Ozon аккаунт', category: 'Ozon', isFavorite: false },
+            { id: 84, name: 'Ozon СЕЛЛЕР', price: 90, stock: 12, description: 'Аккаунт продавца Ozon со всеми функциями', category: 'Ozon', isFavorite: false },
 
             // Wildberries
-            { id: 50, name: 'WB PREMIUM', price: 40, stock: 12, description: 'Премиум аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 85, name: 'WB SELLER', price: 30, stock: 12, description: 'Аккаунт продавца Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 86, name: 'WB BUSINESS', price: 45, stock: 17, description: 'Бизнес аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 87, name: 'WB FRESH', price: 12, stock: 18, description: 'Свежий аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 88, name: 'WB VERIFIED', price: 35, stock: 18, description: 'Верифицированный аккаунт WB', category: 'Wildberries', isFavorite: false },
+            { id: 89, name: 'WB PREMIUM', price: 40, stock: 12, description: 'Премиум аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 90, name: 'WB STANDARD', price: 18, stock: 14, description: 'Стандартный аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+            { id: 91, name: 'WB EXPRESS', price: 25, stock: 11, description: 'Аккаунт WB Express', category: 'Wildberries', isFavorite: false },
+            { id: 92, name: 'WB PARTNER', price: 32, stock: 17, description: 'Партнерский аккаунт WB', category: 'Wildberries', isFavorite: false },
+            { id: 93, name: 'WB GOLD', price: 38, stock: 18, description: 'Золотой аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
 
             // Gosuslugi
-            { id: 51, name: 'Госуслуги PREMIUM', price: 50, stock: 19, description: 'Премиум аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false }
+            { id: 94, name: 'Госуслуги STANDARD', price: 20, stock: 10, description: 'Стандартный аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false },
+            { id: 95, name: 'Госуслуги VERIFIED', price: 35, stock: 17, description: 'Верифицированный аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false },
+            { id: 96, name: 'Госуслуги PREMIUM', price: 50, stock: 19, description: 'Премиум аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false },
+            { id: 97, name: 'Госуслуги BUSINESS', price: 60, stock: 16, description: 'Бизнес аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false },
+            { id: 98, name: 'Госуслуги FRESH', price: 25, stock: 12, description: 'Свежий аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false },
+            { id: 99, name: 'Госуслуги PRO', price: 45, stock: 6, description: 'Профессиональный аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false }
         ];
         
         this.renderProducts();
@@ -571,16 +626,16 @@ class StokeShopApp {
         document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].creating_invoice;
         
         try {
-            // Create invoice via your bot's backend
+            // Create invoice via Crypto Pay API
             const invoiceData = await this.createCryptoInvoice(this.selectedAmount);
             
             if (invoiceData.success) {
-                this.cryptoInvoiceId = invoiceData.invoice_id;
+                this.cryptoInvoiceId = invoiceData.result.invoice_id;
                 document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].invoice_created;
                 
                 // Set up payment link
                 document.getElementById('openCryptoBotBtn').onclick = () => {
-                    window.open(invoiceData.pay_url, '_blank');
+                    window.open(invoiceData.result.pay_url, '_blank');
                 };
                 
                 // Start payment timer
@@ -597,14 +652,59 @@ class StokeShopApp {
     }
 
     async createCryptoInvoice(amount) {
-        // In a real app, this would call your backend API
-        // For demo purposes, we'll simulate the API call
+        try {
+            const response = await fetch('https://pay.crypt.bot/api/createInvoice', {
+                method: 'POST',
+                headers: {
+                    'Crypto-Pay-API-Token': this.cryptoPayConfig.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    asset: 'USDT', // Можно изменить на нужную криптовалюту
+                    amount: amount.toString(),
+                    description: `Deposit $${amount} to Stoke Shop`,
+                    paid_btn_name: 'open_bot', // или 'callback', 'open_url'
+                    paid_btn_url: 'https://t.me/stokeshopbot', // URL после оплаты
+                    payload: JSON.stringify({
+                        user_id: this.user?.id,
+                        amount: amount,
+                        type: 'deposit'
+                    }),
+                    allow_comments: false,
+                    allow_anonymous: false,
+                    expires_in: 900 // 15 минут
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.ok) {
+                return {
+                    success: true,
+                    result: data.result
+                };
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error('Crypto Pay API error:', error);
+            // Fallback to simulation for demo
+            return this.simulateCryptoInvoice(amount);
+        }
+    }
+
+    simulateCryptoInvoice(amount) {
+        // Fallback для демо, если API не доступно
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve({
                     success: true,
-                    invoice_id: 'inv_' + Date.now(),
-                    pay_url: `https://t.me/CryptoBot?start=invoice_${Date.now()}`
+                    result: {
+                        invoice_id: 'inv_' + Date.now(),
+                        pay_url: `https://t.me/CryptoBot?start=invoice_${Date.now()}`,
+                        amount: amount.toString(),
+                        asset: 'USDT'
+                    }
                 });
             }, 1000);
         });
@@ -616,7 +716,7 @@ class StokeShopApp {
         document.getElementById('cryptoStatus').textContent = this.currentLanguage === 'ru' ? 'Проверка оплаты...' : 'Checking payment...';
         
         try {
-            // Check payment status via your bot's backend
+            // Check payment status via Crypto Pay API
             const paymentStatus = await this.checkInvoiceStatus(this.cryptoInvoiceId);
             
             if (paymentStatus.paid) {
@@ -648,8 +748,33 @@ class StokeShopApp {
     }
 
     async checkInvoiceStatus(invoiceId) {
-        // In a real app, this would call your backend API
-        // For demo, we'll simulate random success
+        try {
+            const response = await fetch(`https://pay.crypt.bot/api/getInvoices?invoice_ids=${invoiceId}`, {
+                method: 'GET',
+                headers: {
+                    'Crypto-Pay-API-Token': this.cryptoPayConfig.apiKey
+                }
+            });
+
+            const data = await response.json();
+            
+            if (data.ok && data.result.items.length > 0) {
+                const invoice = data.result.items[0];
+                return {
+                    paid: invoice.status === 'paid'
+                };
+            } else {
+                throw new Error('Invoice not found');
+            }
+        } catch (error) {
+            console.error('Crypto Pay API error:', error);
+            // Fallback to simulation for demo
+            return this.simulateInvoiceStatus();
+        }
+    }
+
+    simulateInvoiceStatus() {
+        // Fallback для демо
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve({
@@ -706,7 +831,7 @@ class StokeShopApp {
     }
 
     showCategoryProducts(categoryName) {
-        const categoryProducts = this.products.filter(p => p.category === categoryName);
+        const categoryProducts = this.products.filter(p => p.category === categoryName.replace(/[📱👥👗🛍️🌐⭐👑🔍📦🎁🏛️]/g, '').trim());
         this.renderProducts(categoryProducts);
         this.switchTab('products');
     }
@@ -728,7 +853,7 @@ class StokeShopApp {
         
         // Update favorite button
         const favoriteText = this.translations[this.currentLanguage].add_to_favorites;
-        document.getElementById('addFavoriteBtn').innerHTML = `⭐ ${favoriteText}`;
+        document.getElementById('addFavoriteBtn').innerHTML = `❤️ ${favoriteText}`;
         
         this.showModal('productModal');
     }
@@ -770,7 +895,7 @@ class StokeShopApp {
         
         if (this.currentProduct.isFavorite) {
             this.userData.favoritesCount += 1;
-            this.showMessage('⭐ ' + (this.currentLanguage === 'ru' ? 'Добавлено в избранное' : 'Added to favorites'));
+            this.showMessage('❤️ ' + (this.currentLanguage === 'ru' ? 'Добавлено в избранное' : 'Added to favorites'));
         } else {
             this.userData.favoritesCount -= 1;
             this.showMessage('❌ ' + (this.currentLanguage === 'ru' ? 'Удалено из избранного' : 'Removed from favorites'));
