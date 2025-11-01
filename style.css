@@ -1,25 +1,26 @@
 :root {
-    --primary: #007AFF;
-    --primary-dark: #0056CC;
-    --primary-light: #66AFFF;
-    --secondary: #34C759;
-    --accent: #FF9500;
-    --danger: #FF3B30;
-    --warning: #FFCC00;
+    --primary: #0A84FF;
+    --primary-dark: #0066CC;
+    --primary-light: #409CFF;
+    --secondary: #30D158;
+    --accent: #FF9F0A;
+    --danger: #FF453A;
+    --warning: #FFD60A;
     
-    /* iOS 26 Colors */
-    --ios-bg: rgba(242, 242, 247, 0.8);
-    --ios-card: rgba(255, 255, 255, 0.7);
-    --ios-card-dark: rgba(28, 28, 30, 0.7);
-    --ios-border: rgba(60, 60, 67, 0.2);
-    --ios-text: #000000;
-    --ios-text-secondary: rgba(60, 60, 67, 0.6);
+    /* iOS Dark Colors */
+    --ios-bg: #000000;
+    --ios-card: rgba(28, 28, 30, 0.8);
+    --ios-card-light: rgba(44, 44, 46, 0.6);
+    --ios-border: rgba(255, 255, 255, 0.1);
+    --ios-text: #FFFFFF;
+    --ios-text-secondary: rgba(235, 235, 245, 0.6);
     
-    /* Glass morphism */
-    --glass-bg: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* Glass morphism Dark */
+    --glass-bg: rgba(30, 30, 32, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
     --glass-blur: blur(20px);
+    --glass-glow: 0 0 80px rgba(10, 132, 255, 0.1);
 }
 
 * {
@@ -30,18 +31,33 @@
 }
 
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #000000;
     color: var(--ios-text);
     min-height: 100vh;
     overflow-x: hidden;
-    backdrop-filter: var(--glass-blur);
 }
 
 #app {
     max-width: 100%;
     min-height: 100vh;
     padding-bottom: 90px;
-    background: transparent;
+    background: #000000;
+    position: relative;
+}
+
+#app::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(10, 132, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 159, 10, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(48, 209, 88, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .screen {
@@ -58,7 +74,7 @@ body {
     display: none !important;
 }
 
-/* iOS Header */
+/* iOS Dark Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -70,6 +86,19 @@ body {
     border-radius: 16px;
     padding: 16px;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(255, 159, 10, 0.05));
+    border-radius: 16px;
+    pointer-events: none;
 }
 
 .user-info {
@@ -77,6 +106,8 @@ body {
     align-items: center;
     gap: 14px;
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .avatar-container {
@@ -90,8 +121,8 @@ body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .avatar-fallback, .profile-avatar-fallback {
@@ -104,8 +135,8 @@ body {
     justify-content: center;
     font-size: 1.4rem;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .user-details {
@@ -128,6 +159,8 @@ body {
 .header-actions {
     display: flex;
     gap: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .icon-btn {
@@ -148,11 +181,12 @@ body {
 }
 
 .icon-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* iOS Balance Card */
+/* iOS Dark Balance Card */
 .balance-card {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
@@ -164,10 +198,25 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.balance-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.15), rgba(255, 159, 10, 0.1));
+    border-radius: 20px;
+    pointer-events: none;
 }
 
 .balance-info {
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .balance-label {
@@ -181,7 +230,7 @@ body {
     font-size: 2.4rem;
     font-weight: 700;
     color: var(--primary);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 0 20px rgba(10, 132, 255, 0.3);
 }
 
 .deposit-btn {
@@ -194,16 +243,18 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 0.95rem;
-    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
 .deposit-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 6px 25px rgba(10, 132, 255, 0.4);
 }
 
-/* iOS Quick Actions */
+/* iOS Dark Quick Actions */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -225,26 +276,49 @@ body {
     align-items: center;
     gap: 10px;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .action-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.action-btn:hover::before {
+    opacity: 1;
 }
 
 .action-icon {
     font-size: 1.8rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    position: relative;
+    z-index: 1;
 }
 
 .action-text {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--ios-text);
+    position: relative;
+    z-index: 1;
 }
 
-/* iOS Tabs */
+/* iOS Dark Tabs */
 .tabs {
     display: flex;
     background: var(--glass-bg);
@@ -270,9 +344,9 @@ body {
 }
 
 .tab.active {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--primary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
 .tab-content {
@@ -283,7 +357,7 @@ body {
     display: block;
 }
 
-/* iOS Categories Grid */
+/* iOS Dark Categories Grid */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -300,12 +374,31 @@ body {
     transition: all 0.3s ease;
     text-align: center;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .category-card:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.category-card:hover::before {
+    opacity: 1;
 }
 
 .category-name {
@@ -313,15 +406,19 @@ body {
     margin-bottom: 6px;
     font-size: 0.95rem;
     color: var(--ios-text);
+    position: relative;
+    z-index: 1;
 }
 
 .category-count {
     color: var(--ios-text-secondary);
     font-size: 0.75rem;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
 }
 
-/* iOS Products Grid */
+/* iOS Dark Products Grid */
 .products-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -337,12 +434,31 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .product-card:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.product-card:hover::before {
+    opacity: 1;
 }
 
 .product-header {
@@ -350,6 +466,8 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
 }
 
 .product-name {
@@ -363,34 +481,41 @@ body {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary);
+    text-shadow: 0 0 10px rgba(10, 132, 255, 0.3);
 }
 
 .product-stock {
     display: inline-block;
     padding: 6px 10px;
     background: var(--secondary);
-    color: white;
+    color: #000;
     border-radius: 12px;
     font-size: 0.7rem;
     font-weight: 600;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .product-stock.low {
     background: var(--warning);
+    color: #000;
 }
 
 .product-stock.out {
     background: var(--danger);
+    color: white;
 }
 
 .product-description {
     color: var(--ios-text-secondary);
     font-size: 0.85rem;
     line-height: 1.4;
+    position: relative;
+    z-index: 1;
 }
 
-/* iOS Profile */
+/* iOS Dark Profile */
 .profile-header {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
@@ -400,12 +525,27 @@ body {
     text-align: center;
     border: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(255, 159, 10, 0.05));
+    border-radius: 20px;
+    pointer-events: none;
 }
 
 .profile-avatar-container {
     width: 90px;
     height: 90px;
     margin: 0 auto 18px;
+    position: relative;
+    z-index: 1;
 }
 
 .profile-stats {
@@ -423,6 +563,19 @@ body {
     padding: 18px 12px;
     text-align: center;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+    border-radius: 16px;
+    pointer-events: none;
 }
 
 .stat-value {
@@ -430,23 +583,41 @@ body {
     font-weight: 700;
     color: var(--primary);
     margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(10, 132, 255, 0.3);
 }
 
 .stat-label {
     color: var(--ios-text-secondary);
     font-size: 0.75rem;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
 }
 
-/* iOS Admin Panel */
+/* iOS Dark Admin Panel */
 .admin-panel {
-    background: rgba(255, 59, 48, 0.1);
+    background: rgba(255, 69, 58, 0.15);
     backdrop-filter: var(--glass-blur);
-    border: 1px solid rgba(255, 59, 48, 0.3);
+    border: 1px solid rgba(255, 69, 58, 0.3);
     border-radius: 16px;
     padding: 24px;
     margin-top: 24px;
     box-shadow: var(--glass-shadow);
+    position: relative;
+}
+
+.admin-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 69, 58, 0.1), transparent);
+    border-radius: 16px;
+    pointer-events: none;
 }
 
 .admin-title {
@@ -455,6 +626,9 @@ body {
     margin-bottom: 18px;
     color: var(--danger);
     text-align: center;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(255, 69, 58, 0.3);
 }
 
 .admin-actions {
@@ -464,9 +638,9 @@ body {
 }
 
 .admin-btn {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: var(--glass-blur);
-    border: 1px solid rgba(255, 59, 48, 0.3);
+    border: 1px solid rgba(255, 69, 58, 0.3);
     border-radius: 14px;
     padding: 14px;
     color: var(--ios-text);
@@ -474,13 +648,16 @@ body {
     font-size: 0.85rem;
     font-weight: 600;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .admin-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
-/* iOS Search */
+/* iOS Dark Search */
 .search-container {
     margin-bottom: 18px;
 }
@@ -505,6 +682,12 @@ body {
     color: var(--ios-text-secondary);
 }
 
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.2);
+}
+
 .search-icon {
     position: absolute;
     left: 16px;
@@ -514,15 +697,15 @@ body {
     font-size: 1.1rem;
 }
 
-/* iOS Modals */
+/* iOS Dark Modals */
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -543,7 +726,20 @@ body {
     max-width: 420px;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(255, 159, 10, 0.05));
+    border-radius: 20px;
+    pointer-events: none;
 }
 
 .modal-header {
@@ -552,6 +748,8 @@ body {
     align-items: center;
     padding: 24px;
     border-bottom: 1px solid var(--ios-border);
+    position: relative;
+    z-index: 1;
 }
 
 .modal-header h3 {
@@ -568,6 +766,8 @@ body {
     cursor: pointer;
     padding: 6px;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .close-btn:hover {
@@ -577,9 +777,11 @@ body {
 
 .modal-body {
     padding: 24px;
+    position: relative;
+    z-index: 1;
 }
 
-/* iOS Amount Grid */
+/* iOS Dark Amount Grid */
 .amount-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -599,16 +801,22 @@ body {
     font-size: 0.85rem;
     font-weight: 600;
     box-shadow: var(--glass-shadow);
+    position: relative;
 }
 
 .amount-option.active {
     background: var(--primary);
     border-color: var(--primary);
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 4px 20px rgba(10, 132, 255, 0.4);
 }
 
-/* iOS Payment Methods */
+.amount-option:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* iOS Dark Payment Methods */
 .payment-methods {
     display: flex;
     flex-direction: column;
@@ -628,6 +836,7 @@ body {
     align-items: center;
     gap: 14px;
     box-shadow: var(--glass-shadow);
+    position: relative;
 }
 
 .payment-method.active {
@@ -636,12 +845,21 @@ body {
     color: white;
 }
 
+.payment-method:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
 .method-icon {
     font-size: 1.4rem;
+    position: relative;
+    z-index: 1;
 }
 
 .method-info {
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .method-name {
@@ -656,7 +874,7 @@ body {
     font-size: 0.75rem;
 }
 
-/* iOS Buttons */
+/* iOS Dark Buttons */
 .confirm-btn, .crypto-btn, .copy-btn, .buy-btn, .favorite-btn {
     width: 100%;
     padding: 18px;
@@ -670,7 +888,9 @@ body {
     justify-content: center;
     gap: 10px;
     font-size: 0.95rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
 .confirm-btn, .crypto-btn.primary, .buy-btn {
@@ -681,7 +901,7 @@ body {
 .confirm-btn:hover, .crypto-btn.primary:hover, .buy-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 6px 25px rgba(10, 132, 255, 0.5);
 }
 
 .crypto-btn.secondary, .favorite-btn {
@@ -692,21 +912,23 @@ body {
 }
 
 .crypto-btn.secondary:hover, .favorite-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .copy-btn {
     background: var(--secondary);
-    color: white;
+    color: #000;
 }
 
 .copy-btn:hover {
-    background: #2db350;
+    background: #25c152;
     transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(48, 209, 88, 0.4);
 }
 
-/* iOS Crypto Info */
+/* iOS Dark Crypto Info */
 .crypto-info {
     text-align: center;
     margin-bottom: 24px;
@@ -717,7 +939,7 @@ body {
     font-weight: 700;
     color: var(--primary);
     margin-bottom: 12px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
 }
 
 .crypto-status {
@@ -730,6 +952,7 @@ body {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--warning);
+    text-shadow: 0 0 10px rgba(255, 214, 10, 0.3);
 }
 
 .crypto-actions {
@@ -738,7 +961,7 @@ body {
     gap: 12px;
 }
 
-/* iOS Wallet Info */
+/* iOS Dark Wallet Info */
 .wallet-info {
     margin-bottom: 24px;
 }
@@ -763,18 +986,18 @@ body {
     line-height: 1.4;
 }
 
-/* iOS Product Modal */
+/* iOS Dark Product Modal */
 .product-price {
     font-size: 2rem;
     font-weight: 700;
     color: var(--primary);
     margin-bottom: 12px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 0 20px rgba(10, 132, 255, 0.4);
 }
 
 .product-stock {
     background: var(--secondary);
-    color: white;
+    color: #000;
     padding: 8px 14px;
     border-radius: 12px;
     font-size: 0.75rem;
@@ -796,7 +1019,7 @@ body {
     gap: 12px;
 }
 
-/* iOS Language Options */
+/* iOS Dark Language Options */
 .language-options {
     display: flex;
     flex-direction: column;
@@ -825,11 +1048,16 @@ body {
     color: white;
 }
 
+.language-option:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
 .language-option .flag {
     font-size: 1.4rem;
 }
 
-/* iOS Mini Menu */
+/* iOS Dark Mini Menu */
 .mini-menu {
     position: fixed;
     bottom: 0;
@@ -841,7 +1069,7 @@ body {
     display: flex;
     padding: 12px 16px;
     z-index: 1000;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .menu-btn {
@@ -863,20 +1091,21 @@ body {
 
 .menu-btn.active {
     color: var(--primary);
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .menu-icon {
     font-size: 1.3rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
-/* iOS Section Titles */
+/* iOS Dark Section Titles */
 .section-title {
     font-size: 1.3rem;
     font-weight: 700;
     margin-bottom: 18px;
     color: var(--ios-text);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive */
