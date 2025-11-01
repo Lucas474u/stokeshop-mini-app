@@ -4,18 +4,22 @@
     --primary-light: #66AFFF;
     --secondary: #34C759;
     --accent: #FF9500;
-    --background: rgba(0, 0, 0, 0.95);
-    --surface: rgba(28, 28, 30, 0.8);
-    --surface-elevated: rgba(44, 44, 46, 0.8);
-    --frosted-glass: rgba(255, 255, 255, 0.1);
-    --frosted-border: rgba(255, 255, 255, 0.15);
-    --on-surface: #FFFFFF;
-    --on-surface-secondary: rgba(255, 255, 255, 0.7);
-    --gray: #8E8E93;
-    --success: #34C759;
-    --warning: #FF9500;
     --danger: #FF3B30;
-    --blur-intensity: blur(20px);
+    --warning: #FFCC00;
+    
+    /* iOS 26 Colors */
+    --ios-bg: rgba(242, 242, 247, 0.8);
+    --ios-card: rgba(255, 255, 255, 0.7);
+    --ios-card-dark: rgba(28, 28, 30, 0.7);
+    --ios-border: rgba(60, 60, 67, 0.2);
+    --ios-text: #000000;
+    --ios-text-secondary: rgba(60, 60, 67, 0.6);
+    
+    /* Glass morphism */
+    --glass-bg: rgba(255, 255, 255, 0.25);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    --glass-blur: blur(20px);
 }
 
 * {
@@ -26,31 +30,20 @@
 }
 
 body {
-    background: var(--background);
-    color: var(--on-surface);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--ios-text);
     min-height: 100vh;
     overflow-x: hidden;
-    font-weight: 600;
-    backdrop-filter: var(--blur-intensity);
+    backdrop-filter: var(--glass-blur);
 }
 
 #app {
     max-width: 100%;
     min-height: 100vh;
     padding-bottom: 90px;
-    background: var(--background);
-    position: relative;
+    background: transparent;
 }
 
-/* Frosted Glass Effect */
-.frosted-glass {
-    background: var(--frosted-glass);
-    backdrop-filter: var(--blur-intensity);
-    -webkit-backdrop-filter: var(--blur-intensity);
-    border: 1px solid var(--frosted-border);
-}
-
-/* Screen Management */
 .screen {
     display: none;
     padding: 16px;
@@ -65,49 +58,54 @@ body {
     display: none !important;
 }
 
-/* Header */
+/* iOS Header */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-    padding: 8px 0;
-    background: transparent;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: var(--glass-shadow);
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     flex: 1;
 }
 
 .avatar-container {
     position: relative;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
 }
 
 .avatar-img, .profile-avatar-img {
     width: 100%;
     height: 100%;
-    border-radius: 24px;
+    border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--primary);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .avatar-fallback, .profile-avatar-fallback {
     width: 100%;
     height: 100%;
-    border-radius: 24px;
+    border-radius: 50%;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 1.4rem;
     color: white;
-    border: 2px solid var(--primary);
-    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .user-details {
@@ -115,60 +113,57 @@ body {
 }
 
 .username, .profile-name {
-    font-weight: 700;
-    font-size: 17px;
-    margin-bottom: 2px;
-    color: var(--on-surface);
-    letter-spacing: -0.41px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+    color: var(--ios-text);
 }
 
 .user-id, .profile-id {
-    color: var(--on-surface-secondary);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.08px;
+    color: var(--ios-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .header-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .icon-btn {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 12px;
     width: 44px;
     height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--on-surface);
+    color: var(--ios-text);
     cursor: pointer;
-    font-size: 18px;
+    font-size: 1.3rem;
     transition: all 0.3s ease;
-    font-weight: 600;
-    backdrop-filter: var(--blur-intensity);
+    box-shadow: var(--glass-shadow);
 }
 
 .icon-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.4);
     transform: scale(1.05);
 }
 
-/* Balance Card */
+/* iOS Balance Card */
 .balance-card {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 20px;
     padding: 24px;
     margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: var(--blur-intensity);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--glass-shadow);
 }
 
 .balance-info {
@@ -176,19 +171,17 @@ body {
 }
 
 .balance-label {
-    color: var(--on-surface-secondary);
-    font-size: 15px;
-    margin-bottom: 6px;
-    font-weight: 600;
-    letter-spacing: -0.24px;
+    color: var(--ios-text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .balance-amount {
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 2.4rem;
+    font-weight: 700;
     color: var(--primary);
-    letter-spacing: -0.41px;
-    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .deposit-btn {
@@ -197,22 +190,20 @@ body {
     border-radius: 14px;
     padding: 14px 24px;
     color: white;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 15px;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
-    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
 .deposit-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
 }
 
-/* Quick Actions */
+/* iOS Quick Actions */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -221,66 +212,67 @@ body {
 }
 
 .action-btn {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 16px 8px;
-    color: var(--on-surface);
+    padding: 18px 10px;
+    color: var(--ios-text);
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    backdrop-filter: var(--blur-intensity);
+    gap: 10px;
+    box-shadow: var(--glass-shadow);
 }
 
 .action-btn:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    transform: translateY(-2px) scale(1.02);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
 }
 
 .action-icon {
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .action-text {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: -0.08px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ios-text);
 }
 
-/* Tabs */
+/* iOS Tabs */
 .tabs {
     display: flex;
-    background: var(--surface);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
     border-radius: 16px;
     padding: 6px;
     margin-bottom: 24px;
-    border: 1px solid var(--frosted-border);
-    backdrop-filter: var(--blur-intensity);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
 }
 
 .tab {
     flex: 1;
-    padding: 12px 8px;
+    padding: 14px 10px;
     background: transparent;
     border: none;
-    color: var(--on-surface-secondary);
+    color: var(--ios-text-secondary);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: -0.24px;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .tab.active {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .tab-content {
@@ -291,67 +283,66 @@ body {
     display: block;
 }
 
-/* Categories Grid */
+/* iOS Categories Grid */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 14px;
 }
 
 .category-card {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: var(--glass-shadow);
+}
+
+.category-card:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
+}
+
+.category-name {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: var(--ios-text);
+}
+
+.category-count {
+    color: var(--ios-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* iOS Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.product-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-align: center;
-    backdrop-filter: var(--blur-intensity);
-}
-
-.category-card:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
-}
-
-.category-name {
-    font-weight: 700;
-    margin-bottom: 6px;
-    font-size: 17px;
-    color: var(--on-surface);
-    letter-spacing: -0.41px;
-}
-
-.category-count {
-    color: var(--on-surface-secondary);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.08px;
-}
-
-/* Products Grid */
-.products-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-}
-
-.product-card {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    border-radius: 16px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: var(--blur-intensity);
+    box-shadow: var(--glass-shadow);
 }
 
 .product-card:hover {
-    border-color: var(--primary);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(31, 38, 135, 0.4);
 }
 
 .product-header {
@@ -362,31 +353,27 @@ body {
 }
 
 .product-name {
-    font-weight: 700;
-    font-size: 17px;
+    font-weight: 600;
+    font-size: 0.95rem;
     margin-bottom: 6px;
-    color: var(--on-surface);
-    letter-spacing: -0.41px;
+    color: var(--ios-text);
 }
 
 .product-price {
-    font-size: 19px;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primary);
-    letter-spacing: -0.24px;
 }
 
 .product-stock {
     display: inline-block;
-    padding: 6px 12px;
-    background: var(--success);
+    padding: 6px 10px;
+    background: var(--secondary);
     color: white;
     border-radius: 12px;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: -0.08px;
-    backdrop-filter: var(--blur-intensity);
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 
 .product-stock.low {
@@ -398,28 +385,27 @@ body {
 }
 
 .product-description {
-    color: var(--on-surface-secondary);
-    font-size: 15px;
+    color: var(--ios-text-secondary);
+    font-size: 0.85rem;
     line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: -0.24px;
 }
 
-/* Profile */
+/* iOS Profile */
 .profile-header {
-    background: var(--surface);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
     border-radius: 20px;
     padding: 24px;
     margin-bottom: 24px;
     text-align: center;
-    border: 1px solid var(--frosted-border);
-    backdrop-filter: var(--blur-intensity);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
 }
 
 .profile-avatar-container {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 16px;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 18px;
 }
 
 .profile-stats {
@@ -430,46 +416,45 @@ body {
 }
 
 .stat-item {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 16px;
+    padding: 18px 12px;
     text-align: center;
-    backdrop-filter: var(--blur-intensity);
+    box-shadow: var(--glass-shadow);
 }
 
 .stat-value {
-    font-size: 24px;
+    font-size: 1.6rem;
     font-weight: 700;
     color: var(--primary);
     margin-bottom: 6px;
-    letter-spacing: -0.41px;
 }
 
 .stat-label {
-    color: var(--on-surface-secondary);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: -0.08px;
+    color: var(--ios-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
 }
 
-/* Admin Panel */
+/* iOS Admin Panel */
 .admin-panel {
-    background: var(--surface);
-    border: 1px solid var(--danger);
+    background: rgba(255, 59, 48, 0.1);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(255, 59, 48, 0.3);
     border-radius: 16px;
-    padding: 20px;
+    padding: 24px;
     margin-top: 24px;
-    backdrop-filter: var(--blur-intensity);
+    box-shadow: var(--glass-shadow);
 }
 
 .admin-title {
-    font-size: 17px;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
     color: var(--danger);
     text-align: center;
-    letter-spacing: -0.41px;
 }
 
 .admin-actions {
@@ -479,27 +464,25 @@ body {
 }
 
 .admin-btn {
-    background: rgba(255, 59, 48, 0.1);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: var(--glass-blur);
     border: 1px solid rgba(255, 59, 48, 0.3);
     border-radius: 14px;
     padding: 14px;
-    color: var(--on-surface);
+    color: var(--ios-text);
     cursor: pointer;
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 0.85rem;
+    font-weight: 600;
     transition: all 0.3s ease;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
 }
 
 .admin-btn:hover {
-    background: rgba(255, 59, 48, 0.2);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.3);
 }
 
-/* Search */
+/* iOS Search */
 .search-container {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .search-box {
@@ -508,20 +491,18 @@ body {
 
 .search-input {
     width: 100%;
-    padding: 16px 16px 16px 48px;
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    border-radius: 16px;
-    color: var(--on-surface);
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
+    padding: 16px 20px 16px 48px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: var(--ios-text);
+    font-size: 0.95rem;
+    box-shadow: var(--glass-shadow);
 }
 
 .search-input::placeholder {
-    color: var(--on-surface-secondary);
-    font-weight: 600;
+    color: var(--ios-text-secondary);
 }
 
 .search-icon {
@@ -529,25 +510,24 @@ body {
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--on-surface-secondary);
-    font-size: 18px;
-    font-weight: 600;
+    color: var(--ios-text-secondary);
+    font-size: 1.1rem;
 }
 
-/* Modals */
+/* iOS Modals */
 .modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 2000;
-    padding: 16px;
-    backdrop-filter: var(--blur-intensity);
+    padding: 20px;
 }
 
 .modal.active {
@@ -555,130 +535,109 @@ body {
 }
 
 .modal-content {
-    background: var(--surface-elevated);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 20px;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     max-height: 90vh;
     overflow-y: auto;
-    animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    backdrop-filter: var(--blur-intensity);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(100px) scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid var(--frosted-border);
+    padding: 24px;
+    border-bottom: 1px solid var(--ios-border);
 }
 
 .modal-header h3 {
-    font-size: 17px;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: var(--on-surface);
-    letter-spacing: -0.41px;
+    color: var(--ios-text);
 }
 
 .close-btn {
     background: none;
     border: none;
-    color: var(--on-surface-secondary);
-    font-size: 20px;
+    color: var(--ios-text-secondary);
+    font-size: 1.6rem;
     cursor: pointer;
     padding: 6px;
-    font-weight: 600;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-    color: var(--on-surface);
+    color: var(--ios-text);
+    transform: scale(1.1);
 }
 
 .modal-body {
-    padding: 20px;
+    padding: 24px;
 }
 
-/* Amount Grid */
+/* iOS Amount Grid */
 .amount-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 24px;
 }
 
 .amount-option {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    border-radius: 14px;
-    padding: 16px 8px;
-    color: var(--on-surface);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 16px 10px;
+    color: var(--ios-text);
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: var(--glass-shadow);
 }
 
 .amount-option.active {
     background: var(--primary);
     border-color: var(--primary);
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
 }
 
-.amount-option:hover {
-    transform: scale(1.05);
-}
-
-/* Payment Methods */
+/* iOS Payment Methods */
 .payment-methods {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 24px;
 }
 
 .payment-method {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 14px;
     padding: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 12px;
-    position: relative;
-    backdrop-filter: var(--blur-intensity);
+    gap: 14px;
+    box-shadow: var(--glass-shadow);
 }
 
 .payment-method.active {
     background: var(--primary);
     border-color: var(--primary);
-}
-
-.payment-method:hover {
-    transform: translateY(-1px);
+    color: white;
 }
 
 .method-icon {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 1.4rem;
 }
 
 .method-info {
@@ -686,111 +645,91 @@ body {
 }
 
 .method-name {
-    font-weight: 700;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
     margin-bottom: 4px;
-    color: var(--on-surface);
-    letter-spacing: -0.24px;
+    color: inherit;
 }
 
 .method-desc {
-    color: var(--on-surface-secondary);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.08px;
+    opacity: 0.8;
+    font-size: 0.75rem;
 }
 
-.method-check {
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.payment-method.active .method-check {
-    opacity: 1;
-}
-
-/* Buttons */
+/* iOS Buttons */
 .confirm-btn, .crypto-btn, .copy-btn, .buy-btn, .favorite-btn {
     width: 100%;
     padding: 18px;
     border: none;
     border-radius: 14px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-size: 15px;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
+    gap: 10px;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .confirm-btn, .crypto-btn.primary, .buy-btn {
     background: var(--primary);
     color: white;
-    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
 }
 
 .confirm-btn:hover, .crypto-btn.primary:hover, .buy-btn:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
 }
 
 .crypto-btn.secondary, .favorite-btn {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    color: var(--on-surface);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    color: var(--ios-text);
 }
 
 .crypto-btn.secondary:hover, .favorite-btn:hover {
-    background: var(--surface-elevated);
-    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
 }
 
 .copy-btn {
     background: var(--secondary);
     color: white;
-    box-shadow: 0 4px 16px rgba(52, 199, 89, 0.3);
 }
 
 .copy-btn:hover {
-    background: #30B14F;
+    background: #2db350;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(52, 199, 89, 0.4);
 }
 
-/* Crypto Info */
+/* iOS Crypto Info */
 .crypto-info {
     text-align: center;
     margin-bottom: 24px;
 }
 
 .crypto-amount {
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 2.2rem;
+    font-weight: 700;
     color: var(--primary);
     margin-bottom: 12px;
-    letter-spacing: -0.41px;
-    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .crypto-status {
-    color: var(--on-surface-secondary);
+    color: var(--ios-text-secondary);
     margin-bottom: 12px;
-    font-weight: 600;
-    letter-spacing: -0.24px;
+    font-weight: 500;
 }
 
 .crypto-timer {
-    font-size: 17px;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--warning);
-    letter-spacing: -0.41px;
 }
 
 .crypto-actions {
@@ -799,64 +738,56 @@ body {
     gap: 12px;
 }
 
-/* Wallet Info */
+/* iOS Wallet Info */
 .wallet-info {
     margin-bottom: 24px;
 }
 
 .wallet-address {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    border-radius: 14px;
-    padding: 16px;
-    font-family: 'SF Mono', 'Menlo', monospace;
-    font-size: 13px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 18px;
+    font-family: 'SF Mono', monospace;
+    font-size: 0.85rem;
     word-break: break-all;
-    margin-bottom: 16px;
-    color: var(--on-surface);
-    font-weight: 600;
-    letter-spacing: -0.08px;
-    backdrop-filter: var(--blur-intensity);
+    margin-bottom: 18px;
+    color: var(--ios-text);
+    box-shadow: var(--glass-shadow);
 }
 
 .wallet-instructions {
-    color: var(--on-surface-secondary);
-    font-size: 13px;
+    color: var(--ios-text-secondary);
+    font-size: 0.85rem;
     line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: -0.08px;
 }
 
-/* Product Modal */
+/* iOS Product Modal */
 .product-price {
-    font-size: 32px;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 700;
     color: var(--primary);
     margin-bottom: 12px;
-    letter-spacing: -0.41px;
-    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .product-stock {
-    background: var(--success);
+    background: var(--secondary);
     color: white;
-    padding: 8px 16px;
-    border-radius: 14px;
-    font-size: 13px;
-    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
     display: inline-block;
-    margin-bottom: 16px;
-    letter-spacing: -0.08px;
-    backdrop-filter: var(--blur-intensity);
+    margin-bottom: 18px;
 }
 
 .product-description {
-    color: var(--on-surface-secondary);
-    font-size: 15px;
+    color: var(--ios-text-secondary);
+    font-size: 0.95rem;
     line-height: 1.4;
     margin-bottom: 24px;
-    font-weight: 600;
-    letter-spacing: -0.24px;
 }
 
 .product-actions {
@@ -865,7 +796,7 @@ body {
     gap: 12px;
 }
 
-/* Language Options */
+/* iOS Language Options */
 .language-options {
     display: flex;
     flex-direction: column;
@@ -873,82 +804,79 @@ body {
 }
 
 .language-option {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 14px;
-    padding: 16px;
-    color: var(--on-surface);
+    padding: 18px;
+    color: var(--ios-text);
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 15px;
+    gap: 14px;
+    font-size: 1.1rem;
     transition: all 0.3s ease;
-    font-weight: 700;
-    letter-spacing: -0.24px;
-    backdrop-filter: var(--blur-intensity);
+    box-shadow: var(--glass-shadow);
 }
 
 .language-option.active {
     background: var(--primary);
     border-color: var(--primary);
-}
-
-.language-option:hover {
-    transform: translateY(-1px);
+    color: white;
 }
 
 .language-option .flag {
-    font-size: 20px;
+    font-size: 1.4rem;
 }
 
-/* Mini Menu */
+/* iOS Mini Menu */
 .mini-menu {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--surface-elevated);
-    border-top: 1px solid var(--frosted-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-top: 1px solid var(--glass-border);
     display: flex;
     padding: 12px 16px;
-    backdrop-filter: var(--blur-intensity);
     z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .menu-btn {
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--on-surface-secondary);
-    padding: 8px 4px;
+    color: var(--ios-text-secondary);
+    padding: 10px 6px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: -0.08px;
+    gap: 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 12px;
 }
 
 .menu-btn.active {
     color: var(--primary);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .menu-icon {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 1.3rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-/* Section Titles */
+/* iOS Section Titles */
 .section-title {
-    font-size: 17px;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 16px;
-    color: var(--on-surface);
-    letter-spacing: -0.41px;
+    margin-bottom: 18px;
+    color: var(--ios-text);
 }
 
 /* Responsive */
@@ -964,50 +892,8 @@ body {
     .amount-grid {
         grid-template-columns: repeat(6, 1fr);
     }
-}
-
-/* Enhanced Frosted Effects */
-.frosted-card {
-    background: var(--surface);
-    border: 1px solid var(--frosted-border);
-    border-radius: 16px;
-    padding: 20px;
-    backdrop-filter: var(--blur-intensity);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.frosted-card:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-/* Gradient Text Effects */
-.gradient-text {
-    background: linear-gradient(135deg, var(--primary), var(--primary-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Pulse Animation for Loading */
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-.pulse {
-    animation: pulse 2s infinite;
-}
-
-/* Shimmer Effect */
-.shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+    
+    .modal-content {
+        max-width: 480px;
+    }
 }
