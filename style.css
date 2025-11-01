@@ -236,11 +236,11 @@ body {
 }
 
 /* Search and Filters */
-.search-bar {
+.search-container {
     margin-bottom: 15px;
 }
 
-.search-bar input {
+.search-input {
     width: 100%;
     padding: 12px 15px;
     background: rgba(255, 255, 255, 0.05);
@@ -248,16 +248,16 @@ body {
     border-radius: 10px;
     color: var(--light);
     font-size: 1rem;
+    margin-bottom: 10px;
 }
 
-.search-bar input::placeholder {
+.search-input::placeholder {
     color: var(--gray);
 }
 
 .filters {
     display: flex;
     gap: 8px;
-    margin-bottom: 15px;
     flex-wrap: wrap;
 }
 
@@ -342,11 +342,9 @@ body {
 }
 
 /* Buttons */
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
+.btn {
     padding: 12px 20px;
+    border: none;
     border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
@@ -355,7 +353,12 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 100%;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
 }
 
 .btn-primary:hover {
@@ -365,62 +368,19 @@ body {
 .btn-secondary {
     background: rgba(255, 255, 255, 0.1);
     color: var(--light);
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-large {
+    padding: 15px 25px;
+    font-size: 1.1rem;
 }
 
 .btn-full {
     width: 100%;
-}
-
-/* Giveaway Card */
-.giveaway-card {
-    background: linear-gradient(135deg, #F59E0B, #D97706);
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.giveaway-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.giveaway-timer {
-    font-size: 1rem;
-    margin-bottom: 15px;
-    font-weight: bold;
-}
-
-.progress-bar {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    height: 8px;
-    margin-bottom: 15px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    background: white;
-    height: 100%;
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
-
-.giveaway-stats {
-    margin-bottom: 15px;
-    font-size: 0.9rem;
 }
 
 /* Balance Card */
@@ -448,9 +408,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
-.profile-btn {
+.profile-action-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
@@ -459,20 +420,42 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
     font-size: 1rem;
     transition: all 0.3s ease;
 }
 
-.profile-btn:hover {
+.profile-action-btn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Admin Panel */
-.admin-panel {
+.btn-text {
+    flex: 1;
+    text-align: left;
+    margin-left: 12px;
+}
+
+.btn-badge {
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Admin Section */
+.admin-section {
     margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .admin-btn {
@@ -486,8 +469,6 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 1rem;
-    margin-bottom: 10px;
-    width: 100%;
     transition: all 0.3s ease;
 }
 
@@ -503,11 +484,15 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     padding: 20px;
+}
+
+.modal.active {
+    display: flex;
 }
 
 .modal-content {
@@ -532,7 +517,7 @@ body {
     margin: 0;
 }
 
-.close-modal {
+.close-btn {
     background: none;
     border: none;
     color: var(--light);
@@ -550,25 +535,66 @@ body {
     padding: 20px;
 }
 
-/* Deposit Methods */
-.deposit-methods {
+/* Amount Selector */
+.amount-selector {
+    margin-bottom: 20px;
+}
+
+.amount-selector label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--gray);
+}
+
+.amount-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.amount-btn {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.amount-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Payment Methods */
+.payment-methods {
+    margin-bottom: 20px;
+}
+
+.payment-methods h4 {
+    margin-bottom: 15px;
+    color: var(--light);
+}
+
+.methods-grid {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 10px;
 }
 
 .method-card {
     background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 15px;
-    text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.method-card:hover {
+.method-card.selected {
     background: rgba(139, 92, 246, 0.2);
+    border-color: var(--primary);
 }
 
 .method-icon {
@@ -577,8 +603,43 @@ body {
 }
 
 .method-name {
-    font-size: 0.9rem;
     font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.method-desc {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* Crypto Bot Modal */
+.crypto-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.crypto-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.crypto-status {
+    color: var(--gray);
+    margin-bottom: 10px;
+}
+
+.crypto-timer {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--warning);
+}
+
+.crypto-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* Utility Classes */
@@ -593,10 +654,6 @@ body {
     color: var(--light);
 }
 
-.btn-icon {
-    font-size: 1.1rem;
-}
-
 /* Responsive */
 @media (min-width: 768px) {
     .categories-grid {
@@ -607,11 +664,11 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
     
-    .stats-grid {
-        gap: 15px;
+    .amount-buttons {
+        grid-template-columns: repeat(4, 1fr);
     }
     
-    .stat-card {
-        padding: 20px;
+    .methods-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
