@@ -4,19 +4,18 @@
     --primary-light: #66AFFF;
     --secondary: #34C759;
     --accent: #FF9500;
-    --dark: #000000;
-    --darker: #000000;
-    --dark-card: #1C1C1E;
-    --dark-border: #38383A;
-    --light: #FFFFFF;
+    --background: rgba(0, 0, 0, 0.95);
+    --surface: rgba(28, 28, 30, 0.8);
+    --surface-elevated: rgba(44, 44, 46, 0.8);
+    --frosted-glass: rgba(255, 255, 255, 0.1);
+    --frosted-border: rgba(255, 255, 255, 0.15);
+    --on-surface: #FFFFFF;
+    --on-surface-secondary: rgba(255, 255, 255, 0.7);
     --gray: #8E8E93;
-    --gray-light: #C7C7CC;
     --success: #34C759;
     --warning: #FF9500;
     --danger: #FF3B30;
-    --background: #000000;
-    --surface: #1C1C1E;
-    --on-surface: #FFFFFF;
+    --blur-intensity: blur(20px);
 }
 
 * {
@@ -32,19 +31,30 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     font-weight: 600;
+    backdrop-filter: var(--blur-intensity);
 }
 
 #app {
     max-width: 100%;
     min-height: 100vh;
-    padding-bottom: 83px;
+    padding-bottom: 90px;
     background: var(--background);
+    position: relative;
 }
 
+/* Frosted Glass Effect */
+.frosted-glass {
+    background: var(--frosted-glass);
+    backdrop-filter: var(--blur-intensity);
+    -webkit-backdrop-filter: var(--blur-intensity);
+    border: 1px solid var(--frosted-border);
+}
+
+/* Screen Management */
 .screen {
     display: none;
     padding: 16px;
-    background: var(--background);
+    background: transparent;
 }
 
 .screen.active {
@@ -61,8 +71,8 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-    background: var(--background);
     padding: 8px 0;
+    background: transparent;
 }
 
 .user-info {
@@ -113,7 +123,7 @@ body {
 }
 
 .user-id, .profile-id {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: -0.08px;
@@ -126,10 +136,10 @@ body {
 
 .icon-btn {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 10px;
-    width: 40px;
-    height: 40px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,24 +148,27 @@ body {
     font-size: 18px;
     transition: all 0.3s ease;
     font-weight: 600;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .icon-btn:hover {
     background: var(--primary);
     border-color: var(--primary);
+    transform: scale(1.05);
 }
 
 /* Balance Card */
 .balance-card {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 16px;
-    padding: 20px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 20px;
+    padding: 24px;
     margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(20px);
+    backdrop-filter: var(--blur-intensity);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .balance-info {
@@ -163,7 +176,7 @@ body {
 }
 
 .balance-label {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 15px;
     margin-bottom: 6px;
     font-weight: 600;
@@ -171,27 +184,32 @@ body {
 }
 
 .balance-amount {
-    font-size: 34px;
-    font-weight: 700;
+    font-size: 36px;
+    font-weight: 800;
     color: var(--primary);
     letter-spacing: -0.41px;
+    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
 }
 
 .deposit-btn {
     background: var(--primary);
     border: none;
-    border-radius: 12px;
-    padding: 12px 20px;
+    border-radius: 14px;
+    padding: 14px 24px;
     color: white;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 15px;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
 }
 
 .deposit-btn:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
 }
 
 /* Quick Actions */
@@ -204,8 +222,8 @@ body {
 
 .action-btn {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 14px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
     padding: 16px 8px;
     color: var(--on-surface);
     cursor: pointer;
@@ -214,12 +232,13 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .action-btn:hover {
     background: var(--primary);
     border-color: var(--primary);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
 }
 
 .action-icon {
@@ -237,10 +256,11 @@ body {
 .tabs {
     display: flex;
     background: var(--surface);
-    border-radius: 14px;
-    padding: 4px;
+    border-radius: 16px;
+    padding: 6px;
     margin-bottom: 24px;
-    border: 1px solid var(--dark-border);
+    border: 1px solid var(--frosted-border);
+    backdrop-filter: var(--blur-intensity);
 }
 
 .tab {
@@ -248,7 +268,7 @@ body {
     padding: 12px 8px;
     background: transparent;
     border: none;
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -260,6 +280,7 @@ body {
 .tab.active {
     background: var(--primary);
     color: white;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
 }
 
 .tab-content {
@@ -279,18 +300,20 @@ body {
 
 .category-card {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 14px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
     padding: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .category-card:hover {
     background: var(--primary);
     border-color: var(--primary);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
 }
 
 .category-name {
@@ -302,7 +325,7 @@ body {
 }
 
 .category-count {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: -0.08px;
@@ -317,16 +340,18 @@ body {
 
 .product-card {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 14px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
     padding: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .product-card:hover {
     border-color: var(--primary);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .product-header {
@@ -361,6 +386,7 @@ body {
     font-weight: 700;
     margin-bottom: 8px;
     letter-spacing: -0.08px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .product-stock.low {
@@ -372,7 +398,7 @@ body {
 }
 
 .product-description {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 15px;
     line-height: 1.4;
     font-weight: 600;
@@ -382,11 +408,12 @@ body {
 /* Profile */
 .profile-header {
     background: var(--surface);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 24px;
     margin-bottom: 24px;
     text-align: center;
-    border: 1px solid var(--dark-border);
+    border: 1px solid var(--frosted-border);
+    backdrop-filter: var(--blur-intensity);
 }
 
 .profile-avatar-container {
@@ -404,10 +431,11 @@ body {
 
 .stat-item {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 14px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
     padding: 16px;
     text-align: center;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .stat-value {
@@ -419,7 +447,7 @@ body {
 }
 
 .stat-label {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: -0.08px;
@@ -429,9 +457,10 @@ body {
 .admin-panel {
     background: var(--surface);
     border: 1px solid var(--danger);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     margin-top: 24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .admin-title {
@@ -452,7 +481,7 @@ body {
 .admin-btn {
     background: rgba(255, 59, 48, 0.1);
     border: 1px solid rgba(255, 59, 48, 0.3);
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 14px;
     color: var(--on-surface);
     cursor: pointer;
@@ -460,10 +489,12 @@ body {
     font-weight: 700;
     transition: all 0.3s ease;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .admin-btn:hover {
     background: rgba(255, 59, 48, 0.2);
+    transform: translateY(-1px);
 }
 
 /* Search */
@@ -477,18 +508,19 @@ body {
 
 .search-input {
     width: 100%;
-    padding: 14px 16px 14px 44px;
+    padding: 16px 16px 16px 48px;
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 14px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
     color: var(--on-surface);
     font-size: 15px;
     font-weight: 600;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .search-input::placeholder {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-weight: 600;
 }
 
@@ -497,7 +529,7 @@ body {
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 18px;
     font-weight: 600;
 }
@@ -515,7 +547,7 @@ body {
     justify-content: center;
     z-index: 2000;
     padding: 16px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: var(--blur-intensity);
 }
 
 .modal.active {
@@ -523,14 +555,16 @@ body {
 }
 
 .modal-content {
-    background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 16px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--frosted-border);
+    border-radius: 20px;
     width: 100%;
     max-width: 400px;
     max-height: 90vh;
     overflow-y: auto;
     animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: var(--blur-intensity);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes modalSlideIn {
@@ -549,7 +583,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border-bottom: 1px solid var(--dark-border);
+    border-bottom: 1px solid var(--frosted-border);
 }
 
 .modal-header h3 {
@@ -562,11 +596,12 @@ body {
 .close-btn {
     background: none;
     border: none;
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 20px;
     cursor: pointer;
     padding: 6px;
     font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .close-btn:hover {
@@ -587,21 +622,27 @@ body {
 
 .amount-option {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
-    padding: 14px 8px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 14px;
+    padding: 16px 8px;
     color: var(--on-surface);
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .amount-option.active {
     background: var(--primary);
     border-color: var(--primary);
     color: white;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.amount-option:hover {
+    transform: scale(1.05);
 }
 
 /* Payment Methods */
@@ -614,8 +655,8 @@ body {
 
 .payment-method {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 14px;
     padding: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -623,11 +664,16 @@ body {
     align-items: center;
     gap: 12px;
     position: relative;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .payment-method.active {
     background: var(--primary);
     border-color: var(--primary);
+}
+
+.payment-method:hover {
+    transform: translateY(-1px);
 }
 
 .method-icon {
@@ -648,7 +694,7 @@ body {
 }
 
 .method-desc {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: -0.08px;
@@ -668,9 +714,9 @@ body {
 /* Buttons */
 .confirm-btn, .crypto-btn, .copy-btn, .buy-btn, .favorite-btn {
     width: 100%;
-    padding: 16px;
+    padding: 18px;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -680,34 +726,42 @@ body {
     gap: 8px;
     font-size: 15px;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .confirm-btn, .crypto-btn.primary, .buy-btn {
     background: var(--primary);
     color: white;
+    box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
 }
 
 .confirm-btn:hover, .crypto-btn.primary:hover, .buy-btn:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
 }
 
 .crypto-btn.secondary, .favorite-btn {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
+    border: 1px solid var(--frosted-border);
     color: var(--on-surface);
 }
 
 .crypto-btn.secondary:hover, .favorite-btn:hover {
-    background: var(--dark-card);
+    background: var(--surface-elevated);
+    transform: translateY(-1px);
 }
 
 .copy-btn {
     background: var(--secondary);
     color: white;
+    box-shadow: 0 4px 16px rgba(52, 199, 89, 0.3);
 }
 
 .copy-btn:hover {
     background: #30B14F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 199, 89, 0.4);
 }
 
 /* Crypto Info */
@@ -717,15 +771,16 @@ body {
 }
 
 .crypto-amount {
-    font-size: 34px;
-    font-weight: 700;
+    font-size: 36px;
+    font-weight: 800;
     color: var(--primary);
     margin-bottom: 12px;
     letter-spacing: -0.41px;
+    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
 }
 
 .crypto-status {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     margin-bottom: 12px;
     font-weight: 600;
     letter-spacing: -0.24px;
@@ -751,8 +806,8 @@ body {
 
 .wallet-address {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 14px;
     padding: 16px;
     font-family: 'SF Mono', 'Menlo', monospace;
     font-size: 13px;
@@ -761,10 +816,11 @@ body {
     color: var(--on-surface);
     font-weight: 600;
     letter-spacing: -0.08px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .wallet-instructions {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 13px;
     line-height: 1.4;
     font-weight: 600;
@@ -773,27 +829,29 @@ body {
 
 /* Product Modal */
 .product-price {
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 800;
     color: var(--primary);
     margin-bottom: 12px;
     letter-spacing: -0.41px;
+    text-shadow: 0 2px 10px rgba(0, 122, 255, 0.3);
 }
 
 .product-stock {
     background: var(--success);
     color: white;
     padding: 8px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
     font-size: 13px;
     font-weight: 700;
     display: inline-block;
     margin-bottom: 16px;
     letter-spacing: -0.08px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .product-description {
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     font-size: 15px;
     line-height: 1.4;
     margin-bottom: 24px;
@@ -816,8 +874,8 @@ body {
 
 .language-option {
     background: var(--surface);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
+    border: 1px solid var(--frosted-border);
+    border-radius: 14px;
     padding: 16px;
     color: var(--on-surface);
     cursor: pointer;
@@ -828,11 +886,16 @@ body {
     transition: all 0.3s ease;
     font-weight: 700;
     letter-spacing: -0.24px;
+    backdrop-filter: var(--blur-intensity);
 }
 
 .language-option.active {
     background: var(--primary);
     border-color: var(--primary);
+}
+
+.language-option:hover {
+    transform: translateY(-1px);
 }
 
 .language-option .flag {
@@ -845,11 +908,11 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--surface);
-    border-top: 1px solid var(--dark-border);
+    background: var(--surface-elevated);
+    border-top: 1px solid var(--frosted-border);
     display: flex;
     padding: 12px 16px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: var(--blur-intensity);
     z-index: 1000;
 }
 
@@ -857,7 +920,7 @@ body {
     flex: 1;
     background: transparent;
     border: none;
-    color: var(--gray);
+    color: var(--on-surface-secondary);
     padding: 8px 4px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -901,4 +964,50 @@ body {
     .amount-grid {
         grid-template-columns: repeat(6, 1fr);
     }
+}
+
+/* Enhanced Frosted Effects */
+.frosted-card {
+    background: var(--surface);
+    border: 1px solid var(--frosted-border);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: var(--blur-intensity);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.frosted-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Gradient Text Effects */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Pulse Animation for Loading */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Shimmer Effect */
+.shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
