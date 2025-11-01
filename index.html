@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stoke Shop - Premium Accounts</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Загрузка -->
+        <div id="loading" class="loading-screen">
+            <div class="loader">
+                <div class="loader-spinner"></div>
+                <p>Загрузка Stoke Shop...</p>
+            </div>
+        </div>
+
+        <!-- Главный экран -->
+        <div id="mainScreen" class="screen hidden">
+            <header class="header">
+                <div class="user-info">
+                    <div class="avatar">🛒</div>
+                    <div class="user-details">
+                        <h1>Stoke Shop</h1>
+                        <div class="balance" id="userBalance">$0.00</div>
+                    </div>
+                </div>
+                <button class="btn-refresh" onclick="loadUserData()">🔄</button>
+            </header>
+
+            <nav class="quick-actions">
+                <button class="action-btn" onclick="showScreen('categories')">
+                    <span>📁</span>
+                    <span>Категории</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('deposit')">
+                    <span>💰</span>
+                    <span>Пополнить</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('orders')">
+                    <span>📦</span>
+                    <span>Заказы</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('favorites')">
+                    <span>⭐</span>
+                    <span>Избранное</span>
+                </button>
+            </nav>
+
+            <section class="promo-section">
+                <div class="promo-card">
+                    <h3>🎁 Розыгрыш iPhone 17 Pro Max</h3>
+                    <p>Участвуй в розыгрыше 3x iPhone!</p>
+                    <button class="btn-promo" onclick="showScreen('giveaway')">Участвовать</button>
+                </div>
+            </section>
+
+            <section class="stats-section">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalProducts">150+</span>
+                    <span class="stat-label">Товаров</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="activeUsers">4.5K+</span>
+                    <span class="stat-label">Покупателей</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="successOrders">12K+</span>
+                    <span class="stat-label">Заказов</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- Экран категорий -->
+        <div id="categoriesScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('main')">←</button>
+                <h2>📁 Категории товаров</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Категории загружаются динамически -->
+            </div>
+        </div>
+
+        <!-- Экран товаров категории -->
+        <div id="productsScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('categories')">←</button>
+                <h2 id="productsCategoryTitle">Товары</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="products-list" id="productsList">
+                <!-- Товары загружаются динамически -->
+            </div>
+        </div>
+
+        <!-- Экран товара -->
+        <div id="productScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('products')">←</button>
+                <h2>Товар</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="product-details" id="productDetails">
+                <!-- Детали товара загружаются динамически -->
+            </div>
+        </div>
+
+        <!-- Экран пополнения -->
+        <div id="depositScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('main')">←</button>
+                <h2>💰 Пополнение баланса</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            
+            <div class="deposit-methods">
+                <div class="method-card" onclick="showCryptoDeposit()">
+                    <div class="method-icon">💳</div>
+                    <div class="method-info">
+                        <h3>Crypto Bot</h3>
+                        <p>Мгновенное пополнение</p>
+                    </div>
+                    <div class="method-arrow">→</div>
+                </div>
+
+                <div class="method-card" onclick="showWallet('TON')">
+                    <div class="method-icon">⚡</div>
+                    <div class="method-info">
+                        <h3>TON</h3>
+                        <p>The Open Network</p>
+                    </div>
+                    <div class="method-arrow">→</div>
+                </div>
+
+                <div class="method-card" onclick="showWallet('USDT')">
+                    <div class="method-icon">💎</div>
+                    <div class="method-info">
+                        <h3>USDT TRC20</h3>
+                        <p>Tron Network</p>
+                    </div>
+                    <div class="method-arrow">→</div>
+                </div>
+
+                <div class="method-card" onclick="showWallet('BTC')">
+                    <div class="method-icon">₿</div>
+                    <div class="method-info">
+                        <h3>Bitcoin</h3>
+                        <p>BTC Network</p>
+                    </div>
+                    <div class="method-arrow">→</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран крипто депозита -->
+        <div id="cryptoDepositScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('deposit')">←</button>
+                <h2>💳 Crypto Bot</h2>
+                <div class="header-placeholder"></div>
+            </div>
+
+            <div class="deposit-form">
+                <div class="input-group">
+                    <label>Сумма пополнения (USD)</label>
+                    <input type="number" id="depositAmount" placeholder="От 10 до 1000" min="10" max="1000">
+                </div>
+                
+                <button class="btn-primary" onclick="createCryptoInvoice()">
+                    Создать счет для оплаты
+                </button>
+
+                <div class="deposit-info">
+                    <h4>Преимущества Crypto Bot:</h4>
+                    <ul>
+                        <li>⚡ Мгновенное зачисление</li>
+                        <li>💎 Без комиссии</li>
+                        <li>🔐 Безопасно и анонимно</li>
+                        <li>🌍 10+ криптовалют</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран кошелька -->
+        <div id="walletScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('deposit')">←</button>
+                <h2 id="walletTitle">Кошелек</h2>
+                <div class="header-placeholder"></div>
+            </div>
+
+            <div class="wallet-info">
+                <div class="wallet-address" id="walletAddress">
+                    Загрузка...
+                </div>
+                <button class="btn-copy" onclick="copyWalletAddress()">
+                    📋 Копировать
+                </button>
+                
+                <div class="wallet-instructions">
+                    <h4>Инструкция:</h4>
+                    <ol>
+                        <li>Скопируйте адрес выше</li>
+                        <li>Отправьте <span id="walletCurrency">TON</span> на этот адрес</li>
+                        <li>Минимальная сумма: $10</li>
+                        <li>Баланс обновится автоматически после 1 подтверждения</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран заказов -->
+        <div id="ordersScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('main')">←</button>
+                <h2>📦 История заказов</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="orders-list" id="ordersList">
+                <!-- Заказы загружаются динамически -->
+            </div>
+        </div>
+
+        <!-- Экран избранного -->
+        <div id="favoritesScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('main')">←</button>
+                <h2>⭐ Избранное</h2>
+                <div class="header-placeholder"></div>
+            </div>
+            <div class="favorites-list" id="favoritesList">
+                <!-- Избранное загружается динамически -->
+            </div>
+        </div>
+
+        <!-- Экран розыгрыша -->
+        <div id="giveawayScreen" class="screen hidden">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showScreen('main')">←</button>
+                <h2>🎁 Розыгрыш</h2>
+                <div class="header-placeholder"></div>
+            </div>
+
+            <div class="giveaway-container">
+                <div class="giveaway-card">
+                    <div class="giveaway-header">
+                        <h3>iPhone 17 Pro Max</h3>
+                        <div class="giveaway-prize">3x</div>
+                    </div>
+                    
+                    <div class="giveaway-timer">
+                        <div class="timer-item">
+                            <span id="timerDays">05</span>
+                            <span>дней</span>
+                        </div>
+                        <div class="timer-item">
+                            <span id="timerHours">18</span>
+                            <span>часов</span>
+                        </div>
+                    </div>
+
+                    <div class="giveaway-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="participantsCount">4,586</span>
+                            <span class="stat-label">Участников</span>
+                        </div>
+                    </div>
+
+                    <div class="giveaway-conditions">
+                        <h4>Условия участия:</h4>
+                        <ul>
+                            <li>Общая сумма пополнений от $30</li>
+                            <li>Активный аккаунт в боте</li>
+                            <li>Участие бесплатное</li>
+                        </ul>
+                    </div>
+
+                    <div class="giveaway-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="depositProgress"></div>
+                        </div>
+                        <div class="progress-text">
+                            Ваши пополнения: <span id="userDeposits">$0</span> / $30
+                        </div>
+                    </div>
+
+                    <button class="btn-participate" id="participateBtn" onclick="participateGiveaway()">
+                        Участвовать в розыгрыше
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification" class="notification hidden"></div>
+
+    <script src="script.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
