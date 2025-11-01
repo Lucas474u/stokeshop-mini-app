@@ -3,133 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stoke Shop - Магазин аккаунтов</title>
+    <title>Stoke Shop</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
-        <!-- Loading Screen -->
-        <div id="loading" class="screen active">
-            <div class="loading-content">
-                <div class="logo">🛒 Stoke Shop</div>
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Загрузка магазина...</div>
-            </div>
-        </div>
-
         <!-- Main Screen -->
-        <div id="main" class="screen">
+        <div id="main" class="screen active">
             <!-- Header -->
             <div class="header">
                 <div class="user-info">
-                    <div class="avatar" id="userAvatar">👤</div>
+                    <div class="avatar-container">
+                        <img id="userAvatar" src="" alt="Avatar" class="avatar-img" onerror="this.style.display='none'">
+                        <div class="avatar-fallback" id="avatarFallback">👤</div>
+                    </div>
                     <div class="user-details">
-                        <div class="username" id="username">Загрузка...</div>
-                        <div class="balance">Баланс: $<span id="userBalance">0.00</span></div>
+                        <div class="username" id="username">Пользователь</div>
+                        <div class="user-id">ID: <span id="userId">---</span></div>
                     </div>
                 </div>
-                <button class="btn-icon" id="refreshBtn" title="Обновить">🔄</button>
+                <div class="balance-display">
+                    <div class="balance-label">Баланс</div>
+                    <div class="balance-amount">$<span id="userBalance">0.00</span></div>
+                </div>
             </div>
 
-            <!-- Quick Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">1,247</div>
-                    <div class="stat-label">Пользователей</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">156</div>
-                    <div class="stat-label">Товаров</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">89%</div>
-                    <div class="stat-label">Довольных</div>
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn" id="depositAction">
+                    <div class="action-icon">💳</div>
+                    <div class="action-text">Пополнить</div>
+                </button>
+                <button class="action-btn" id="ordersAction">
+                    <div class="action-icon">📦</div>
+                    <div class="action-text">Заказы</div>
+                </button>
+                <button class="action-btn" id="favoritesAction">
+                    <div class="action-icon">⭐</div>
+                    <div class="action-text">Избранное</div>
+                </button>
+                <button class="action-btn" id="supportAction">
+                    <div class="action-icon">💬</div>
+                    <div class="action-text">Поддержка</div>
+                </button>
+            </div>
+
+            <!-- Giveaway Banner -->
+            <div class="giveaway-banner">
+                <div class="giveaway-content">
+                    <div class="giveaway-icon">🎁</div>
+                    <div class="giveaway-text">
+                        <div class="giveaway-title">РОЗЫГРЫШ 3x iPhone 17 Pro Max</div>
+                        <div class="giveaway-subtitle">Участвуй и выигрывай!</div>
+                    </div>
+                    <div class="giveaway-arrow">🎯</div>
                 </div>
             </div>
 
             <!-- Navigation Tabs -->
             <nav class="tabs">
-                <button class="tab active" data-tab="categories">📱 Категории</button>
-                <button class="tab" data-tab="products">🔥 Товары</button>
-                <button class="tab" data-tab="profile">👤 Профиль</button>
+                <button class="tab active" data-tab="categories">
+                    <span class="tab-icon">📱</span>
+                    <span class="tab-text">Категории</span>
+                </button>
+                <button class="tab" data-tab="products">
+                    <span class="tab-icon">🔥</span>
+                    <span class="tab-text">Все товары</span>
+                </button>
+                <button class="tab" data-tab="profile">
+                    <span class="tab-icon">👤</span>
+                    <span class="tab-text">Профиль</span>
+                </button>
             </nav>
 
             <!-- Categories Content -->
             <div id="categories" class="tab-content active">
-                <h2 class="section-title">Популярные категории</h2>
+                <div class="section-header">
+                    <h2 class="section-title">Категории</h2>
+                    <div class="section-subtitle">Выберите категорию для просмотра товаров</div>
+                </div>
                 <div class="categories-grid" id="categoriesGrid">
-                    <!-- Categories loaded by JavaScript -->
+                    <!-- Categories will be loaded here -->
                 </div>
             </div>
 
             <!-- Products Content -->
             <div id="products" class="tab-content">
+                <div class="section-header">
+                    <h2 class="section-title">Все товары</h2>
+                    <div class="section-subtitle">Доступные аккаунты и услуги</div>
+                </div>
+                
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="🔍 Поиск товаров..." class="search-input">
-                    <div class="filters">
-                        <button class="filter-btn active" data-filter="all">Все</button>
-                        <button class="filter-btn" data-filter="in_stock">В наличии</button>
-                        <button class="filter-btn" data-filter="popular">Популярные</button>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="searchInput" placeholder="Поиск товаров..." class="search-input">
                     </div>
                 </div>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Products loaded by JavaScript -->
+                
+                <div class="products-container" id="productsContainer">
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
                 </div>
             </div>
 
             <!-- Profile Content -->
             <div id="profile" class="tab-content">
-                <!-- Balance Card -->
-                <div class="balance-card">
-                    <div class="balance-label">Ваш баланс</div>
-                    <div class="balance-amount">$<span id="profileBalance">0.00</span></div>
-                    <button class="btn btn-primary" id="depositBtn">
-                        💳 Пополнить баланс
-                    </button>
+                <div class="profile-header">
+                    <div class="profile-avatar-container">
+                        <img id="profileAvatar" src="" alt="Avatar" class="profile-avatar-img" onerror="this.style.display='none'">
+                        <div class="profile-avatar-fallback" id="profileAvatarFallback">👤</div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name" id="profileName">Пользователь</div>
+                        <div class="profile-id">ID: <span id="profileUserId">---</span></div>
+                        <div class="profile-status">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Online</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Quick Actions -->
-                <div class="profile-actions">
-                    <button class="profile-action-btn" data-action="orders">
-                        <span class="btn-icon">📦</span>
-                        <span class="btn-text">Мои заказы</span>
-                        <span class="btn-badge" id="ordersCount">0</span>
-                    </button>
-                    
-                    <button class="profile-action-btn" data-action="favorites">
-                        <span class="btn-icon">⭐</span>
-                        <span class="btn-text">Избранное</span>
-                        <span class="btn-badge" id="favoritesCount">0</span>
-                    </button>
-                    
-                    <button class="profile-action-btn" data-action="giveaway">
-                        <span class="btn-icon">🎁</span>
-                        <span class="btn-text">Розыгрыш iPhone</span>
-                        <span class="btn-badge">🔥</span>
-                    </button>
-                    
-                    <button class="profile-action-btn" data-action="support">
-                        <span class="btn-icon">💬</span>
-                        <span class="btn-text">Поддержка</span>
-                    </button>
+                <!-- Balance Card -->
+                <div class="profile-balance-card">
+                    <div class="balance-card-header">
+                        <div class="balance-title">Ваш баланс</div>
+                        <button class="balance-action-btn" id="profileDepositBtn">
+                            <span class="action-icon">💳</span>
+                            Пополнить
+                        </button>
+                    </div>
+                    <div class="balance-amount-large">$<span id="profileBalance">0.00</span></div>
+                    <div class="balance-stats">
+                        <div class="balance-stat">
+                            <span class="stat-label">Пополнено:</span>
+                            <span class="stat-value">$<span id="totalDeposited">0.00</span></span>
+                        </div>
+                        <div class="balance-stat">
+                            <span class="stat-label">Потрачено:</span>
+                            <span class="stat-value">$<span id="totalSpent">0.00</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Stats -->
+                <div class="user-stats-grid">
+                    <div class="user-stat-card">
+                        <div class="user-stat-icon">📦</div>
+                        <div class="user-stat-info">
+                            <div class="user-stat-value" id="userOrdersCount">0</div>
+                            <div class="user-stat-label">Заказов</div>
+                        </div>
+                    </div>
+                    <div class="user-stat-card">
+                        <div class="user-stat-icon">⭐</div>
+                        <div class="user-stat-info">
+                            <div class="user-stat-value" id="userFavoritesCount">0</div>
+                            <div class="user-stat-label">Избранное</div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Admin Panel (Only for you) -->
-                <div id="adminSection" class="admin-section hidden">
-                    <h3 class="section-title">⚙️ Админ панель</h3>
+                <div id="adminPanel" class="admin-panel">
+                    <div class="admin-header">
+                        <h3 class="admin-title">⚙️ Админ Панель</h3>
+                        <div class="admin-badge">OWNER</div>
+                    </div>
                     <div class="admin-actions">
                         <button class="admin-btn" data-action="stats">
-                            📊 Статистика
+                            <span class="admin-btn-icon">📊</span>
+                            Статистика
                         </button>
                         <button class="admin-btn" data-action="users">
-                            👥 Пользователи
-                        </button>
-                        <button class="admin-btn" data-action="products">
-                            🛒 Товары
+                            <span class="admin-btn-icon">👥</span>
+                            Пользователи
                         </button>
                         <button class="admin-btn" data-action="kassa">
-                            💰 Касса
+                            <span class="admin-btn-icon">💰</span>
+                            Касса
                         </button>
                     </div>
                 </div>
@@ -144,39 +198,50 @@
                     <button class="close-btn" id="closeDepositModal">✕</button>
                 </div>
                 <div class="modal-body">
-                    <div class="amount-selector">
-                        <label>Выберите сумму:</label>
-                        <div class="amount-buttons">
-                            <button class="amount-btn" data-amount="10">$10</button>
-                            <button class="amount-btn" data-amount="25">$25</button>
-                            <button class="amount-btn" data-amount="50">$50</button>
-                            <button class="amount-btn" data-amount="100">$100</button>
+                    <div class="amount-section">
+                        <h4>Выберите сумму:</h4>
+                        <div class="amount-grid">
+                            <button class="amount-option" data-amount="10">$10</button>
+                            <button class="amount-option" data-amount="25">$25</button>
+                            <button class="amount-option" data-amount="50">$50</button>
+                            <button class="amount-option" data-amount="100">$100</button>
+                            <button class="amount-option" data-amount="200">$200</button>
+                            <button class="amount-option" data-amount="500">$500</button>
                         </div>
                     </div>
                     
-                    <div class="payment-methods">
-                        <h4>Способы оплаты:</h4>
-                        <div class="methods-grid">
-                            <div class="method-card selected" data-method="crypto_bot">
+                    <div class="payment-section">
+                        <h4>Способ оплаты:</h4>
+                        <div class="payment-methods">
+                            <div class="payment-method active" data-method="crypto_bot">
                                 <div class="method-icon">🤖</div>
-                                <div class="method-name">Crypto Bot</div>
-                                <div class="method-desc">Мгновенно • Без комиссии</div>
+                                <div class="method-info">
+                                    <div class="method-name">Crypto Bot</div>
+                                    <div class="method-desc">Мгновенно • Без комиссии</div>
+                                </div>
+                                <div class="method-check">✓</div>
                             </div>
-                            <div class="method-card" data-method="ton">
+                            <div class="payment-method" data-method="ton">
                                 <div class="method-icon">💎</div>
-                                <div class="method-name">TON</div>
-                                <div class="method-desc">The Open Network</div>
+                                <div class="method-info">
+                                    <div class="method-name">TON</div>
+                                    <div class="method-desc">The Open Network</div>
+                                </div>
+                                <div class="method-check">✓</div>
                             </div>
-                            <div class="method-card" data-method="usdt">
+                            <div class="payment-method" data-method="usdt">
                                 <div class="method-icon">💎</div>
-                                <div class="method-name">USDT</div>
-                                <div class="method-desc">TRC20 • TRON</div>
+                                <div class="method-info">
+                                    <div class="method-name">USDT</div>
+                                    <div class="method-desc">TRC20 • TRON</div>
+                                </div>
+                                <div class="method-check">✓</div>
                             </div>
                         </div>
                     </div>
                     
-                    <button class="btn btn-primary btn-large" id="confirmDeposit">
-                        💳 Пополнить $<span id="selectedAmount">10</span>
+                    <button class="confirm-deposit-btn" id="confirmDepositBtn">
+                        💳 Пополнить $<span id="selectedDepositAmount">10</span>
                     </button>
                 </div>
             </div>
@@ -186,15 +251,22 @@
         <div id="productModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 id="productModalTitle">Название товара</h3>
+                    <h3 id="productModalTitle">Товар</h3>
                     <button class="close-btn" id="closeProductModal">✕</button>
                 </div>
                 <div class="modal-body">
-                    <div class="product-price" id="productModalPrice">$0.00</div>
-                    <div class="product-stock" id="productModalStock">В наличии: 0 шт</div>
-                    <div class="product-description" id="productModalDescription">Описание товара</div>
-                    <button class="btn btn-primary btn-full" id="buyBtn">🛒 Купить</button>
-                    <button class="btn btn-secondary btn-full" id="favoriteBtn">⭐ Добавить в избранное</button>
+                    <div class="product-modal-price">$<span id="productModalPrice">0</span></div>
+                    <div class="product-modal-stock" id="productModalStock">В наличии: 0 шт</div>
+                    <div class="product-modal-description" id="productModalDescription">Описание товара</div>
+                    
+                    <div class="product-modal-actions">
+                        <button class="buy-now-btn" id="buyNowBtn">
+                            🛒 Купить сейчас
+                        </button>
+                        <button class="add-favorite-btn" id="addFavoriteBtn">
+                            ⭐ Добавить в избранное
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,21 +275,45 @@
         <div id="cryptoBotModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>🤖 Crypto Bot оплата</h3>
+                    <h3>🤖 Crypto Bot</h3>
                     <button class="close-btn" id="closeCryptoModal">✕</button>
                 </div>
                 <div class="modal-body">
-                    <div class="crypto-info">
-                        <div class="crypto-amount">Сумма: $<span id="cryptoAmount">10</span></div>
-                        <div class="crypto-status" id="cryptoStatus">Создание инвойса...</div>
-                        <div class="crypto-timer" id="cryptoTimer">⏰ 15:00</div>
+                    <div class="crypto-payment-info">
+                        <div class="crypto-amount">$<span id="cryptoPaymentAmount">10</span></div>
+                        <div class="crypto-status" id="cryptoPaymentStatus">Создание платежа...</div>
+                        <div class="crypto-timer" id="cryptoPaymentTimer">⏰ 15:00</div>
                     </div>
                     <div class="crypto-actions">
-                        <button class="btn btn-primary" id="openCryptoBot">🔗 Открыть Crypto Bot</button>
-                        <button class="btn btn-secondary" id="checkCryptoPayment">🔄 Проверить оплату</button>
+                        <button class="crypto-pay-btn" id="openCryptoBotBtn">
+                            🔗 Перейти к оплате
+                        </button>
+                        <button class="crypto-check-btn" id="checkCryptoPaymentBtn">
+                            🔄 Проверить оплату
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Mini Menu (Bottom Bar) -->
+        <div class="mini-menu">
+            <button class="mini-menu-btn active" data-action="main">
+                <span class="mini-menu-icon">🏠</span>
+                <span class="mini-menu-text">Главная</span>
+            </button>
+            <button class="mini-menu-btn" data-action="shop">
+                <span class="mini-menu-icon">🛒</span>
+                <span class="mini-menu-text">Магазин</span>
+            </button>
+            <button class="mini-menu-btn" data-action="balance">
+                <span class="mini-menu-icon">💰</span>
+                <span class="mini-menu-text">Баланс</span>
+            </button>
+            <button class="mini-menu-btn" data-action="support">
+                <span class="mini-menu-icon">💬</span>
+                <span class="mini-menu-text">Помощь</span>
+            </button>
         </div>
     </div>
 
