@@ -4,13 +4,13 @@
     --primary-light: #A78BFA;
     --secondary: #10B981;
     --accent: #F59E0B;
-    --dark: #0F172A;
-    --darker: #020617;
-    --dark-card: #1E293B;
-    --dark-border: #334155;
-    --light: #F8FAFC;
-    --gray: #64748B;
-    --gray-light: #94A3B8;
+    --dark: #000000;
+    --darker: #000000;
+    --dark-card: #1a1a1a;
+    --dark-border: #333333;
+    --light: #FFFFFF;
+    --gray: #666666;
+    --gray-light: #999999;
     --success: #10B981;
     --warning: #F59E0B;
     --danger: #EF4444;
@@ -20,11 +20,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-    background: var(--darker);
+    background: var(--dark);
     color: var(--light);
     min-height: 100vh;
     overflow-x: hidden;
@@ -34,11 +34,13 @@ body {
     max-width: 100%;
     min-height: 100vh;
     padding-bottom: 70px;
+    background: var(--dark);
 }
 
 .screen {
     display: none;
     padding: 16px;
+    background: var(--dark);
 }
 
 .screen.active {
@@ -49,71 +51,13 @@ body {
     display: none !important;
 }
 
-/* Language Selector */
-.language-selector {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(2, 6, 23, 0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 3000;
-    backdrop-filter: blur(10px);
-}
-
-.language-selector.active {
-    display: flex;
-}
-
-.language-modal {
-    background: var(--dark-card);
-    border: 1px solid var(--dark-border);
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 300px;
-    width: 90%;
-    text-align: center;
-}
-
-.language-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.language-option {
-    background: var(--dark);
-    border: 1px solid var(--dark-border);
-    border-radius: 12px;
-    padding: 15px;
-    color: var(--light);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.language-option.active {
-    background: var(--primary);
-    border-color: var(--primary);
-}
-
-.language-option .flag {
-    font-size: 1.2rem;
-}
-
 /* Header */
 .header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    background: var(--dark);
 }
 
 .user-info {
@@ -146,6 +90,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
+    color: white;
     border: 2px solid var(--primary);
 }
 
@@ -157,6 +102,7 @@ body {
     font-weight: 600;
     font-size: 1.1rem;
     margin-bottom: 2px;
+    color: var(--light);
 }
 
 .user-id, .profile-id {
@@ -186,6 +132,7 @@ body {
 
 .icon-btn:hover {
     background: var(--primary);
+    border-color: var(--primary);
 }
 
 /* Balance Card */
@@ -255,6 +202,7 @@ body {
 
 .action-btn:hover {
     background: var(--primary);
+    border-color: var(--primary);
     transform: translateY(-2px);
 }
 
@@ -322,18 +270,15 @@ body {
 
 .category-card:hover {
     background: var(--primary);
+    border-color: var(--primary);
     transform: translateY(-2px);
-}
-
-.category-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
 }
 
 .category-name {
     font-weight: 600;
     margin-bottom: 5px;
     font-size: 0.9rem;
+    color: var(--light);
 }
 
 .category-count {
@@ -373,6 +318,7 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 5px;
+    color: var(--light);
 }
 
 .product-price {
@@ -463,6 +409,7 @@ body {
     font-weight: 700;
     margin-bottom: 15px;
     color: var(--danger);
+    text-align: center;
 }
 
 .admin-actions {
@@ -525,13 +472,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(2, 6, 23, 0.9);
+    background: rgba(0, 0, 0, 0.9);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 2000;
     padding: 20px;
-    backdrop-filter: blur(10px);
 }
 
 .modal.active {
@@ -559,6 +505,7 @@ body {
 .modal-header h3 {
     font-size: 1.1rem;
     font-weight: 700;
+    color: var(--light);
 }
 
 .close-btn {
@@ -640,6 +587,7 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 2px;
+    color: var(--light);
 }
 
 .method-desc {
@@ -660,6 +608,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    font-size: 0.9rem;
 }
 
 .confirm-btn, .crypto-btn.primary, .buy-btn {
@@ -734,6 +683,7 @@ body {
     font-size: 0.8rem;
     word-break: break-all;
     margin-bottom: 15px;
+    color: var(--light);
 }
 
 .wallet-instructions {
@@ -774,6 +724,36 @@ body {
     gap: 10px;
 }
 
+/* Language Options */
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.language-option {
+    background: var(--dark);
+    border: 1px solid var(--dark-border);
+    border-radius: 10px;
+    padding: 15px;
+    color: var(--light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.language-option.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.language-option .flag {
+    font-size: 1.2rem;
+}
+
 /* Mini Menu */
 .mini-menu {
     position: fixed;
@@ -784,7 +764,6 @@ body {
     border-top: 1px solid var(--dark-border);
     display: flex;
     padding: 10px;
-    backdrop-filter: blur(10px);
     z-index: 1000;
 }
 
@@ -817,6 +796,7 @@ body {
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 15px;
+    color: var(--light);
 }
 
 /* Responsive */
