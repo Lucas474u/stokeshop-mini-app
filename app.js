@@ -307,4 +307,370 @@ class StokeShopApp {
                 </div>
                 <div class="product-description">${product.description}</div>
             </div>
-        `).join
+        `).join('');
+    }
+
+    switchTab(tabName) {
+        // Update active tab
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Update active content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    showScreen(screenName) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenName).classList.add('active');
+    }
+
+    showModal(modalName) {
+        document.getElementById(modalName).classList.add('active');
+    }
+
+    hideModal(modalName) {
+        document.getElementById(modalName).classList.remove('active');
+    }
+
+    showCategoryProducts(categoryName) {
+        const categoryProducts = this.products.filter(p => p.category === categoryName);
+        
+        this.renderProducts(categoryProducts);
+        this.switchTab('products');
+        
+        // Update search placeholder
+        document.getElementById('searchInput').placeholder = `🔍 Поиск в ${categoryName}...`;
+    }
+
+    showProductModal(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (!product) return;
+
+        this.currentProduct = product;
+
+        document.getElementById('productModalTitle').textContent = product.name;
+        document.getElementById('productModalPrice').textContent = `$${product.price}`;
+        document.getElementById('productModalStock').textContent = `В наличии: ${product.stock} шт`;
+        document.getElementById('productModalDescription').textContent = product.description;
+        
+        // Update favorite button
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        favoriteBtn.textContent = product.isFavorite ? '❌ Удалить из избранного' : '⭐ Добавить в избранное';
+        
+        this.showModal('productModal');
+    }
+
+    showDepositModal() {
+        this.selectedAmount = 10;
+        this.selectedMethod = 'crypto_bot';
+        this.updateDepositModal();
+        this.showModal('depositModal');
+    }
+
+    updateDepositModal() {
+        // Update amount buttons
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            const amount = parseInt(btn.getAttribute('data-amount'));
+            btn.classList.toggle('active', amount === this.selectedAmount);
+        });
+
+        // Update payment methods
+        document.querySelectorAll('.method-card').forEach(method => {
+            const methodName = method.getAttribute('data-method');
+            method.classList.toggle('selected', methodName === this.selectedMethod);
+        });
+
+        // Update confirm button
+        document.getElementById('selectedAmount').textContent = this.selectedAmount;
+    }
+
+    selectAmount(amount) {
+        this.selectedAmount = amount;
+        this.updateDepositModal();
+    }
+
+    selectPaymentMethod(method) {
+        this.selectedMethod = method;
+        this.updateDepositModal();
+    }
+
+    async processDeposit() {
+        if (this.selectedMethod === 'crypto_bot') {
+            await this.processCryptoBotDeposit();
+        } else {
+            this.showWalletAddress(this.selectedMethod);
+        }
+    }
+
+    async processCryptoBotDeposit() {
+        this.showModal('cryptoBotModal');
+        
+        // Update crypto modal
+        document.getElementById('cryptoAmount').textContent = this.selectedAmount;
+        document.getElementById('cryptoStatus').textContent = 'Создание инвойса...';
+        
+        try {
+            // Simulate API call to create invoice
+            // In real app, you would call your bot's API
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Simulate successful invoice creation
+            const invoiceUrl = `https://t.me/CryptoBot?start=invoice_${Date.now()}`;
+            
+            document.getElementById('cryptoStatus').textContent = 'Инвойс создан!';
+            document.getElementById('openCryptoBot').onclick = () => {
+                this.tg.openInvoice(invoiceUrl);
+            };
+            
+            // Start payment timer
+            this.startPaymentTimer();
+            
+        } catch (error) {
+            document.getElementById('cryptoStatus').textContent = 'Ошибка создания инвойса';
+            document.getElementById('cryptoStatus').style.color = 'var(--danger)';
+        }
+    }
+
+    startPaymentTimer() {
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        const timerElement = document.getElementById('cryptoTimer');
+        
+        const timer = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerElement.textContent = `⏰ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                document.getElementById('cryptoStatus').textContent = 'Время оплаты истекло';
+                document.getElementById('cryptoStatus').style.color = 'var(--danger)';
+            }
+            
+            timeLeft--;
+        }, 1000);
+    }
+
+    async checkCryptoPayment() {
+        document.getElementById('cryptoStatus').textContent = 'Проверка оплаты...';
+        
+        try {
+            // Simulate payment check
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Simulate successful payment (in real app, check with your bot)
+            const success = Math.random() > 0.5; // 50% chance for demo
+            
+            if (success) {
+                document.getElementById('cryptoStatus').textContent = '✅ Оплата получена!';
+                document.getElementById('cryptoStatus').style.color = 'var(--success)';
+                
+                // Update balance
+                this.userData.balance += this.selectedAmount;
+                this.updateUI();
+                
+                setTimeout(() => {
+                    this.hideModal('cryptoBotModal');
+                    this.hideModal('depositModal');
+                    this.showMessage(`Баланс пополнен на $${this.selectedAmount}!`);
+                }, 2000);
+            } else {
+                document.getElementById('cryptoStatus').textContent = '❌ Оплата не найдена';
+                document.getElementById('cryptoStatus').style.color = 'var(--danger)';
+            }
+            
+        } catch (error) {
+            document.getElementById('cryptoStatus').textContent = 'Ошибка проверки';
+            document.getElementById('cryptoStatus').style.color = 'var(--danger)';
+        }
+    }
+
+    showWalletAddress(method) {
+        const addresses = {
+            'ton': 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
+            'usdt': 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt'
+        };
+        
+        const address = addresses[method];
+        const message = `Адрес для пополнения (${method.toUpperCase()}):\n\n<code>${address}</code>\n\nПосле отправки средств баланс пополнится автоматически.`;
+        
+        this.showMessage(message);
+        this.hideModal('depositModal');
+    }
+
+    async buyProduct() {
+        if (!this.currentProduct) return;
+
+        if (this.userData.balance < this.currentProduct.price) {
+            this.showError('Недостаточно средств на балансе');
+            return;
+        }
+
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Update balance and stock
+            this.userData.balance -= this.currentProduct.price;
+            this.currentProduct.stock -= 1;
+            this.userData.ordersCount += 1;
+            
+            this.updateUI();
+            this.hideModal('productModal');
+            
+            this.showMessage(`🎉 Покупка "${this.currentProduct.name}" успешно завершена!`);
+            
+        } catch (error) {
+            this.showError('Ошибка при покупке товара');
+        }
+    }
+
+    toggleFavorite() {
+        if (!this.currentProduct) return;
+
+        this.currentProduct.isFavorite = !this.currentProduct.isFavorite;
+        
+        if (this.currentProduct.isFavorite) {
+            this.userData.favoritesCount += 1;
+            this.showMessage('✅ Добавлено в избранное');
+        } else {
+            this.userData.favoritesCount -= 1;
+            this.showMessage('❌ Удалено из избранного');
+        }
+        
+        this.updateUI();
+        
+        // Update favorite button text
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        favoriteBtn.textContent = this.currentProduct.isFavorite ? '❌ Удалить из избранного' : '⭐ Добавить в избранное';
+    }
+
+    handleProfileAction(action) {
+        switch (action) {
+            case 'orders':
+                this.showMessage('📦 История заказов загружается...');
+                break;
+            case 'favorites':
+                this.showMessage('⭐ Загрузка избранных товаров...');
+                break;
+            case 'giveaway':
+                this.showGiveawayInfo();
+                break;
+            case 'support':
+                this.tg.openTelegramLink('https://t.me/stokeshopchannel');
+                break;
+        }
+    }
+
+    handleAdminAction(action) {
+        switch (action) {
+            case 'stats':
+                this.showAdminStats();
+                break;
+            case 'users':
+                this.showMessage('👥 Управление пользователями');
+                break;
+            case 'products':
+                this.showMessage('🛒 Управление товарами');
+                break;
+            case 'kassa':
+                this.showKassa();
+                break;
+        }
+    }
+
+    showGiveawayInfo() {
+        const message = `🎉 <b>РОЗЫГРЫШ 3x iPhone 17 Pro Max</b>\n\n` +
+                       `Участников: 4,586\n` +
+                       `До конца: 5 дней 18 часов\n` +
+                       `Ваш статус: ✅ Участвуете\n\n` +
+                       `Ваша сумма пополнений: $${this.userData.totalDeposits}`;
+        
+        this.showMessage(message);
+    }
+
+    showAdminStats() {
+        const message = `📊 <b>Статистика магазина</b>\n\n` +
+                       `👥 Пользователей: 1,247\n` +
+                       `🛒 Товаров: 156\n` +
+                       `💰 Выручка: $28,450\n` +
+                       `📈 Заказов сегодня: 15`;
+        
+        this.showMessage(message);
+    }
+
+    showKassa() {
+        const totalCash = 28450.75;
+        const message = `💰 <b>Касса проекта</b>\n\n` +
+                       `Общая сумма всех пополнений: $${totalCash.toFixed(2)}`;
+        
+        this.showMessage(message);
+    }
+
+    filterProducts(searchTerm) {
+        const filtered = this.products.filter(product =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            product.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        this.renderProducts(filtered);
+    }
+
+    activateFilter(button) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        
+        const filter = button.getAttribute('data-filter');
+        let filteredProducts = this.products;
+        
+        switch (filter) {
+            case 'in_stock':
+                filteredProducts = this.products.filter(p => p.stock > 0);
+                break;
+            case 'popular':
+                filteredProducts = this.products.filter(p => p.price > 50);
+                break;
+        }
+        
+        this.renderProducts(filteredProducts);
+    }
+
+    async refreshData() {
+        this.showMessage('Обновление данных...');
+        await this.loadInitialData();
+        this.showMessage('Данные обновлены!');
+    }
+
+    openCryptoBot() {
+        // This would open Crypto Bot in real implementation
+        this.tg.openTelegramLink('https://t.me/CryptoBot');
+    }
+
+    showMessage(message) {
+        this.tg.showPopup({
+            title: 'Stoke Shop',
+            message: message,
+            buttons: [{ type: 'ok' }]
+        });
+    }
+
+    showError(message) {
+        this.tg.showPopup({
+            title: 'Ошибка',
+            message: message,
+            buttons: [{ type: 'ok' }]
+        });
+    }
+}
+
+// Initialize app when Telegram Web App is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new StokeShopApp();
+});
