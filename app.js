@@ -20,7 +20,7 @@ class StokeShopApp {
         
         // Crypto Pay API credentials
         this.cryptoPayConfig = {
-            apiKey: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE', // Замените на ваш API ключ
+            apiKey: 'YOUR_CRYPTO_PAY_API_KEY', // Замените на ваш API ключ
             apiUrl: 'https://pay.crypt.bot/api/'
         };
         
@@ -994,4 +994,3 @@ Telegram.WebApp.ready();
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new StokeShopApp();
 });
-
