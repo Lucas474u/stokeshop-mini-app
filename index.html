@@ -3,256 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOKE SHOP</title>
-    <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Stoke Shop - Магазин аккаунтов</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Шапка приложения -->
-        <div class="header">
-            <div class="shop-title">Stoke Shop</div>
-            <div class="balance" id="userBalance">$124.50</div>
-            <button class="refresh-btn" onclick="refreshBalance()">↻</button>
-        </div>
-
-        <!-- Навигация -->
-        <div class="navigation">
-            <div class="nav-item active" onclick="showSection('main')">
-                <div class="nav-icon">≡</div>
-                <div class="nav-label">Главная</div>
-            </div>
-            <div class="nav-item" onclick="showSection('categories')">
-                <div class="nav-icon">📦</div>
-                <div class="nav-label">Товары</div>
-            </div>
-            <div class="nav-item" onclick="showSection('deposit')">
-                <div class="nav-icon">$</div>
-                <div class="nav-label">Баланс</div>
-            </div>
-            <div class="nav-item" onclick="showSection('orders')">
-                <div class="nav-icon">📋</div>
-                <div class="nav-label">Заказы</div>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading" class="screen active">
+            <div class="loading-content">
+                <div class="logo">🛒 Stoke Shop</div>
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Загрузка...</div>
             </div>
         </div>
 
-        <!-- Основной контент -->
-        <div class="content" id="content">
-            <!-- Загрузка -->
-            <div class="loading" id="loading"></div>
-
-            <!-- Главная страница -->
-            <div class="section active" id="main">
-                <!-- Промо баннер -->
-                <div class="promo-banner">
-                    <div class="promo-title">РОЗЫГРЫШ IPHONE 17 PRO MAX</div>
-                    <div class="promo-subtitle">Участвуй в розыгрыше 3 устройств</div>
-                    <button class="btn" onclick="showSection('giveaway')">УЧАСТВОВАТЬ</button>
-                </div>
-
-                <!-- Статистика -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">150</div>
-                        <div class="stat-label">Товаров</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">4</div>
-                        <div class="stat-label">Покупателей</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">12</div>
-                        <div class="stat-label">Заказов</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">$2,847</div>
-                        <div class="stat-label">Выручка</div>
+        <!-- Main Screen -->
+        <div id="main" class="screen">
+            <div class="header">
+                <div class="user-info">
+                    <div class="avatar">👤</div>
+                    <div class="user-details">
+                        <div class="username" id="username">Пользователь</div>
+                        <div class="balance">Баланс: $<span id="userBalance">0.00</span></div>
                     </div>
                 </div>
+                <button class="btn-icon" id="refreshBtn">🔄</button>
+            </div>
 
-                <!-- Быстрые действия -->
-                <div class="quick-actions">
-                    <button class="action-btn" onclick="showSection('categories')">
-                        НАЧАТЬ ПОКУПКИ
-                    </button>
-                    <button class="action-btn secondary" onclick="showSection('deposit')">
-                        ПОПОЛНИТЬ БАЛАНС
-                    </button>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalUsers">1,247</div>
+                    <div class="stat-label">Пользователей</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="giveawayParticipants">4,586</div>
+                    <div class="stat-label">В розыгрыше</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeProducts">156</div>
+                    <div class="stat-label">Товаров</div>
                 </div>
             </div>
 
-            <!-- Категории -->
-            <div class="section" id="categories">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('main')">←</button>
-                    <h2>КАТЕГОРИИ ТОВАРОВ</h2>
-                </div>
-                <div class="search-box">
-                    <input type="text" placeholder="Поиск товаров..." id="searchInput">
-                </div>
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-tab="categories">📱 Категории</button>
+                <button class="tab" data-tab="products">🔥 Товары</button>
+                <button class="tab" data-tab="giveaway">🎁 Розыгрыш</button>
+                <button class="tab" data-tab="profile">👤 Профиль</button>
+            </div>
+
+            <!-- Categories Tab -->
+            <div id="categories" class="tab-content active">
+                <div class="section-title">Популярные категории</div>
                 <div class="categories-grid" id="categoriesGrid">
-                    <!-- Категории будут загружены через JavaScript -->
+                    <!-- Categories will be loaded here -->
                 </div>
             </div>
 
-            <!-- Пополнение баланса -->
-            <div class="section" id="deposit">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('main')">←</button>
-                    <h2>ПОПОЛНЕНИЕ БАЛАНСА</h2>
+            <!-- Products Tab -->
+            <div id="products" class="tab-content">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Поиск товаров...">
                 </div>
-                
-                <div class="payment-methods">
-                    <div class="method-category">
-                        <h3>CRYPTO BOT</h3>
-                        <p>Мгновенное пополнение</p>
-                    </div>
-                    
-                    <div class="method-item" onclick="selectPayment('crypto_bot')">
-                        <div class="method-icon">⚡</div>
-                        <div class="method-info">
-                            <div class="method-name">Crypto Bot</div>
-                            <div class="method-desc">Мгновенное зачисление</div>
-                        </div>
-                        <div class="method-arrow">→</div>
-                    </div>
-
-                    <div class="method-category">
-                        <h3>КРИПТОВАЛЮТЫ</h3>
-                        <p>Прямые переводы</p>
-                    </div>
-
-                    <div class="method-item" onclick="selectPayment('ton')">
-                        <div class="method-icon">●</div>
-                        <div class="method-info">
-                            <div class="method-name">TON</div>
-                            <div class="method-desc">The Open Network</div>
-                        </div>
-                        <div class="method-arrow">→</div>
-                    </div>
-
-                    <div class="method-item" onclick="selectPayment('usdt')">
-                        <div class="method-icon">●</div>
-                        <div class="method-info">
-                            <div class="method-name">USDT TRC20</div>
-                            <div class="method-desc">Tron Network</div>
-                        </div>
-                        <div class="method-arrow">→</div>
-                    </div>
-
-                    <div class="method-item" onclick="selectPayment('btc')">
-                        <div class="method-icon">₿</div>
-                        <div class="method-info">
-                            <div class="method-name">Bitcoin</div>
-                            <div class="method-desc">BTC Network</div>
-                        </div>
-                        <div class="method-arrow">→</div>
-                    </div>
+                <div class="filters">
+                    <button class="filter-btn active">Все</button>
+                    <button class="filter-btn">В наличии</button>
+                    <button class="filter-btn">Популярные</button>
+                </div>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
                 </div>
             </div>
 
-            <!-- Crypto Bot оплата -->
-            <div class="section" id="crypto_bot">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('deposit')">←</button>
-                    <h2>CRYPTO BOT</h2>
-                </div>
-                
-                <div class="deposit-form">
-                    <label>СУММА ПОПОЛНЕНИЯ (USD)</label>
-                    <input type="number" id="depositAmount" placeholder="От 10 до 1000" min="10" max="1000">
-                    <button class="btn" onclick="createCryptoInvoice()">СОЗДАТЬ СЧЕТ ДЛЯ ОПЛАТЫ</button>
-                </div>
-
-                <div class="features-list">
-                    <h3>ПРЕИМУЩЕСТВА CRYPTO BOT</h3>
-                    <div class="feature-item">Мгновенное зачисление</div>
-                    <div class="feature-item">Без комиссии</div>
-                    <div class="feature-item">Безопасно и анонимно</div>
-                    <div class="feature-item">10+ криптовалют</div>
-                </div>
-            </div>
-
-            <!-- Кошелек TON -->
-            <div class="section" id="ton_wallet">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('deposit')">←</button>
-                    <h2>КОШЕЛЕК TON</h2>
-                </div>
-                
-                <div class="wallet-info">
-                    <div class="wallet-address" id="tonAddress">
-                        Загрузка...
-                    </div>
-                    <button class="btn secondary" onclick="copyAddress('ton')">СКОПИРОВАТЬ</button>
-                    
-                    <div class="instructions">
-                        <h3>ИНСТРУКЦИЯ</h3>
-                        <ol>
-                            <li>Скопируйте адрес выше</li>
-                            <li>Отправьте TON на этот адрес</li>
-                            <li>Минимальная сумма: $10</li>
-                            <li>Баланс обновится автоматически после 1 подтверждения</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-
-            <!-- История заказов -->
-            <div class="section" id="orders">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('main')">←</button>
-                    <h2>ИСТОРИЯ ЗАКАЗОВ</h2>
-                </div>
-                <div class="orders-list" id="ordersList">
-                    <!-- Заказы будут загружены через JavaScript -->
-                </div>
-            </div>
-
-            <!-- Розыгрыш -->
-            <div class="section" id="giveaway">
-                <div class="section-header">
-                    <button class="back-btn" onclick="showSection('main')">←</button>
-                    <h2>РОЗЫГРЫШ</h2>
-                </div>
-                
+            <!-- Giveaway Tab -->
+            <div id="giveaway" class="tab-content">
                 <div class="giveaway-card">
-                    <div class="giveaway-title">IPHONE 17 PRO MAX</div>
-                    <div class="giveaway-count">3X</div>
-                    <div class="giveaway-timer">
-                        <div class="timer-item">
-                            <div class="timer-number">07</div>
-                            <div class="timer-label">дней</div>
-                        </div>
-                        <div class="timer-item">
-                            <div class="timer-number">00</div>
-                            <div class="timer-label">часов</div>
-                        </div>
+                    <div class="giveaway-title">🎉 Розыгрыш 3x iPhone 17 Pro Max</div>
+                    <div class="giveaway-timer" id="giveawayTimer">До конца: 5д 18ч</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
                     </div>
-                    <div class="giveaway-participants">4,586 УЧАСТНИКОВ</div>
-                    
-                    <div class="giveaway-conditions">
-                        <h3>УСЛОВИЯ УЧАСТИЯ</h3>
-                        <ul>
-                            <li>Общая сумма пополнений от $30</li>
-                            <li>Активный аккаунт в боте</li>
-                            <li>Участие бесплатное</li>
-                        </ul>
+                    <div class="giveaway-stats">
+                        Участников: <span id="participantsCount">4,586</span> | 
+                        Ваш статус: <span id="participationStatus">✅ Участвуете</span>
                     </div>
-                    
-                    <div class="giveaway-status">
-                        Ваши пополнения: <span id="userDeposits">$45.00</span> / $30
-                    </div>
-                    
-                    <button class="btn" id="participateBtn" onclick="participateGiveaway()">УЧАСТВОВАТЬ В РОЗЫГРЫШЕ</button>
+                    <button class="btn-primary" id="participateBtn">Участвовать</button>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile" class="tab-content">
+                <div class="balance-card">
+                    <div class="balance-label">Ваш баланс</div>
+                    <div class="balance-amount">$<span id="profileBalance">0.00</span></div>
+                    <button class="btn-primary" id="depositBtn">💳 Пополнить баланс</button>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="profile-btn" data-action="orders">
+                        <span class="btn-icon">🛒</span> Мои заказы
+                    </button>
+                    <button class="profile-btn" data-action="favorites">
+                        <span class="btn-icon">⭐</span> Избранное
+                    </button>
+                    <button class="profile-btn" data-action="support">
+                        <span class="btn-icon">💬</span> Поддержка
+                    </button>
+                    <button class="profile-btn" data-action="about">
+                        <span class="btn-icon">ℹ️</span> О магазине
+                    </button>
+                </div>
+
+                <!-- Admin Panel (only for admins) -->
+                <div id="adminPanel" class="admin-panel hidden">
+                    <div class="section-title">⚙️ Админ панель</div>
+                    <button class="admin-btn" data-action="stats">
+                        📊 Статистика
+                    </button>
+                    <button class="admin-btn" data-action="users">
+                        👥 Пользователи
+                    </button>
+                    <button class="admin-btn" data-action="products">
+                        🛒 Товары
+                    </button>
+                    <button class="admin-btn" data-action="balance">
+                        💰 Балансы
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Уведомления -->
-        <div class="notification" id="notification"></div>
+        <!-- Deposit Modal -->
+        <div id="depositModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>💳 Пополнение баланса</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="deposit-methods">
+                        <div class="method-card" data-method="ton">
+                            <div class="method-icon">💎</div>
+                            <div class="method-name">TON</div>
+                        </div>
+                        <div class="method-card" data-method="usdt">
+                            <div class="method-icon">💎</div>
+                            <div class="method-name">USDT</div>
+                        </div>
+                        <div class="method-card" data-method="crypto">
+                            <div class="method-icon">🤖</div>
+                            <div class="method-name">Crypto Bot</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Modal -->
+        <div id="productModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="productModalTitle">Товар</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="product-price" id="productModalPrice">$0.00</div>
+                    <div class="product-stock" id="productModalStock">В наличии: 0 шт</div>
+                    <div class="product-description" id="productModalDescription">Описание товара</div>
+                    <button class="btn-primary btn-full" id="buyBtn">🛒 Купить</button>
+                    <button class="btn-secondary btn-full" id="favoriteBtn">⭐ Добавить в избранное</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="./app.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
