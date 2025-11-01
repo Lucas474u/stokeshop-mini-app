@@ -10,18 +10,23 @@
 <body>
     <div id="app">
         <!-- Language Selector -->
-        <div id="languageSelector" class="language-selector">
-            <div class="language-modal">
-                <h3>Select Language</h3>
-                <div class="language-options">
-                    <button class="language-option active" data-lang="ru">
-                        <span class="flag">🇷🇺</span>
-                        Русский
-                    </button>
-                    <button class="language-option" data-lang="en">
-                        <span class="flag">🇬🇧</span>
-                        English
-                    </button>
+        <div id="languageSelector" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Select Language</h3>
+                    <button class="close-btn" id="closeLanguageModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="language-options">
+                        <button class="language-option active" data-lang="ru">
+                            <span class="flag">🇷🇺</span>
+                            Русский
+                        </button>
+                        <button class="language-option" data-lang="en">
+                            <span class="flag">🇬🇧</span>
+                            English
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,7 +50,7 @@
                         🌐
                     </button>
                     <button class="icon-btn" id="refreshBtn" title="Refresh">
-                        🔄
+                        ↻
                     </button>
                 </div>
             </div>
@@ -147,10 +152,10 @@
                 <div id="adminPanel" class="admin-panel hidden">
                     <h3 class="admin-title">Admin Panel</h3>
                     <div class="admin-actions">
-                        <button class="admin-btn" data-action="stats">
+                        <button class="admin-btn" id="adminStatsBtn">
                             📊 Statistics
                         </button>
-                        <button class="admin-btn" data-action="kassa">
+                        <button class="admin-btn" id="adminKassaBtn">
                             💰 Cash Desk
                         </button>
                     </div>
@@ -258,7 +263,7 @@
                             🔗 <span data-i18n="open_crypto_bot">Open Crypto Bot</span>
                         </button>
                         <button class="crypto-btn secondary" id="checkCryptoPaymentBtn">
-                            🔄 <span data-i18n="check_payment">Check Payment</span>
+                            ↻ <span data-i18n="check_payment">Check Payment</span>
                         </button>
                     </div>
                 </div>
