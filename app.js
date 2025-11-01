@@ -99,8 +99,8 @@ class StokeShopApp {
         // Initialize Telegram Web App
         this.tg.expand();
         this.tg.enableClosingConfirmation();
-        this.tg.setHeaderColor('#0F172A');
-        this.tg.setBackgroundColor('#020617');
+        this.tg.setHeaderColor('#000000');
+        this.tg.setBackgroundColor('#000000');
         
         // Get user data from Telegram
         this.user = this.tg.initDataUnsafe?.user;
@@ -184,7 +184,7 @@ class StokeShopApp {
             }
         }
         
-        // Load balance from localStorage (in real app - from your backend)
+        // Load balance from localStorage
         const savedBalance = localStorage.getItem('stoke_balance');
         if (savedBalance) {
             this.userData.balance = parseFloat(savedBalance);
@@ -230,41 +230,81 @@ class StokeShopApp {
     }
 
     loadProducts() {
-        // All products from your database
+        // Все аккаунты из вашей базы данных
         this.products = [
-            // Telegram accounts
+            // Telegram accounts (8)
             { id: 1, name: 'НОВОРЕГ Telegram', price: 4, stock: 25, description: 'Новый аккаунт Telegram с гарантией', category: 'Telegram', isFavorite: false },
             { id: 2, name: 'ФИЗ СИМ US', price: 5, stock: 15, description: 'Аккаунт с US сим-картой', category: 'Telegram', isFavorite: false },
-            { id: 3, name: 'ПРЕМИУМ Telegram', price: 7, stock: 15, description: 'Премиум аккаунт Telegram', category: 'Telegram', isFavorite: false },
+            { id: 3, name: 'ФИЗ СИМ EU', price: 5.5, stock: 12, description: 'Аккаунт с EU сим-картой', category: 'Telegram', isFavorite: false },
+            { id: 4, name: 'ВИРТ СИМ', price: 4.5, stock: 20, description: 'Аккаунт с виртуальной симкой', category: 'Telegram', isFavorite: false },
+            { id: 5, name: 'БИЗНЕС', price: 6, stock: 10, description: 'Бизнес аккаунт Telegram', category: 'Telegram', isFavorite: false },
+            { id: 6, name: 'ПРЕМИУМ', price: 7, stock: 15, description: 'Премиум аккаунт Telegram', category: 'Telegram', isFavorite: false },
+            { id: 7, name: 'ВЕРИФИЦИРОВАН', price: 6.5, stock: 12, description: 'Верифицированный аккаунт', category: 'Telegram', isFavorite: false },
+            { id: 8, name: 'ПРО АККАУНТ', price: 5.8, stock: 7, description: 'Профессиональный аккаунт', category: 'Telegram', isFavorite: false },
+
+            // VKontakte accounts (7)
+            { id: 9, name: 'ВК PREMIUM', price: 10, stock: 15, description: 'Премиум аккаунт ВК', category: 'VKontakte', isFavorite: false },
+            { id: 10, name: 'ВК BUSINESS', price: 8, stock: 12, description: 'Бизнес страница ВК', category: 'VKontakte', isFavorite: false },
+            { id: 11, name: 'ВК STANDARD', price: 3, stock: 25, description: 'Стандартный аккаунт ВК', category: 'VKontakte', isFavorite: false },
+            { id: 12, name: 'ВК FRESH', price: 2, stock: 20, description: 'Свежий аккаунт ВК', category: 'VKontakte', isFavorite: false },
+            { id: 13, name: 'ВК VERIFIED', price: 9, stock: 13, description: 'Верифицированный аккаунт ВК', category: 'VKontakte', isFavorite: false },
+            { id: 14, name: 'ВК CREATOR', price: 7, stock: 12, description: 'Аккаунт создателя контента', category: 'VKontakte', isFavorite: false },
+            { id: 15, name: 'ВК GAMING', price: 5, stock: 18, description: 'Игровой аккаунт ВК', category: 'VKontakte', isFavorite: false },
+
+            // Vinted accounts (15)
+            { id: 16, name: 'Vinted BRUT Франция', price: 120, stock: 23, description: 'Премиум аккаунты Vinted Франция', category: 'Vinted', isFavorite: false },
+            { id: 17, name: 'Vinted BRUT Испания', price: 115, stock: 16, description: 'Качественные аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 18, name: 'Vinted BRUT Италия', price: 110, stock: 13, description: 'Итальянские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 19, name: 'Vinted BRUT Германия', price: 125, stock: 12, description: 'Немецкие аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 20, name: 'Vinted BRUT Польша', price: 100, stock: 17, description: 'Польские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 21, name: 'Vinted BRUT США', price: 140, stock: 21, description: 'Американские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 22, name: 'Vinted BRUT Великобритания', price: 130, stock: 14, description: 'Британские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 23, name: 'Vinted BRUT Канада', price: 135, stock: 19, description: 'Канадские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 24, name: 'Vinted BRUT Нидерланды', price: 105, stock: 18, description: 'Голландские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 25, name: 'Vinted BRUT Бельгия', price: 95, stock: 14, description: 'Бельгийские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 26, name: 'Vinted BRUT Португалия', price: 90, stock: 16, description: 'Португальские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 27, name: 'Vinted BRUT Швеция', price: 145, stock: 11, description: 'Шведские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 28, name: 'Vinted BRUT Норвегия', price: 150, stock: 14, description: 'Норвежские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 29, name: 'Vinted BRUT Дания', price: 135, stock: 12, description: 'Датские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+            { id: 30, name: 'Vinted BRUT Финляндия', price: 140, stock: 15, description: 'Финские аккаунты Vinted', category: 'Vinted', isFavorite: false },
+
+            // Wallapop accounts (13)
+            { id: 31, name: 'Wallapop Испания', price: 25, stock: 10, description: 'Качественный испанский аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 32, name: 'Wallapop Италия', price: 22, stock: 17, description: 'Итальянский аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
+            { id: 33, name: 'Wallapop Франция', price: 28, stock: 12, description: 'Французский аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
+            { id: 34, name: 'Wallapop Португалия', price: 20, stock: 15, description: 'Португальский аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 35, name: 'Wallapop PREMIUM', price: 35, stock: 19, description: 'Премиум аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
+            { id: 36, name: 'Wallapop BUSINESS', price: 45, stock: 16, description: 'Бизнес аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
+            { id: 37, name: 'Wallapop FRESH', price: 15, stock: 20, description: 'Свежий аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
+            { id: 38, name: 'Wallapop VERIFIED', price: 30, stock: 9, description: 'Верифицированный аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 39, name: 'Wallapop TOP SELLER', price: 50, stock: 15, description: 'Аккаунт топ продавца', category: 'Wallapop', isFavorite: false },
+            { id: 40, name: 'Wallapop PRO', price: 40, stock: 15, description: 'Профессиональный аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 41, name: 'Wallapop STANDARD', price: 18, stock: 18, description: 'Стандартный аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 42, name: 'Wallapop ULTIMATE', price: 55, stock: 18, description: 'Ультимативный аккаунт', category: 'Wallapop', isFavorite: false },
+            { id: 43, name: 'Wallapop ECONOMY', price: 12, stock: 25, description: 'Экономный аккаунт', category: 'Wallapop', isFavorite: false },
+
+            // Добавляем остальные категории...
+            // Facebook (16), Telegram Stars (4), Telegram Premium (3), Yandex (10), Ozon (8), Wildberries (9), Gosuslugi (6)
             
-            // Vinted accounts
-            { id: 4, name: 'Vinted BRUT Франция', price: 120, stock: 23, description: 'Премиум аккаунты Vinted Франция', category: 'Vinted', isFavorite: false },
-            { id: 5, name: 'Vinted BRUT Испания', price: 115, stock: 16, description: 'Качественные аккаунты Vinted', category: 'Vinted', isFavorite: false },
-            { id: 6, name: 'Vinted BRUT США', price: 140, stock: 21, description: 'Американские аккаунты Vinted', category: 'Vinted', isFavorite: false },
-            
-            // Wallapop accounts
-            { id: 7, name: 'Wallapop PREMIUM', price: 35, stock: 19, description: 'Премиум аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
-            { id: 8, name: 'Wallapop BUSINESS', price: 45, stock: 16, description: 'Бизнес аккаунт Wallapop', category: 'Wallapop', isFavorite: false },
-            
-            // Facebook accounts
-            { id: 9, name: 'Facebook USA', price: 3, stock: 20, description: 'Американский аккаунт Facebook', category: 'Facebook', isFavorite: false },
-            { id: 10, name: 'Facebook BUSINESS', price: 5, stock: 14, description: 'Бизнес аккаунт Facebook', category: 'Facebook', isFavorite: false },
-            
+            // Facebook accounts (пример нескольких)
+            { id: 44, name: 'Facebook USA', price: 3, stock: 20, description: 'Американский аккаунт Facebook', category: 'Facebook', isFavorite: false },
+            { id: 45, name: 'Facebook BUSINESS', price: 5, stock: 14, description: 'Бизнес аккаунт Facebook', category: 'Facebook', isFavorite: false },
+
             // Telegram Stars
-            { id: 11, name: 'Telegram Stars 100', price: 0.8, stock: 100, description: '100 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
-            { id: 12, name: 'Telegram Stars 1000', price: 11, stock: 30, description: '1000 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
-            
-            // Yandex accounts
-            { id: 13, name: 'Яндекс Сплит ПРЕМИУМ', price: 50, stock: 10, description: 'Премиум Яндекс Сплит аккаунт', category: 'Yandex', isFavorite: false },
-            
-            // Ozon accounts
-            { id: 14, name: 'Ozon ПРЕМИУМ', price: 60, stock: 13, description: 'Премиум Ozon аккаунт', category: 'Ozon', isFavorite: false },
-            
-            // Wildberries accounts
-            { id: 15, name: 'WB PREMIUM', price: 40, stock: 12, description: 'Премиум аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
-            
-            // Gosuslugi accounts
-            { id: 16, name: 'Госуслуги PREMIUM', price: 50, stock: 19, description: 'Премиум аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false }
+            { id: 46, name: 'Telegram Stars 100', price: 0.8, stock: 100, description: '100 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+            { id: 47, name: 'Telegram Stars 1000', price: 11, stock: 30, description: '1000 звезд для Telegram', category: 'Telegram Stars', isFavorite: false },
+
+            // Yandex
+            { id: 48, name: 'Яндекс Сплит ПРЕМИУМ', price: 50, stock: 10, description: 'Премиум Яндекс Сплит аккаунт', category: 'Yandex', isFavorite: false },
+
+            // Ozon
+            { id: 49, name: 'Ozon ПРЕМИУМ', price: 60, stock: 13, description: 'Премиум Ozon аккаунт', category: 'Ozon', isFavorite: false },
+
+            // Wildberries
+            { id: 50, name: 'WB PREMIUM', price: 40, stock: 12, description: 'Премиум аккаунт Wildberries', category: 'Wildberries', isFavorite: false },
+
+            // Gosuslugi
+            { id: 51, name: 'Госуслуги PREMIUM', price: 50, stock: 19, description: 'Премиум аккаунт Госуслуг', category: 'Gosuslugi', isFavorite: false }
         ];
         
         this.renderProducts();
@@ -274,6 +314,10 @@ class StokeShopApp {
         // Language selection
         document.getElementById('languageBtn').addEventListener('click', () => {
             this.showModal('languageSelector');
+        });
+
+        document.getElementById('closeLanguageModal').addEventListener('click', () => {
+            this.hideModal('languageSelector');
         });
 
         document.querySelectorAll('.language-option').forEach(option => {
@@ -293,10 +337,6 @@ class StokeShopApp {
 
         // Deposit button
         document.getElementById('depositBtn').addEventListener('click', () => {
-            this.showDepositModal();
-        });
-
-        document.getElementById('profileDepositBtn').addEventListener('click', () => {
             this.showDepositModal();
         });
 
@@ -360,11 +400,12 @@ class StokeShopApp {
         });
 
         // Admin actions
-        document.querySelectorAll('.admin-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const action = e.currentTarget.getAttribute('data-action');
-                this.handleAdminAction(action);
-            });
+        document.getElementById('adminStatsBtn').addEventListener('click', () => {
+            this.handleAdminAction('stats');
+        });
+
+        document.getElementById('adminKassaBtn').addEventListener('click', () => {
+            this.handleAdminAction('kassa');
         });
 
         // Mini menu
@@ -799,7 +840,6 @@ class StokeShopApp {
     updateUI() {
         // Update balance
         document.getElementById('userBalance').textContent = this.userData.balance.toFixed(2);
-        document.getElementById('profileBalance').textContent = this.userData.balance.toFixed(2);
         
         // Update stats
         document.getElementById('ordersCount').textContent = this.userData.ordersCount;
@@ -818,14 +858,6 @@ class StokeShopApp {
     showMessage(message) {
         this.tg.showPopup({
             title: 'Stoke Shop',
-            message: message,
-            buttons: [{ type: 'ok' }]
-        });
-    }
-
-    showError(message) {
-        this.tg.showPopup({
-            title: this.currentLanguage === 'ru' ? 'Ошибка' : 'Error',
             message: message,
             buttons: [{ type: 'ok' }]
         });
