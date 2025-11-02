@@ -356,6 +356,13 @@
             justify-content: center;
             margin: 0 auto 16px;
             border: 3px solid var(--primary-color);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .avatar i {
@@ -992,11 +999,12 @@
             <div class="tab-content" id="profile-tab">
                 <div class="profile-header">
                     <div class="avatar">
-                        <i class="fas fa-user"></i>
+                        <img id="userAvatar" src="" alt="Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <i class="fas fa-user" id="avatarFallback"></i>
                     </div>
                     <div class="profile-info">
                         <h3 id="userName">Пользователь</h3>
-                        <p class="user-id" id="userId">ID: 123456</p>
+                        <p class="user-id" id="userId">ID: Загрузка...</p>
                     </div>
                 </div>
 
@@ -1090,7 +1098,7 @@
                 <div class="referral-link">
                     <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
                     <div class="link-container">
-                        <input type="text" id="referralLink" readonly value="https://t.me/stokeshopbot?start=ref123456">
+                        <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref123456">
                         <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
                     </div>
                 </div>
@@ -1411,7 +1419,11 @@
             referralLink: document.getElementById('referralLink'),
             joinChannelBtn: document.getElementById('joinChannelBtn'),
             loadingOverlay: document.getElementById('loadingOverlay'),
-            searchInput: document.getElementById('searchInput')
+            searchInput: document.getElementById('searchInput'),
+            userAvatar: document.getElementById('userAvatar'),
+            avatarFallback: document.getElementById('avatarFallback'),
+            userName: document.getElementById('userName'),
+            userId: document.getElementById('userId')
         };
 
         // Initialize app
@@ -1419,6 +1431,37 @@
             loadCategories();
             setupEventListeners();
             updateUI();
+            loadUserData();
+        }
+
+        // Load user data from Telegram
+        function loadUserData() {
+            // This would normally come from Telegram WebApp.initData
+            // For demo purposes, we'll use mock data
+            const mockUserData = {
+                id: 123456789,
+                first_name: "Иван",
+                last_name: "Петров",
+                username: "ivan_petrov",
+                photo_url: "https://via.placeholder.com/150/6366f1/ffffff?text=IP",
+                language_code: "ru"
+            };
+
+            // Set user data
+            elements.userName.textContent = `${mockUserData.first_name} ${mockUserData.last_name}`;
+            elements.userId.textContent = `ID: ${mockUserData.id}`;
+            
+            if (mockUserData.photo_url) {
+                elements.userAvatar.src = mockUserData.photo_url;
+                elements.userAvatar.style.display = 'block';
+                elements.avatarFallback.style.display = 'none';
+            } else {
+                elements.userAvatar.style.display = 'none';
+                elements.avatarFallback.style.display = 'flex';
+            }
+
+            // Update referral link with actual user ID
+            elements.referralLink.value = `https://t.me/cryptosending_bot?start=ref${mockUserData.id}`;
         }
 
         // Load categories to the grid
@@ -1682,17 +1725,8 @@
                 showLoading(false);
                 
                 if (selectedPaymentMethod === 'crypto_bot') {
-                    // For Crypto Bot, show payment link
-                    elements.paymentInfo.innerHTML = `
-                        <h4>${currentLanguage === 'ru' ? 'Оплата через Crypto Bot' : 'Payment via Crypto Bot'}</h4>
-                        <p>${currentLanguage === 'ru' ? 'Перейдите по ссылке для оплаты:' : 'Follow the link to pay:'}</p>
-                        <a href="https://t.me/CryptoBot?start=stokeshop_${selectedAmount}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
-                            ${currentLanguage === 'ru' ? 'Перейти к оплате' : 'Go to payment'}
-                        </a>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary);">
-                            ${currentLanguage === 'ru' ? 'После оплаты баланс пополнится автоматически' : 'Balance will be topped up automatically after payment'}
-                        </p>
-                    `;
+                    // For Crypto Bot, create invoice
+                    createCryptoBotInvoice(selectedAmount);
                 } else {
                     // For other methods, show wallet address
                     const walletAddresses = {
@@ -1717,6 +1751,30 @@
                 elements.amountSelector.classList.add('hidden');
                 elements.paymentInfo.classList.remove('hidden');
             }, 1500);
+        }
+
+        // Create Crypto Bot invoice
+        function createCryptoBotInvoice(amount) {
+            // In a real implementation, this would call your backend API
+            // which would create an invoice via Crypto Bot API
+            const invoiceUrl = `https://t.me/CryptoBot?start=invoice_${Date.now()}_${amount}`;
+            
+            elements.paymentInfo.innerHTML = `
+                <h4>${currentLanguage === 'ru' ? 'Оплата через Crypto Bot' : 'Payment via Crypto Bot'}</h4>
+                <p>${currentLanguage === 'ru' ? 'Перейдите по ссылке для оплаты:' : 'Follow the link to pay:'}</p>
+                <a href="${invoiceUrl}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
+                    ${currentLanguage === 'ru' ? 'Перейти к оплате' : 'Go to payment'}
+                </a>
+                <div style="background: var(--surface); padding: 16px; border-radius: 8px; margin: 16px 0;">
+                    <p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+                        <strong>${currentLanguage === 'ru' ? 'Сумма:' : 'Amount:'}</strong> $${amount}<br>
+                        <strong>${currentLanguage === 'ru' ? 'Статус:' : 'Status:'}</strong> ${currentLanguage === 'ru' ? 'Ожидание оплаты' : 'Pending payment'}
+                    </p>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                    ${currentLanguage === 'ru' ? 'После оплаты баланс пополнится автоматически' : 'Balance will be topped up automatically after payment'}
+                </p>
+            `;
         }
 
         // Reset payment modal
