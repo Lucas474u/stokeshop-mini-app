@@ -3,266 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOKE SHOP • Premium Marketplace</title>
+    <title>STOKE SHOP • Elite Marketplace</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="app-container">
-        <!-- Premium Header -->
-        <header class="premium-header">
-            <div class="header-background">
-                <div class="gradient-orbit"></div>
-                <div class="gradient-orbit-2"></div>
+        <!-- Ultra Premium Header -->
+        <header class="ultra-header">
+            <div class="header-bg-elements">
+                <div class="bg-orbital orb-1"></div>
+                <div class="bg-orbital orb-2"></div>
+                <div class="bg-orbital orb-3"></div>
             </div>
             <div class="header-content">
-                <div class="brand-section">
-                    <div class="logo-glow">
-                        <div class="logo-icon">🛒</div>
+                <div class="brand-logo">
+                    <div class="logo-container">
+                        <div class="logo-shine"></div>
+                        <img src="logo.png" alt="STOKE SHOP" class="logo-image" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
+                        <div class="logo-fallback" id="logoFallback">🛒</div>
                     </div>
-                    <div class="brand-text">
-                        <h1 class="brand-name">STOKE SHOP</h1>
-                        <div class="brand-subtitle">PREMIUM MARKETPLACE</div>
+                    <div class="brand-titles">
+                        <h1 class="brand-main">STOKE SHOP</h1>
+                        <div class="brand-sub">ELITE MARKETPLACE</div>
                     </div>
                 </div>
-                <div class="user-section">
-                    <div class="balance-display">
-                        <div class="balance-amount" id="userBalance">$150.00</div>
-                        <div class="balance-label">Баланс</div>
+                <div class="user-widget">
+                    <div class="balance-widget">
+                        <div class="balance-figure">$<span id="userBalance">150.00</span></div>
+                        <div class="balance-caption">Баланс</div>
                     </div>
-                    <div class="user-avatar" id="userAvatar">
-                        <div class="avatar-glow"></div>
-                        <img id="avatarImage" src="" alt="Avatar" onerror="this.style.display='none'">
+                    <div class="avatar-container" id="userAvatar">
+                        <div class="avatar-halo"></div>
+                        <img id="avatarImage" src="" alt="Profile" onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
                         <div class="avatar-fallback" id="avatarFallback">U</div>
+                        <div class="online-indicator"></div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Premium Main Content -->
-        <main class="premium-content">
-            <!-- Hero Section -->
-            <section class="luxury-hero">
-                <div class="hero-background">
-                    <div class="floating-shapes">
-                        <div class="shape shape-1"></div>
-                        <div class="shape shape-2"></div>
-                        <div class="shape shape-3"></div>
+        <!-- Main Content Area -->
+        <main class="main-content-area">
+            <!-- Luxury Hero Section -->
+            <section class="luxury-hero-section">
+                <div class="hero-backdrop">
+                    <div class="particle-field">
+                        <div class="particle p1"></div>
+                        <div class="particle p2"></div>
+                        <div class="particle p3"></div>
+                        <div class="particle p4"></div>
                     </div>
                 </div>
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        <span class="badge-text">PREMIUM</span>
-                        <div class="badge-glow"></div>
+                <div class="hero-core">
+                    <div class="prestige-badge">
+                        <span class="badge-text">EXCLUSIVE</span>
+                        <div class="badge-aura"></div>
                     </div>
-                    <h2 class="hero-title">Элитный Маркетплейс <span class="gradient-text">Аккаунтов</span></h2>
-                    <p class="hero-description">Эксклюзивные аккаунты с гарантией качества и мгновенной доставкой</p>
-                    <div class="hero-stats">
-                        <div class="luxury-stat">
-                            <div class="stat-icon">💎</div>
-                            <div class="stat-content">
+                    <h2 class="hero-headline">Элитный Маркетплейс <span class="text-gradient">Премиум Аккаунтов</span></h2>
+                    <p class="hero-tagline">Эксклюзивные аккаунты с гарантией качества и мгновенной доставкой 24/7</p>
+                    <div class="prestige-stats">
+                        <div class="stat-elite">
+                            <div class="stat-ornament">💎</div>
+                            <div class="stat-data">
                                 <div class="stat-number">99+</div>
-                                <div class="stat-label">Премиум товаров</div>
+                                <div class="stat-desc">Элитных товаров</div>
                             </div>
                         </div>
-                        <div class="luxury-stat">
-                            <div class="stat-icon">⚡</div>
-                            <div class="stat-content">
+                        <div class="stat-elite">
+                            <div class="stat-ornament">⭐</div>
+                            <div class="stat-data">
                                 <div class="stat-number">4.9</div>
-                                <div class="stat-label">Рейтинг качества</div>
+                                <div class="stat-desc">Рейтинг качества</div>
                             </div>
                         </div>
-                        <div class="luxury-stat">
-                            <div class="stat-icon">🛡️</div>
-                            <div class="stat-content">
+                        <div class="stat-elite">
+                            <div class="stat-ornament">⚡</div>
+                            <div class="stat-data">
                                 <div class="stat-number">24/7</div>
-                                <div class="stat-label">Поддержка</div>
+                                <div class="stat-desc">Поддержка</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Categories Section -->
-            <section class="luxury-categories">
-                <div class="section-header">
+            <!-- Categories Carousel -->
+            <section class="categories-carousel">
+                <div class="section-head">
                     <h3 class="section-title">Категории</h3>
-                    <div class="section-decoration">
-                        <div class="decoration-line"></div>
+                    <div class="title-decoration">
+                        <div class="decoration-bar"></div>
                         <div class="decoration-dot"></div>
                     </div>
                 </div>
-                <div class="categories-scroll">
-                    <div class="categories-track" id="categoriesTrack">
-                        <!-- Categories will be loaded here -->
-                    </div>
+                <div class="carousel-track" id="categoriesCarousel">
+                    <!-- Categories injected by JS -->
                 </div>
             </section>
 
-            <!-- Featured Products -->
-            <section class="featured-products">
-                <div class="section-header">
-                    <div class="title-section">
+            <!-- Featured Products Showcase -->
+            <section class="products-showcase">
+                <div class="showcase-header">
+                    <div class="title-group">
                         <h3 class="section-title">Избранные Товары</h3>
-                        <div class="title-ornament">✨</div>
+                        <div class="title-sparkle">✨</div>
                     </div>
-                    <button class="view-all-btn" id="viewAll">
+                    <button class="browse-all" id="viewAllProducts">
                         <span>Все товары</span>
-                        <div class="btn-arrow">→</div>
+                        <div class="arrow-icon">→</div>
                     </button>
                 </div>
-                <div class="products-scroll">
-                    <div class="products-track" id="productsTrack">
-                        <!-- Products will be loaded here -->
-                    </div>
+                <div class="showcase-track" id="featuredProducts">
+                    <!-- Featured products injected by JS -->
                 </div>
             </section>
 
-            <!-- Crypto Payment Section -->
-            <section class="crypto-section">
-                <div class="section-header">
+            <!-- Crypto Payment Gallery -->
+            <section class="crypto-gallery">
+                <div class="section-head">
                     <h3 class="section-title">Элитные Способы Оплаты</h3>
-                    <div class="crypto-badge">CRYPTO</div>
+                    <div class="crypto-tag">CRYPTO</div>
                 </div>
-                <div class="crypto-grid">
-                    <div class="crypto-card" data-coin="ton">
-                        <div class="crypto-glow"></div>
-                        <div class="crypto-icon">
-                            <div class="icon-bg"></div>
+                <div class="payment-grid">
+                    <div class="payment-card" data-method="ton">
+                        <div class="card-glow"></div>
+                        <div class="payment-icon">
+                            <div class="icon-base"></div>
                             <span>💎</span>
                         </div>
-                        <div class="crypto-info">
-                            <div class="crypto-name">TON</div>
-                            <div class="crypto-desc">The Open Network</div>
+                        <div class="payment-info">
+                            <div class="payment-name">TON</div>
+                            <div class="payment-desc">The Open Network</div>
                         </div>
-                        <div class="crypto-arrow">→</div>
+                        <div class="payment-arrow">→</div>
                     </div>
-                    <div class="crypto-card" data-coin="usdt">
-                        <div class="crypto-glow"></div>
-                        <div class="crypto-icon">
-                            <div class="icon-bg"></div>
+                    <div class="payment-card" data-method="usdt">
+                        <div class="card-glow"></div>
+                        <div class="payment-icon">
+                            <div class="icon-base"></div>
                             <span>💰</span>
                         </div>
-                        <div class="crypto-info">
-                            <div class="crypto-name">USDT</div>
-                            <div class="crypto-desc">TRC20 Network</div>
+                        <div class="payment-info">
+                            <div class="payment-name">USDT</div>
+                            <div class="payment-desc">TRC20 Network</div>
                         </div>
-                        <div class="crypto-arrow">→</div>
+                        <div class="payment-arrow">→</div>
                     </div>
-                    <div class="crypto-card" data-coin="crypto-bot">
-                        <div class="crypto-glow"></div>
-                        <div class="crypto-icon">
-                            <div class="icon-bg"></div>
+                    <div class="payment-card" data-method="btc">
+                        <div class="card-glow"></div>
+                        <div class="payment-icon">
+                            <div class="icon-base"></div>
+                            <span>₿</span>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Bitcoin</div>
+                            <div class="payment-desc">BTC Network</div>
+                        </div>
+                        <div class="payment-arrow">→</div>
+                    </div>
+                    <div class="payment-card" data-method="crypto-bot">
+                        <div class="card-glow"></div>
+                        <div class="payment-icon">
+                            <div class="icon-base"></div>
                             <span>🤖</span>
                         </div>
-                        <div class="crypto-info">
-                            <div class="crypto-name">Crypto Bot</div>
-                            <div class="crypto-desc">Мгновенная оплата</div>
+                        <div class="payment-info">
+                            <div class="payment-name">Crypto Bot</div>
+                            <div class="payment-desc">Мгновенная оплата</div>
                         </div>
-                        <div class="crypto-arrow">→</div>
+                        <div class="payment-arrow">→</div>
                     </div>
                 </div>
             </section>
         </main>
 
         <!-- Luxury Navigation -->
-        <nav class="luxury-nav">
-            <div class="nav-background"></div>
-            <div class="nav-items">
-                <button class="nav-item active" data-page="home">
-                    <div class="nav-icon">
-                        <div class="icon-bg"></div>
+        <nav class="luxury-navigation">
+            <div class="nav-backdrop"></div>
+            <div class="nav-rail">
+                <button class="nav-option active" data-page="home">
+                    <div class="nav-symbol">
+                        <div class="symbol-bg"></div>
                         <span>🏠</span>
                     </div>
-                    <div class="nav-label">Главная</div>
-                    <div class="nav-indicator"></div>
+                    <div class="nav-caption">Главная</div>
+                    <div class="nav-highlight"></div>
                 </button>
-                <button class="nav-item" data-page="shop">
-                    <div class="nav-icon">
-                        <div class="icon-bg"></div>
+                <button class="nav-option" data-page="shop">
+                    <div class="nav-symbol">
+                        <div class="symbol-bg"></div>
                         <span>🛍️</span>
                     </div>
-                    <div class="nav-label">Магазин</div>
-                    <div class="nav-indicator"></div>
+                    <div class="nav-caption">Магазин</div>
+                    <div class="nav-highlight"></div>
                 </button>
-                <button class="nav-item" data-page="balance">
-                    <div class="nav-icon">
-                        <div class="icon-bg"></div>
+                <button class="nav-option" data-page="balance">
+                    <div class="nav-symbol">
+                        <div class="symbol-bg"></div>
                         <span>💰</span>
                     </div>
-                    <div class="nav-label">Баланс</div>
-                    <div class="nav-indicator"></div>
+                    <div class="nav-caption">Баланс</div>
+                    <div class="nav-highlight"></div>
                 </button>
-                <button class="nav-item" data-page="profile">
-                    <div class="nav-icon">
-                        <div class="icon-bg"></div>
+                <button class="nav-option" data-page="profile">
+                    <div class="nav-symbol">
+                        <div class="symbol-bg"></div>
                         <span>👤</span>
                     </div>
-                    <div class="nav-label">Профиль</div>
-                    <div class="nav-indicator"></div>
+                    <div class="nav-caption">Профиль</div>
+                    <div class="nav-highlight"></div>
                 </button>
             </div>
         </nav>
     </div>
 
-    <!-- Luxury Modals -->
-    <!-- Product Modal -->
+    <!-- Luxury Modal System -->
+    <!-- Product Detail Modal -->
     <div class="luxury-modal" id="productModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-container">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title-section">
+        <div class="modal-overlay"></div>
+        <div class="modal-frame">
+            <div class="modal-panel">
+                <div class="modal-head">
+                    <div class="head-content">
                         <h3 id="modalProductName">Product Name</h3>
-                        <div class="modal-badge" id="modalProductBadge">PREMIUM</div>
+                        <div class="premium-badge">PREMIUM</div>
                     </div>
-                    <button class="modal-close" id="closeModal">
-                        <div class="close-icon">×</div>
+                    <button class="modal-close" id="closeProductModal">
+                        <div class="close-symbol">×</div>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="product-visual">
-                        <div class="product-image-container">
-                            <div class="image-glow"></div>
-                            <div class="product-image" id="modalProductImage">🛍️</div>
+                        <div class="visual-container">
+                            <div class="visual-glow"></div>
+                            <div class="product-visual" id="modalProductVisual">🛍️</div>
                         </div>
-                        <div class="product-price-section">
-                            <div class="price-tag">
+                        <div class="price-display">
+                            <div class="price-main">
                                 <div class="price-amount" id="modalProductPrice">$0.00</div>
                                 <div class="price-label">Стоимость</div>
                             </div>
-                            <div class="stock-info">
+                            <div class="stock-display">
                                 <div class="stock-badge" id="modalProductStock">
                                     <span class="stock-count">0</span>
-                                    <span class="stock-label">в наличии</span>
+                                    <span class="stock-text">в наличии</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="product-details">
-                        <div class="detail-section">
+                        <div class="detail-block">
                             <h4 class="detail-title">Описание</h4>
                             <p class="detail-content" id="modalProductDescription">Описание товара...</p>
                         </div>
-                        <div class="detail-section">
+                        <div class="detail-block">
                             <h4 class="detail-title">Детали</h4>
                             <div class="detail-tags" id="modalProductDetails">
-                                <!-- Details will be loaded here -->
+                                <!-- Details injected by JS -->
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="luxury-btn secondary" id="addToFavorites">
-                        <div class="btn-glow"></div>
+                <div class="modal-foot">
+                    <button class="elite-btn secondary" id="addToFavoritesBtn">
+                        <div class="btn-aura"></div>
                         <span class="btn-icon">⭐</span>
                         <span class="btn-text">В избранное</span>
                     </button>
-                    <button class="luxury-btn primary" id="buyProduct">
-                        <div class="btn-glow"></div>
+                    <button class="elite-btn primary" id="buyProductBtn">
+                        <div class="btn-aura"></div>
                         <span class="btn-icon">🛒</span>
                         <span class="btn-text">Купить сейчас</span>
                     </button>
@@ -273,58 +286,58 @@
 
     <!-- Payment Modal -->
     <div class="luxury-modal" id="paymentModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-container">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title-section">
+        <div class="modal-overlay"></div>
+        <div class="modal-frame">
+            <div class="modal-panel">
+                <div class="modal-head">
+                    <div class="head-content">
                         <h3>Оплата Товара</h3>
-                        <div class="modal-badge">PAYMENT</div>
+                        <div class="premium-badge">PAYMENT</div>
                     </div>
                     <button class="modal-close" id="closePaymentModal">
-                        <div class="close-icon">×</div>
+                        <div class="close-symbol">×</div>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="payment-summary">
-                        <div class="summary-item">
-                            <span class="summary-label">Товар:</span>
-                            <span class="summary-value" id="paymentProductName">-</span>
+                        <div class="summary-row">
+                            <span class="row-label">Товар:</span>
+                            <span class="row-value" id="paymentProductName">-</span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Цена:</span>
-                            <span class="summary-value price" id="paymentProductPrice">$0.00</span>
+                        <div class="summary-row">
+                            <span class="row-label">Цена:</span>
+                            <span class="row-value price" id="paymentProductPrice">$0.00</span>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Ваш баланс:</span>
-                            <span class="summary-value balance" id="paymentUserBalance">$0.00</span>
+                        <div class="summary-row">
+                            <span class="row-label">Ваш баланс:</span>
+                            <span class="row-value balance" id="paymentUserBalance">$0.00</span>
                         </div>
                     </div>
                     <div class="payment-methods">
                         <h4 class="methods-title">Выберите способ оплаты:</h4>
-                        <div class="methods-grid">
-                            <div class="method-card" data-method="balance">
+                        <div class="methods-display">
+                            <div class="method-option" data-method="balance">
                                 <div class="method-glow"></div>
-                                <div class="method-icon">💰</div>
-                                <div class="method-info">
+                                <div class="method-symbol">💰</div>
+                                <div class="method-details">
                                     <div class="method-name">Баланс аккаунта</div>
                                     <div class="method-desc">Мгновенная оплата</div>
                                 </div>
                                 <div class="method-arrow">→</div>
                             </div>
-                            <div class="method-card" data-method="crypto">
+                            <div class="method-option" data-method="crypto">
                                 <div class="method-glow"></div>
-                                <div class="method-icon">💎</div>
-                                <div class="method-info">
+                                <div class="method-symbol">💎</div>
+                                <div class="method-details">
                                     <div class="method-name">Криптовалюта</div>
                                     <div class="method-desc">TON, USDT, BTC</div>
                                 </div>
                                 <div class="method-arrow">→</div>
                             </div>
-                            <div class="method-card" data-method="crypto-bot">
+                            <div class="method-option" data-method="crypto-bot">
                                 <div class="method-glow"></div>
-                                <div class="method-icon">🤖</div>
-                                <div class="method-info">
+                                <div class="method-symbol">🤖</div>
+                                <div class="method-details">
                                     <div class="method-name">Crypto Bot</div>
                                     <div class="method-desc">Рекомендуется</div>
                                 </div>
@@ -337,43 +350,43 @@
         </div>
     </div>
 
-    <!-- Invoice Modal -->
+    <!-- Crypto Invoice Modal -->
     <div class="luxury-modal" id="invoiceModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-container">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title-section">
+        <div class="modal-overlay"></div>
+        <div class="modal-frame">
+            <div class="modal-panel">
+                <div class="modal-head">
+                    <div class="head-content">
                         <h3>Оплата через Crypto Bot</h3>
-                        <div class="modal-badge">CRYPTO</div>
+                        <div class="premium-badge">CRYPTO</div>
                     </div>
                     <button class="modal-close" id="closeInvoiceModal">
-                        <div class="close-icon">×</div>
+                        <div class="close-symbol">×</div>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="invoice-display">
-                        <div class="invoice-amount">
-                            <span class="amount-label">Сумма к оплате:</span>
-                            <span class="amount-value" id="invoiceAmount">$0.00</span>
+                        <div class="invoice-header">
+                            <span class="invoice-label">Сумма к оплате:</span>
+                            <span class="invoice-amount" id="invoiceAmount">$0.00</span>
                         </div>
-                        <div class="invoice-qr-container">
+                        <div class="qr-container">
                             <div class="qr-glow"></div>
-                            <div class="invoice-qr" id="invoiceQR">
+                            <div class="qr-code" id="invoiceQR">
                                 <div class="qr-placeholder">
-                                    <div class="qr-icon">📱</div>
+                                    <div class="qr-symbol">📱</div>
                                     <div class="qr-text">Crypto Bot Invoice</div>
                                 </div>
                             </div>
                         </div>
                         <div class="invoice-actions">
-                            <a href="#" id="invoiceLink" target="_blank" class="luxury-btn primary invoice-link">
-                                <div class="btn-glow"></div>
+                            <a href="#" id="invoiceLink" target="_blank" class="elite-btn primary invoice-action">
+                                <div class="btn-aura"></div>
                                 <span class="btn-icon">🔗</span>
                                 <span class="btn-text">Перейти к оплате</span>
                             </a>
                         </div>
-                        <div class="invoice-status">
+                        <div class="payment-status">
                             <div class="status-indicator pending" id="invoiceStatus">
                                 <div class="status-dot"></div>
                                 <span class="status-text">Ожидание оплаты...</span>
