@@ -651,7 +651,7 @@ class StokeShopApp {
         }
 
         // Проверяем API ключ
-        if (!this.cryptoPayConfig.apiKey || this.cryptoPayConfig.apiKey === '12345:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
+        if (!this.cryptoPayConfig.apiKey || this.cryptoPayConfig.apiKey === '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE') {
             throw new Error('Crypto Pay API ключ не настроен. Получите ключ в @CryptoBot командой /api');
         }
 
@@ -1035,3 +1035,4 @@ Telegram.WebApp.ready();
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new StokeShopApp();
 });
+
