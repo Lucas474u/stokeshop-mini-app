@@ -347,6 +347,24 @@
             box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
         }
 
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: var(--transition);
+            padding: 4px;
+        }
+
+        .favorite-btn.active {
+            color: #ef4444;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
+
         /* Profile Styles */
         .profile-header {
             text-align: center;
@@ -848,6 +866,75 @@
             font-weight: bold;
         }
 
+        /* Favorites & Giveaway Styles */
+        .favorites-grid, .giveaway-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .giveaway-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .giveaway-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .giveaway-prize {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .giveaway-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .participants-count {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .participate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-color), #eab308);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .participate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
         /* Utility Classes */
         .hidden {
             display: none !important;
@@ -923,6 +1010,10 @@
             .amount-buttons {
                 grid-template-columns: repeat(6, 1fr);
             }
+
+            .favorites-grid, .giveaway-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -965,13 +1056,13 @@
                 <i class="fas fa-user"></i>
                 <span data-lang="profile">Профиль</span>
             </button>
-            <button class="nav-item" data-tab="news">
-                <i class="fas fa-newspaper"></i>
-                <span data-lang="news">Новости</span>
+            <button class="nav-item" data-tab="favorites">
+                <i class="fas fa-heart"></i>
+                <span>Избранное</span>
             </button>
-            <button class="nav-item" data-tab="referral">
-                <i class="fas fa-users"></i>
-                <span data-lang="referral">Рефералы</span>
+            <button class="nav-item" data-tab="giveaway">
+                <i class="fas fa-gift"></i>
+                <span>Розыгрыш</span>
             </button>
         </div>
     </nav>
@@ -1016,8 +1107,8 @@
                         <i class="fas fa-user" style="display: none;"></i>
                     </div>
                     <div class="profile-info">
-                        <h3 id="userName">Тестовый Пользователь</h3>
-                        <p class="user-id" id="userId">ID: 123456789</p>
+                        <h3 id="userName">Загрузка...</h3>
+                        <p class="user-id" id="userId">ID: Загрузка...</p>
                     </div>
                 </div>
 
@@ -1028,7 +1119,7 @@
                         </div>
                         <div class="stat-info">
                             <span class="stat-label" data-lang="balance">Баланс</span>
-                            <span class="stat-value" id="userBalance">$25.50</span>
+                            <span class="stat-value" id="userBalance">$0.00</span>
                         </div>
                         <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
                     </div>
@@ -1039,47 +1130,41 @@
                         </div>
                         <div class="stat-info">
                             <span class="stat-label" data-lang="orders_history">Заказы</span>
-                            <span class="stat-value" id="ordersCount">3</span>
+                            <span class="stat-value" id="ordersCount">0</span>
                         </div>
                         <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
                     </div>
                 </div>
 
                 <div class="profile-actions">
-                    <button class="action-btn" id="favoritesBtn">
-                        <i class="fas fa-heart"></i>
-                        <span>Избранное</span>
+                    <button class="action-btn" id="supportBtn">
+                        <i class="fas fa-headset"></i>
+                        <span data-lang="support">Поддержка</span>
                     </button>
-                    <button class="action-btn" id="giveawayBtn">
-                        <i class="fas fa-gift"></i>
-                        <span>Розыгрыш</span>
+                    <button class="action-btn" id="referralBtn">
+                        <i class="fas fa-users"></i>
+                        <span data-lang="referral">Рефералы</span>
                     </button>
                 </div>
             </div>
 
-            <!-- News Tab -->
-            <div class="tab-content" id="news-tab">
+            <!-- Favorites Tab -->
+            <div class="tab-content" id="favorites-tab">
                 <div class="section-header">
-                    <h2 data-lang="news">Новости и обновления</h2>
+                    <h2>Избранное</h2>
                 </div>
-                <div class="news-container">
-                    <div class="news-card">
-                        <div class="news-header">
-                            <h3 data-lang="news_welcome">Добро пожаловать в Stoke Shop!</h3>
-                            <span class="news-date">Сегодня</span>
-                        </div>
-                        <p data-lang="news_welcome_text">Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.</p>
-                    </div>
-                    <div class="channel-promo">
-                        <div class="promo-content">
-                            <i class="fab fa-telegram"></i>
-                            <div class="promo-text">
-                                <h4 data-lang="subscribe_channel">Подпишитесь на наш канал</h4>
-                                <p data-lang="subscribe_text">Будьте в курсе последних новостей и акций</p>
-                            </div>
-                        </div>
-                        <button class="promo-btn" id="joinChannelBtn" data-lang="join_channel">Присоединиться</button>
-                    </div>
+                <div class="favorites-grid" id="favoritesGrid">
+                    <!-- Favorites will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Giveaway Tab -->
+            <div class="tab-content" id="giveaway-tab">
+                <div class="section-header">
+                    <h2>Розыгрыши</h2>
+                </div>
+                <div class="giveaway-grid" id="giveawayGrid">
+                    <!-- Giveaways will be loaded here -->
                 </div>
             </div>
 
@@ -1095,11 +1180,11 @@
 
                 <div class="referral-stats">
                     <div class="referral-stat">
-                        <span class="stat-number" id="referralsCount">5</span>
+                        <span class="stat-number" id="referralsCount">0</span>
                         <span class="stat-label" data-lang="referrals">Рефералов</span>
                     </div>
                     <div class="referral-stat">
-                        <span class="stat-number" id="referralEarnings">$12.50</span>
+                        <span class="stat-number" id="referralEarnings">$0</span>
                         <span class="stat-label" data-lang="earnings">Заработано</span>
                     </div>
                 </div>
@@ -1191,6 +1276,21 @@
                     <!-- Purchase details will be shown here -->
                 </div>
                 <button class="confirm-btn" id="confirmPurchase">Подтвердить покупку</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Modal -->
+    <div class="modal hidden" id="ordersModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>История заказов</h3>
+                <button class="modal-close" id="closeOrdersModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="ordersList">
+                    <!-- Orders will be shown here -->
+                </div>
             </div>
         </div>
     </div>
@@ -1419,8 +1519,44 @@
         let currentCategory = null;
         let selectedPaymentMethod = null;
         let selectedAmount = 0;
-        let userBalance = 25.50;
         let selectedProduct = null;
+        
+        // Real user data
+        let userData = {
+            balance: 0,
+            orders: [],
+            favorites: [],
+            referralCount: 0,
+            referralEarnings: 0
+        };
+
+        // Giveaways data
+        const giveaways = [
+            {
+                id: 1,
+                prize: "Telegram Premium на 1 год",
+                description: "Выиграйте годовую подписку Telegram Premium",
+                endDate: "2024-12-31",
+                participants: 154,
+                image: "fas fa-crown"
+            },
+            {
+                id: 2,
+                prize: "$50 на баланс",
+                description: "Получите $50 для покупок в нашем магазине",
+                endDate: "2024-11-30",
+                participants: 287,
+                image: "fas fa-coins"
+            },
+            {
+                id: 3,
+                prize: "Набор аккаунтов Vinted",
+                description: "5 премиум аккаунтов Vinted разных стран",
+                endDate: "2024-12-15",
+                participants: 89,
+                image: "fas fa-tshirt"
+            }
+        ];
 
         // DOM elements
         const elements = {
@@ -1452,29 +1588,123 @@
             userName: document.getElementById('userName'),
             userId: document.getElementById('userId'),
             userBalance: document.getElementById('userBalance'),
+            ordersCount: document.getElementById('ordersCount'),
+            viewOrdersBtn: document.getElementById('viewOrdersBtn'),
             favoritesBtn: document.getElementById('favoritesBtn'),
             giveawayBtn: document.getElementById('giveawayBtn'),
             purchaseModal: document.getElementById('purchaseModal'),
             closePurchaseModal: document.getElementById('closePurchaseModal'),
             purchaseTitle: document.getElementById('purchaseTitle'),
             purchaseInfo: document.getElementById('purchaseInfo'),
-            confirmPurchase: document.getElementById('confirmPurchase')
+            confirmPurchase: document.getElementById('confirmPurchase'),
+            ordersModal: document.getElementById('ordersModal'),
+            closeOrdersModal: document.getElementById('closeOrdersModal'),
+            ordersList: document.getElementById('ordersList'),
+            favoritesGrid: document.getElementById('favoritesGrid'),
+            giveawayGrid: document.getElementById('giveawayGrid'),
+            referralsCount: document.getElementById('referralsCount'),
+            referralEarnings: document.getElementById('referralEarnings'),
+            supportBtn: document.getElementById('supportBtn'),
+            referralBtn: document.getElementById('referralBtn')
         };
 
         // Initialize app
         function initApp() {
             loadUserData();
             loadCategories();
+            loadFavorites();
+            loadGiveaways();
             setupEventListeners();
             updateUI();
         }
 
         // Load user data from Telegram
         function loadUserData() {
-            // Static data for testing
-            elements.userName.textContent = "Тестовый Пользователь";
-            elements.userId.textContent = "ID: 123456789";
-            elements.userBalance.textContent = `$${userBalance.toFixed(2)}`;
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                const user = tg.initDataUnsafe.user;
+                
+                if (user) {
+                    // Set user avatar
+                    if (user.photo_url) {
+                        elements.userAvatar.src = user.photo_url;
+                    }
+                    
+                    // Set user name
+                    let userName = '';
+                    if (user.first_name || user.last_name) {
+                        userName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+                    } else if (user.username) {
+                        userName = `@${user.username}`;
+                    }
+                    elements.userName.textContent = userName || 'Пользователь';
+                    
+                    // Set user ID
+                    elements.userId.textContent = `ID: ${user.id}`;
+                    
+                    // Set theme based on Telegram theme
+                    if (tg.colorScheme === 'dark') {
+                        currentTheme = 'dark';
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
+                    }
+
+                    // Initialize user data from Telegram
+                    initializeUserData(user.id);
+                }
+            } else {
+                // Fallback for testing
+                initializeUserData('test_user_123');
+            }
+        }
+
+        // Initialize user data
+        function initializeUserData(userId) {
+            // Load from localStorage or initialize default data
+            const savedData = localStorage.getItem(`userData_${userId}`);
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            } else {
+                // Default data for new users
+                userData = {
+                    balance: 25.50,
+                    orders: [
+                        {
+                            id: 1,
+                            product: "НОВОРЕГ Telegram",
+                            price: 4.0,
+                            date: "2024-01-15",
+                            status: "completed"
+                        },
+                        {
+                            id: 2,
+                            product: "ВК PREMIUM",
+                            price: 10.0,
+                            date: "2024-01-10",
+                            status: "completed"
+                        }
+                    ],
+                    favorites: [1, 3, 7], // Product IDs
+                    referralCount: 5,
+                    referralEarnings: 12.50
+                };
+                saveUserData(userId);
+            }
+            
+            updateUserStats();
+        }
+
+        // Save user data
+        function saveUserData(userId) {
+            localStorage.setItem(`userData_${userId}`, JSON.stringify(userData));
+        }
+
+        // Update user statistics
+        function updateUserStats() {
+            elements.userBalance.textContent = `$${userData.balance.toFixed(2)}`;
+            elements.ordersCount.textContent = userData.orders.length;
+            elements.referralsCount.textContent = userData.referralCount;
+            elements.referralEarnings.textContent = `$${userData.referralEarnings.toFixed(2)}`;
         }
 
         // Load categories to the grid
@@ -1504,14 +1734,22 @@
             elements.productsGrid.innerHTML = '';
             if (products[categoryId]) {
                 products[categoryId].forEach(product => {
+                    const isFavorite = userData.favorites.includes(product.id);
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.innerHTML = `
                         <div class="product-header">
-                            <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
-                            <div class="product-price">$${product.price}</div>
+                            <div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="product-price">$${product.price}</div>
+                            </div>
                         </div>
-                        <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
                         <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
                     `;
@@ -1519,16 +1757,173 @@
                 });
             }
             
-            // Add event listeners for buy buttons
+            // Add event listeners
             document.querySelectorAll('.buy-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = parseInt(e.target.getAttribute('data-product-id'));
                     handleProductPurchase(productId, categoryId);
                 });
             });
+
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                    toggleFavorite(productId, e.currentTarget);
+                });
+            });
             
             document.getElementById('accounts-tab').querySelector('.categories-grid').classList.add('hidden');
             elements.productsSection.classList.remove('hidden');
+        }
+
+        // Toggle favorite
+        function toggleFavorite(productId, button) {
+            const index = userData.favorites.indexOf(productId);
+            if (index > -1) {
+                userData.favorites.splice(index, 1);
+                button.classList.remove('active');
+                showNotification('Удалено из избранного');
+            } else {
+                userData.favorites.push(productId);
+                button.classList.add('active');
+                showNotification('Добавлено в избранное');
+            }
+            saveUserData(getUserId());
+            loadFavorites();
+        }
+
+        // Load favorites
+        function loadFavorites() {
+            elements.favoritesGrid.innerHTML = '';
+            
+            if (userData.favorites.length === 0) {
+                elements.favoritesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <h3>Нет избранных товаров</h3>
+                        <p>Добавляйте товары в избранное, чтобы вернуться к ним позже</p>
+                    </div>
+                `;
+                return;
+            }
+
+            userData.favorites.forEach(favId => {
+                let product = null;
+                let categoryId = null;
+                
+                // Find product in all categories
+                for (const catId in products) {
+                    const found = products[catId].find(p => p.id === favId);
+                    if (found) {
+                        product = found;
+                        categoryId = parseInt(catId);
+                        break;
+                    }
+                }
+
+                if (product) {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <button class="favorite-btn active" data-product-id="${product.id}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="product-price">$${product.price}</div>
+                            </div>
+                        </div>
+                        <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
+                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                    `;
+                    elements.favoritesGrid.appendChild(productCard);
+                }
+            });
+
+            // Add event listeners for favorites
+            document.querySelectorAll('#favorites-tab .buy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-product-id'));
+                    let categoryId = null;
+                    
+                    // Find product category
+                    for (const catId in products) {
+                        const product = products[catId].find(p => p.id === productId);
+                        if (product) {
+                            categoryId = parseInt(catId);
+                            break;
+                        }
+                    }
+                    
+                    if (categoryId) {
+                        handleProductPurchase(productId, categoryId);
+                    }
+                });
+            });
+
+            document.querySelectorAll('#favorites-tab .favorite-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                    toggleFavorite(productId, e.currentTarget);
+                    // Remove from DOM after toggle
+                    if (!userData.favorites.includes(productId)) {
+                        e.currentTarget.closest('.product-card').remove();
+                        if (userData.favorites.length === 0) {
+                            loadFavorites();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Load giveaways
+        function loadGiveaways() {
+            elements.giveawayGrid.innerHTML = '';
+            
+            giveaways.forEach(giveaway => {
+                const giveawayCard = document.createElement('div');
+                giveawayCard.className = 'giveaway-card';
+                giveawayCard.innerHTML = `
+                    <div class="giveaway-header">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <i class="${giveaway.image}" style="color: var(--secondary-color);"></i>
+                                <h3 class="giveaway-prize">${giveaway.prize}</h3>
+                            </div>
+                            <p>${giveaway.description}</p>
+                        </div>
+                    </div>
+                    <div class="participants-count">
+                        <i class="fas fa-users"></i> Участников: ${giveaway.participants}
+                    </div>
+                    <div class="giveaway-date">
+                        <i class="fas fa-clock"></i> До: ${giveaway.endDate}
+                    </div>
+                    <button class="participate-btn" data-giveaway-id="${giveaway.id}">
+                        Участвовать
+                    </button>
+                `;
+                elements.giveawayGrid.appendChild(giveawayCard);
+            });
+
+            // Add event listeners for giveaways
+            document.querySelectorAll('.participate-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const giveawayId = parseInt(e.target.getAttribute('data-giveaway-id'));
+                    participateInGiveaway(giveawayId);
+                });
+            });
+        }
+
+        // Participate in giveaway
+        function participateInGiveaway(giveawayId) {
+            showNotification('Вы успешно участвуете в розыгрыше! Удачи! 🎉');
         }
 
         // Handle product purchase
@@ -1538,10 +1933,8 @@
 
             selectedProduct = product;
 
-            if (userBalance < product.price) {
-                showNotification(currentLanguage === 'ru' ? 
-                    '❌ Недостаточно средств на балансе' : 
-                    '❌ Insufficient funds on balance');
+            if (userData.balance < product.price) {
+                showNotification('❌ Недостаточно средств на балансе');
                 return;
             }
 
@@ -1552,8 +1945,8 @@
                     <h4>${currentLanguage === 'ru' ? product.name_ru : product.name_en}</h4>
                     <p>${currentLanguage === 'ru' ? product.description_ru : product.description_en}</p>
                     <p style="font-size: 1.25rem; font-weight: bold; color: var(--primary-color); margin: 10px 0;">$${product.price}</p>
-                    <p>${currentLanguage === 'ru' ? 'Ваш баланс:' : 'Your balance:'} $${userBalance.toFixed(2)}</p>
-                    <p>${currentLanguage === 'ru' ? 'После покупки:' : 'After purchase:'} $${(userBalance - product.price).toFixed(2)}</p>
+                    <p>${currentLanguage === 'ru' ? 'Ваш баланс:' : 'Your balance:'} $${userData.balance.toFixed(2)}</p>
+                    <p>${currentLanguage === 'ru' ? 'После покупки:' : 'After purchase:'} $${(userData.balance - product.price).toFixed(2)}</p>
                 </div>
             `;
             elements.purchaseModal.classList.remove('hidden');
@@ -1570,19 +1963,70 @@
                 showLoading(false);
                 
                 // Deduct product price from balance
-                userBalance -= selectedProduct.price;
-                elements.userBalance.textContent = `$${userBalance.toFixed(2)}`;
+                userData.balance -= selectedProduct.price;
+                
+                // Add to orders
+                userData.orders.unshift({
+                    id: Date.now(),
+                    product: currentLanguage === 'ru' ? selectedProduct.name_ru : selectedProduct.name_en,
+                    price: selectedProduct.price,
+                    date: new Date().toISOString().split('T')[0],
+                    status: 'completed'
+                });
+                
+                // Save data
+                saveUserData(getUserId());
+                updateUserStats();
                 
                 // Close modal
                 elements.purchaseModal.classList.add('hidden');
                 
                 // Show success message
-                showNotification(currentLanguage === 'ru' ? 
-                    '✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.' : 
-                    '✅ Payment successful! Account details have been sent to your private messages.');
+                showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
                 
                 selectedProduct = null;
             }, 2000);
+        }
+
+        // Show orders
+        function showOrders() {
+            elements.ordersList.innerHTML = '';
+            
+            if (userData.orders.length === 0) {
+                elements.ordersList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <i class="fas fa-shopping-bag" style="font-size: 3rem; margin-bottom: 16px; opacity: 0.5;"></i>
+                        <h3>Нет заказов</h3>
+                        <p>Здесь будут отображаться ваши покупки</p>
+                    </div>
+                `;
+            } else {
+                userData.orders.forEach(order => {
+                    const orderElement = document.createElement('div');
+                    orderElement.className = 'product-card';
+                    orderElement.innerHTML = `
+                        <div class="product-header">
+                            <div class="product-name">${order.product}</div>
+                            <div class="product-price">$${order.price}</div>
+                        </div>
+                        <div class="product-stock">Дата: ${order.date}</div>
+                        <div class="product-description" style="color: var(--success-color);">
+                            <i class="fas fa-check-circle"></i> ${order.status === 'completed' ? 'Завершен' : 'В обработке'}
+                        </div>
+                    `;
+                    elements.ordersList.appendChild(orderElement);
+                });
+            }
+            
+            elements.ordersModal.classList.remove('hidden');
+        }
+
+        // Get user ID
+        function getUserId() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                return window.Telegram.WebApp.initDataUnsafe.user?.id || 'unknown';
+            }
+            return 'test_user';
         }
 
         // Setup event listeners
@@ -1601,7 +2045,7 @@
             // Theme switch
             elements.themeSwitch.addEventListener('click', toggleTheme);
 
-            // Open mini app button - now opens @cryptosending_bot
+            // Open mini app button
             elements.openMiniApp.addEventListener('click', () => {
                 window.open('https://t.me/cryptosending_bot', '_blank');
             });
@@ -1660,11 +2104,19 @@
                 selectedProduct = null;
             });
 
+            // View orders
+            elements.viewOrdersBtn.addEventListener('click', showOrders);
+
+            // Close orders modal
+            elements.closeOrdersModal.addEventListener('click', () => {
+                elements.ordersModal.classList.add('hidden');
+            });
+
             // Copy referral link
             elements.copyReferralBtn.addEventListener('click', () => {
                 elements.referralLink.select();
                 document.execCommand('copy');
-                showNotification(currentLanguage === 'ru' ? 'Ссылка скопирована!' : 'Link copied!');
+                showNotification('Ссылка скопирована!');
             });
 
             // Join channel
@@ -1672,18 +2124,72 @@
                 window.open('https://t.me/stokeshopchannel', '_blank');
             });
 
-            // Favorites button
-            elements.favoritesBtn.addEventListener('click', () => {
-                showNotification(currentLanguage === 'ru' ? '⭐ Раздел "Избранное" в разработке' : '⭐ Favorites section in development');
+            // Support button
+            elements.supportBtn.addEventListener('click', () => {
+                window.open('https://t.me/stokeshopsupport', '_blank');
             });
 
-            // Giveaway button
-            elements.giveawayBtn.addEventListener('click', () => {
-                showNotification(currentLanguage === 'ru' ? '🎁 Розыгрыш скоро начнется!' : '🎁 Giveaway starting soon!');
+            // Referral button
+            elements.referralBtn.addEventListener('click', () => {
+                switchTab('referral');
             });
 
             // Search functionality
             elements.searchInput.addEventListener('input', handleSearch);
+        }
+
+        // Process deposit
+        function processDeposit() {
+            if (!selectedPaymentMethod) {
+                showNotification('Выберите способ оплаты');
+                return;
+            }
+
+            if (selectedAmount < 10) {
+                showNotification('Минимальная сумма $10');
+                return;
+            }
+
+            showLoading(true);
+            
+            setTimeout(() => {
+                showLoading(false);
+                
+                if (selectedPaymentMethod === 'crypto_bot') {
+                    // Correct Crypto Bot payment link
+                    elements.paymentInfo.innerHTML = `
+                        <h4>Оплата через Crypto Bot</h4>
+                        <p>Перейдите по ссылке для оплаты:</p>
+                        <a href="https://t.me/CryptoBot?start=stokeshop_${selectedAmount}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
+                            Перейти к оплате
+                        </a>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                            После оплаты баланс пополнится автоматически
+                        </p>
+                    `;
+                } else {
+                    const walletAddresses = {
+                        ton: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
+                        usdt: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
+                        btc: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq'
+                    };
+                    
+                    elements.paymentInfo.innerHTML = `
+                        <h4>Отправьте платеж на адрес:</h4>
+                        <div class="payment-address">${walletAddresses[selectedPaymentMethod]}</div>
+                        <p>Сумма: $${selectedAmount}</p>
+                        <button class="copy-btn" onclick="copyToClipboard('${walletAddresses[selectedPaymentMethod]}')">
+                            Копировать адрес
+                        </button>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
+                            После отправки средств баланс пополнится автоматически
+                        </p>
+                    `;
+                }
+                
+                elements.amountSelector.classList.add('hidden');
+                elements.paymentInfo.classList.remove('hidden');
+            }, 1500);
         }
 
         // Handle search
@@ -1724,22 +2230,30 @@
             } else {
                 searchResults.forEach(product => {
                     const category = categories.find(c => c.id === product.categoryId);
+                    const isFavorite = userData.favorites.includes(product.id);
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.innerHTML = `
                         <div class="product-header">
-                            <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
-                            <div class="product-price">$${product.price}</div>
+                            <div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'Категория:' : 'Category:'} ${currentLanguage === 'ru' ? category.name_ru : category.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="product-price">$${product.price}</div>
+                            </div>
                         </div>
-                        <div class="product-stock">${currentLanguage === 'ru' ? 'Категория:' : 'Category:'} ${currentLanguage === 'ru' ? category.name_ru : category.name_en}</div>
-                        <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
                         <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
                     `;
                     elements.categoriesGrid.appendChild(productCard);
                 });
 
-                // Re-add event listeners for buy buttons in search results
+                // Re-add event listeners
                 document.querySelectorAll('.buy-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const productId = parseInt(e.target.getAttribute('data-product-id'));
@@ -1747,6 +2261,14 @@
                         if (product) {
                             handleProductPurchase(productId, product.categoryId);
                         }
+                    });
+                });
+
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                        toggleFavorite(productId, e.currentTarget);
                     });
                 });
             }
@@ -1804,63 +2326,10 @@
             });
 
             loadCategories();
+            loadFavorites();
             if (currentCategory) {
                 showProducts(currentCategory);
             }
-        }
-
-        // Process deposit
-        function processDeposit() {
-            if (!selectedPaymentMethod) {
-                showNotification(currentLanguage === 'ru' ? 'Выберите способ оплаты' : 'Select payment method');
-                return;
-            }
-
-            if (selectedAmount < 10) {
-                showNotification(currentLanguage === 'ru' ? 'Минимальная сумма $10' : 'Minimum amount is $10');
-                return;
-            }
-
-            showLoading(true);
-            
-            setTimeout(() => {
-                showLoading(false);
-                
-                if (selectedPaymentMethod === 'crypto_bot') {
-                    // Fixed Crypto Bot payment link
-                    elements.paymentInfo.innerHTML = `
-                        <h4>${currentLanguage === 'ru' ? 'Оплата через Crypto Bot' : 'Payment via Crypto Bot'}</h4>
-                        <p>${currentLanguage === 'ru' ? 'Перейдите по ссылке для оплаты:' : 'Follow the link to pay:'}</p>
-                        <a href="https://t.me/cryptosending_bot?start=CD${selectedAmount}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
-                            ${currentLanguage === 'ru' ? 'Перейти к оплате' : 'Go to payment'}
-                        </a>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary);">
-                            ${currentLanguage === 'ru' ? 'После оплаты баланс пополнится автоматически' : 'Balance will be topped up automatically after payment'}
-                        </p>
-                    `;
-                } else {
-                    const walletAddresses = {
-                        ton: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
-                        usdt: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
-                        btc: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq'
-                    };
-                    
-                    elements.paymentInfo.innerHTML = `
-                        <h4>${currentLanguage === 'ru' ? 'Отправьте платеж на адрес:' : 'Send payment to address:'}</h4>
-                        <div class="payment-address">${walletAddresses[selectedPaymentMethod]}</div>
-                        <p>${currentLanguage === 'ru' ? 'Сумма:' : 'Amount:'} $${selectedAmount}</p>
-                        <button class="copy-btn" onclick="copyToClipboard('${walletAddresses[selectedPaymentMethod]}')">
-                            ${currentLanguage === 'ru' ? 'Копировать адрес' : 'Copy address'}
-                        </button>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
-                            ${currentLanguage === 'ru' ? 'После отправки средств баланс пополнится автоматически' : 'Balance will be topped up automatically after transfer'}
-                        </p>
-                    `;
-                }
-                
-                elements.amountSelector.classList.add('hidden');
-                elements.paymentInfo.classList.remove('hidden');
-            }, 1500);
         }
 
         // Reset payment modal
@@ -1893,6 +2362,8 @@
                 z-index: 1000;
                 box-shadow: var(--shadow);
                 transition: var(--transition);
+                max-width: 300px;
+                word-wrap: break-word;
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
@@ -1905,7 +2376,7 @@
         // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showNotification(currentLanguage === 'ru' ? 'Скопировано!' : 'Copied!');
+                showNotification('Скопировано!');
             });
         }
 
