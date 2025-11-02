@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stoke Shop - Accounts Store</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f59e0b;
+            --background: #ffffff;
+            --surface: #f8fafc;
+            --surface-dark: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-dark: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 0 16px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lang-switcher, .theme-switcher {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-switcher:hover, .theme-switcher:hover {
+            background: var(--surface-dark);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            min-width: 60px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-item i {
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px 0 80px 0;
+            min-height: 100vh;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .search-box {
+            position: relative;
+            width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 36px 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-color);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .category-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .category-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .product-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.125rem;
+        }
+
+        .product-stock {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .product-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .buy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Profile Styles */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--surface-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .avatar i {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.balance {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .stat-icon.orders {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .stat-action {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .stat-action:hover {
+            background: var(--primary-dark);
+        }
+
+        .profile-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            background: var(--surface-dark);
+            border-color: var(--primary-color);
+        }
+
+        .action-btn i {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--background);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            margin-bottom: 24px;
+        }
+
+        .method-category h4 {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .method-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .method-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--surface-dark);
+        }
+
+        .method-btn i {
+            font-size: 1.5rem;
+        }
+
+        .method-btn span {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Amount Selector */
+        .amount-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .amount-btn {
+            padding: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .amount-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .custom-amount {
+            margin-bottom: 20px;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .confirm-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* News Styles */
+        .news-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .news-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .news-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .news-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .channel-promo {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .promo-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .promo-content i {
+            font-size: 2rem;
+        }
+
+        .promo-text h4 {
+            margin-bottom: 4px;
+        }
+
+        .promo-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .promo-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Referral Styles */
+        .referral-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .referral-hero i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .referral-stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .referral-link {
+            margin-bottom: 24px;
+        }
+
+        .referral-link label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .link-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .link-container input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .copy-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .referral-rules h3 {
+            margin-bottom: 12px;
+            font-size: 1.125rem;
+        }
+
+        .referral-rules ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .referral-rules li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .referral-rules li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+                padding: 0 24px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .profile-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .methods-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .amount-buttons {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">S</div>
+                    <span class="logo-text">Stoke Shop</span>
+                </div>
+                <div class="header-actions">
+                    <button class="lang-switcher" id="langSwitch">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="theme-switcher" id="themeSwitch">
+                        <i class="icon-moon">🌙</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" data-tab="accounts">
+                <i class="icon-shop">🛒</i>
+                <span data-lang="categories">Аккаунты</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+                <i class="icon-user">👤</i>
+                <span data-lang="profile">Профиль</span>
+            </button>
+            <button class="nav-item" data-tab="news">
+                <i class="icon-news">📰</i>
+                <span data-lang="news">Новости</span>
+            </button>
+            <button class="nav-item" data-tab="referral">
+                <i class="icon-referral">👥</i>
+                <span data-lang="referral">Рефералы</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Accounts Tab -->
+            <div class="tab-content active" id="accounts-tab">
+                <div class="section-header">
+                    <h2 data-lang="categories">Категории аккаунтов</h2>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск..." data-lang-placeholder="search_placeholder">
+                        <i class="icon-search">🔍</i>
+                    </div>
+                </div>
+
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Categories will be loaded here -->
+                </div>
+
+                <div class="products-section hidden" id="productsSection">
+                    <div class="products-header">
+                        <button class="back-button" id="backToCategories">
+                            <i class="icon-arrow-left">←</i>
+                            <span data-lang="back_to_categories">Назад к категориям</span>
+                        </button>
+                        <h3 id="categoryTitle">Категория</h3>
+                    </div>
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-content" id="profile-tab">
+                <div class="profile-header">
+                    <div class="avatar">
+                        <i class="icon-user-circle">👤</i>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="userName">Пользователь</h3>
+                        <p class="user-id" id="userId">ID: 123456</p>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon balance">
+                            <i class="icon-wallet">💰</i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" data-lang="balance">Баланс</span>
+                            <span class="stat-value" id="userBalance">$0.00</span>
+                        </div>
+                        <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="icon-orders">📦</i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" data-lang="orders_history">Заказы</span>
+                            <span class="stat-value" id="ordersCount">0</span>
+                        </div>
+                        <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="action-btn" id="favoritesBtn">
+                        <i class="icon-heart">❤️</i>
+                        <span data-lang="favorites">Избранное</span>
+                    </button>
+                    <button class="action-btn" id="giveawayBtn">
+                        <i class="icon-gift">🎁</i>
+                        <span data-lang="giveaway">Розыгрыш</span>
+                    </button>
+                    <button class="action-btn" id="supportBtn">
+                        <i class="icon-support">💬</i>
+                        <span data-lang="support">Поддержка</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- News Tab -->
+            <div class="tab-content" id="news-tab">
+                <div class="section-header">
+                    <h2 data-lang="news">Новости и обновления</h2>
+                </div>
+                <div class="news-container">
+                    <div class="news-card">
+                        <div class="news-header">
+                            <h3 data-lang="news_welcome">Добро пожаловать в Stoke Shop!</h3>
+                            <span class="news-date">Сегодня</span>
+                        </div>
+                        <p data-lang="news_welcome_text">Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.</p>
+                    </div>
+                    <div class="channel-promo">
+                        <div class="promo-content">
+                            <i class="icon-telegram">📱</i>
+                            <div class="promo-text">
+                                <h4 data-lang="subscribe_channel">Подпишитесь на наш канал</h4>
+                                <p data-lang="subscribe_text">Будьте в курсе последних новостей и акций</p>
+                            </div>
+                        </div>
+                        <button class="promo-btn" id="joinChannelBtn" data-lang="join_channel">Присоединиться</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referral Tab -->
+            <div class="tab-content" id="referral-tab">
+                <div class="referral-header">
+                    <div class="referral-hero">
+                        <i class="icon-users">👥</i>
+                        <h2 data-lang="referral_system">Реферальная система</h2>
+                        <p data-lang="referral_description">Приглашайте друзей и получайте бонусы</p>
+                    </div>
+                </div>
+
+                <div class="referral-stats">
+                    <div class="referral-stat">
+                        <span class="stat-number" id="referralsCount">0</span>
+                        <span class="stat-label" data-lang="referrals">Рефералов</span>
+                    </div>
+                    <div class="referral-stat">
+                        <span class="stat-number" id="referralEarnings">$0</span>
+                        <span class="stat-label" data-lang="earnings">Заработано</span>
+                    </div>
+                </div>
+
+                <div class="referral-link">
+                    <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
+                    <div class="link-container">
+                        <input type="text" id="referralLink" readonly value="https://t.me/stokeshopbot?start=ref123456">
+                        <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
+                    </div>
+                </div>
+
+                <div class="referral-rules">
+                    <h3 data-lang="how_it_works">Как это работает?</h3>
+                    <ul>
+                        <li data-lang="ref_rule_1">Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
+                        <li data-lang="ref_rule_2">Ваш друг получает 5% бонус на первый депозит</li>
+                        <li data-lang="ref_rule_3">Нет ограничений по количеству приглашенных</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Deposit Modal -->
+    <div class="modal hidden" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-lang="deposit">Пополнение баланса</h3>
+                <button class="modal-close" id="closeDepositModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-methods">
+                    <div class="method-category">
+                        <h4 data-lang="crypto_payments">Криптовалюты</h4>
+                        <div class="methods-grid">
+                            <button class="method-btn" data-method="crypto_bot">
+                                <i class="icon-crypto-bot">🤖</i>
+                                <span>Crypto Bot</span>
+                            </button>
+                            <button class="method-btn" data-method="ton">
+                                <i class="icon-ton">💎</i>
+                                <span>TON</span>
+                            </button>
+                            <button class="method-btn" data-method="usdt">
+                                <i class="icon-usdt">💵</i>
+                                <span>USDT</span>
+                            </button>
+                            <button class="method-btn" data-method="btc">
+                                <i class="icon-btc">₿</i>
+                                <span>Bitcoin</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="amount-selector hidden" id="amountSelector">
+                    <h4 data-lang="select_amount">Выберите сумму</h4>
+                    <div class="amount-buttons">
+                        <button class="amount-btn" data-amount="10">$10</button>
+                        <button class="amount-btn" data-amount="25">$25</button>
+                        <button class="amount-btn" data-amount="50">$50</button>
+                        <button class="amount-btn" data-amount="100">$100</button>
+                        <button class="amount-btn" data-amount="200">$200</button>
+                        <button class="amount-btn" data-amount="500">$500</button>
+                    </div>
+                    <div class="custom-amount">
+                        <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
+                    </div>
+                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Продолжить</button>
+                </div>
+
+                <div class="payment-info hidden" id="paymentInfo">
+                    <!-- Payment instructions will be shown here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p data-lang="loading">Загрузка...</p>
+    </div>
+
+    <script>
+        // Translation data
+        const translations = {
+            ru: {
+                categories: "Аккаунты",
+                profile: "Профиль",
+                news: "Новости",
+                referral: "Рефералы",
+                search_placeholder: "Поиск...",
+                balance: "Баланс",
+                deposit: "Пополнить",
+                orders_history: "Заказы",
+                view: "Смотреть",
+                favorites: "Избранное",
+                giveaway: "Розыгрыш",
+                support: "Поддержка",
+                news_welcome: "Добро пожаловать в Stoke Shop!",
+                news_welcome_text: "Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.",
+                subscribe_channel: "Подпишитесь на наш канал",
+                subscribe_text: "Будьте в курсе последних новостей и акций",
+                join_channel: "Присоединиться",
+                referral_system: "Реферальная система",
+                referral_description: "Приглашайте друзей и получайте бонусы",
+                referrals: "Рефералов",
+                earnings: "Заработано",
+                your_referral_link: "Ваша реферальная ссылка:",
+                copy: "Копировать",
+                how_it_works: "Как это работает?",
+                ref_rule_1: "Вы получаете 10% от первого пополнения каждого приглашенного друга",
+                ref_rule_2: "Ваш друг получает 5% бонус на первый депозит",
+                ref_rule_3: "Нет ограничений по количеству приглашенных",
+                crypto_payments: "Криптовалюты",
+                select_amount: "Выберите сумму",
+                continue: "Продолжить",
+                loading: "Загрузка...",
+                back_to_categories: "Назад к категориям"
+            },
+            en: {
+                categories: "Accounts",
+                profile: "Profile",
+                news: "News",
+                referral: "Referrals",
+                search_placeholder: "Search...",
+                balance: "Balance",
+                deposit: "Deposit",
+                orders_history: "Orders",
+                view: "View",
+                favorites: "Favorites",
+                giveaway: "Giveaway",
+                support: "Support",
+                news_welcome: "Welcome to Stoke Shop!",
+                news_welcome_text: "We are glad to welcome you to our accounts store. New categories and improved payment system are now available.",
+                subscribe_channel: "Subscribe to our channel",
+                subscribe_text: "Stay updated with latest news and promotions",
+                join_channel: "Join",
+                referral_system: "Referral System",
+                referral_description: "Invite friends and get bonuses",
+                referrals: "Referrals",
+                earnings: "Earnings",
+                your_referral_link: "Your referral link:",
+                copy: "Copy",
+                how_it_works: "How it works?",
+                ref_rule_1: "You get 10% from the first deposit of each invited friend",
+                ref_rule_2: "Your friend gets 5% bonus on first deposit",
+                ref_rule_3: "No limits on the number of invited users",
+                crypto_payments: "Cryptocurrencies",
+                select_amount: "Select amount",
+                continue: "Continue",
+                loading: "Loading...",
+                back_to_categories: "Back to categories"
+            }
+        };
+
+        // Sample data
+        const categories = [
+            { id: 1, name_ru: "Telegram", name_en: "Telegram", description_ru: "Аккаунты Telegram", description_en: "Telegram accounts", emoji: "📱" },
+            { id: 2, name_ru: "ВКонтакте", name_en: "VKontakte", description_ru: "Аккаунты ВК", description_en: "VK accounts", emoji: "👥" },
+            { id: 3, name_ru: "Vinted", name_en: "Vinted", description_ru: "Аккаунты Vinted", description_en: "Vinted accounts", emoji: "🛍️" },
+            { id: 4, name_ru: "Wallapop", name_en: "Wallapop", description_ru: "Аккаунты Wallapop", description_en: "Wallapop accounts", emoji: "🏪" },
+            { id: 5, name_ru: "Facebook", name_en: "Facebook", description_ru: "Аккаунты Facebook", description_en: "Facebook accounts", emoji: "📘" },
+            { id: 6, name_ru: "Звезды Telegram", name_en: "Telegram Stars", description_ru: "Аккаунты звезд Telegram", description_en: "Telegram Stars accounts", emoji: "⭐" }
+        ];
+
+        const products = {
+            1: [
+                { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
+                { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" }
+            ],
+            2: [
+                { id: 3, name_ru: "ВК PREMIUM", name_en: "VK PREMIUM", price: 10.0, stock: 15, description_ru: "Премиум аккаунт ВК", description_en: "Premium VK account" },
+                { id: 4, name_ru: "ВК BUSINESS", name_en: "VK BUSINESS", price: 8.0, stock: 12, description_ru: "Бизнес страница ВК", description_en: "VK Business page" }
+            ]
+        };
+
+        // App state
+        let currentLanguage = 'ru';
+        let currentTheme = 'light';
+        let currentCategory = null;
+        let selectedPaymentMethod = null;
+        let selectedAmount = 0;
+
+        // DOM elements
+        const elements = {
+            langSwitch: document.getElementById('langSwitch'),
+            themeSwitch: document.getElementById('themeSwitch'),
+            navItems: document.querySelectorAll('.nav-item'),
+            tabContents: document.querySelectorAll('.tab-content'),
+            categoriesGrid: document.getElementById('categoriesGrid'),
+            productsSection: document.getElementById('productsSection'),
+            productsGrid: document.getElementById('productsGrid'),
+            categoryTitle: document.getElementById('categoryTitle'),
+            backToCategories: document.getElementById('backToCategories'),
+            depositBtn: document.getElementById('depositBtn'),
+            depositModal: document.getElementById('depositModal'),
+            closeDepositModal: document.getElementById('closeDepositModal'),
+            methodBtns: document.querySelectorAll('.method-btn'),
+            amountBtns: document.querySelectorAll('.amount-btn'),
+            confirmDeposit: document.getElementById('confirmDeposit'),
+            amountSelector: document.getElementById('amountSelector'),
+            paymentInfo: document.getElementById('paymentInfo'),
+            customAmount: document.getElementById('customAmount'),
+            copyReferralBtn: document.getElementById('copyReferralBtn'),
+            referralLink: document.getElementById('referralLink'),
+            joinChannelBtn: document.getElementById('joinChannelBtn'),
+            loadingOverlay: document.getElementById('loadingOverlay')
+        };
+
+        // Initialize app
+        function initApp() {
+            loadCategories();
+            setupEventListeners();
+            updateUI();
+        }
+
+        // Load categories to the grid
+        function loadCategories() {
+            elements.categoriesGrid.innerHTML = '';
+            categories.forEach(category => {
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.innerHTML = `
+                    <div class="category-icon">${category.emoji}</div>
+                    <h3>${currentLanguage === 'ru' ? category.name_ru : category.name_en}</h3>
+                    <p>${currentLanguage === 'ru' ? category.description_ru : category.description_en}</p>
+                `;
+                categoryCard.addEventListener('click', () => showProducts(category.id));
+                elements.categoriesGrid.appendChild(categoryCard);
+            });
+        }
+
+        // Show products for a category
+        function showProducts(categoryId) {
+            currentCategory = categoryId;
+            const category = categories.find(c => c.id === categoryId);
+            elements.categoryTitle.textContent = currentLanguage === 'ru' ? category.name_ru : category.name_en;
+            
+            elements.productsGrid.innerHTML = '';
+            if (products[categoryId]) {
+                products[categoryId].forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <div class="product-header">
+                            <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                            <div class="product-price">$${product.price}</div>
+                        </div>
+                        <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                        <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
+                        <button class="buy-btn">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                    `;
+                    elements.productsGrid.appendChild(productCard);
+                });
+            }
+            
+            document.getElementById('accounts-tab').querySelector('.categories-grid').classList.add('hidden');
+            elements.productsSection.classList.remove('hidden');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            elements.navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const tab = item.getAttribute('data-tab');
+                    switchTab(tab);
+                });
+            });
+
+            // Language switch
+            elements.langSwitch.addEventListener('click', toggleLanguage);
+
+            // Theme switch
+            elements.themeSwitch.addEventListener('click', toggleTheme);
+
+            // Back to categories
+            elements.backToCategories.addEventListener('click', () => {
+                elements.productsSection.classList.add('hidden');
+                document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
+            });
+
+            // Deposit modal
+            elements.depositBtn.addEventListener('click', () => {
+                elements.depositModal.classList.remove('hidden');
+            });
+
+            elements.closeDepositModal.addEventListener('click', () => {
+                elements.depositModal.classList.add('hidden');
+                resetPaymentModal();
+            });
+
+            // Payment methods
+            elements.methodBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedPaymentMethod = btn.getAttribute('data-method');
+                    elements.methodBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    elements.amountSelector.classList.remove('hidden');
+                });
+            });
+
+            // Amount buttons
+            elements.amountBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedAmount = parseFloat(btn.getAttribute('data-amount'));
+                    elements.amountBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    elements.customAmount.value = '';
+                });
+            });
+
+            // Custom amount input
+            elements.customAmount.addEventListener('input', (e) => {
+                selectedAmount = parseFloat(e.target.value) || 0;
+                elements.amountBtns.forEach(b => b.classList.remove('active'));
+            });
+
+            // Confirm deposit
+            elements.confirmDeposit.addEventListener('click', processDeposit);
+
+            // Copy referral link
+            elements.copyReferralBtn.addEventListener('click', () => {
+                elements.referralLink.select();
+                document.execCommand('copy');
+                showNotification(currentLanguage === 'ru' ? 'Ссылка скопирована!' : 'Link copied!');
+            });
+
+            // Join channel
+            elements.joinChannelBtn.addEventListener('click', () => {
+                window.open('https://t.me/stokeshopchannel', '_blank');
+            });
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            elements.navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-tab') === tabName) {
+                    item.classList.add('active');
+                }
+            });
+
+            elements.tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === `${tabName}-tab`) {
+                    content.classList.add('active');
+                }
+            });
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            updateUI();
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            elements.themeSwitch.innerHTML = currentTheme === 'light' ? '<i class="icon-moon">🌙</i>' : '<i class="icon-sun">☀️</i>';
+        }
+
+        // Update UI with current language
+        function updateUI() {
+            // Update language switch
+            elements.langSwitch.innerHTML = `
+                <span class="lang-flag">${currentLanguage === 'ru' ? '🇷🇺' : '🇬🇧'}</span>
+                <span class="lang-text">${currentLanguage === 'ru' ? 'RU' : 'EN'}</span>
+            `;
+
+            // Update all elements with data-lang attribute
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+
+            // Update placeholders
+            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-lang-placeholder');
+                if (translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
+                }
+            });
+
+            // Reload categories and products with new language
+            loadCategories();
+            if (currentCategory) {
+                showProducts(currentCategory);
+            }
+        }
+
+        // Process deposit
+        function processDeposit() {
+            if (!selectedPaymentMethod) {
+                showNotification(currentLanguage === 'ru' ? 'Выберите способ оплаты' : 'Select payment method');
+                return;
+            }
+
+            if (selectedAmount < 10) {
+                showNotification(currentLanguage === 'ru' ? 'Минимальная сумма $10' : 'Minimum amount is $10');
+                return;
+            }
+
+            showLoading(true);
+            
+            // Simulate API call
+            setTimeout(() => {
+                showLoading(false);
+                
+                if (selectedPaymentMethod === 'crypto_bot') {
+                    // For Crypto Bot, show payment link
+                    elements.paymentInfo.innerHTML = `
+                        <h4>${currentLanguage === 'ru' ? 'Оплата через Crypto Bot' : 'Payment via Crypto Bot'}</h4>
+                        <p>${currentLanguage === 'ru' ? 'Перейдите по ссылке для оплаты:' : 'Follow the link to pay:'}</p>
+                        <a href="https://t.me/CryptoBot?start=stokeshop_${selectedAmount}" target="_blank" style="display: block; padding: 12px; background: var(--primary-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0;">
+                            ${currentLanguage === 'ru' ? 'Перейти к оплате' : 'Go to payment'}
+                        </a>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                            ${currentLanguage === 'ru' ? 'После оплаты баланс пополнится автоматически' : 'Balance will be topped up automatically after payment'}
+                        </p>
+                    `;
+                } else {
+                    // For other methods, show wallet address
+                    const walletAddresses = {
+                        ton: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
+                        usdt: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
+                        btc: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq'
+                    };
+                    
+                    elements.paymentInfo.innerHTML = `
+                        <h4>${currentLanguage === 'ru' ? 'Отправьте платеж на адрес:' : 'Send payment to address:'}</h4>
+                        <div class="payment-address">${walletAddresses[selectedPaymentMethod]}</div>
+                        <p>${currentLanguage === 'ru' ? 'Сумма:' : 'Amount:'} $${selectedAmount}</p>
+                        <button class="copy-btn" onclick="copyToClipboard('${walletAddresses[selectedPaymentMethod]}')">
+                            ${currentLanguage === 'ru' ? 'Копировать адрес' : 'Copy address'}
+                        </button>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
+                            ${currentLanguage === 'ru' ? 'После отправки средств баланс пополнится автоматически' : 'Balance will be topped up automatically after transfer'}
+                        </p>
+                    `;
+                }
+                
+                elements.amountSelector.classList.add('hidden');
+                elements.paymentInfo.classList.remove('hidden');
+            }, 1500);
+        }
+
+        // Reset payment modal
+        function resetPaymentModal() {
+            selectedPaymentMethod = null;
+            selectedAmount = 0;
+            elements.methodBtns.forEach(b => b.classList.remove('active'));
+            elements.amountBtns.forEach(b => b.classList.remove('active'));
+            elements.customAmount.value = '';
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.add('hidden');
+        }
+
+        // Show loading overlay
+        function showLoading(show) {
+            elements.loadingOverlay.classList.toggle('hidden', !show);
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                z-index: 1000;
+                box-shadow: var(--shadow);
+                transition: var(--transition);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(currentLanguage === 'ru' ? 'Скопировано!' : 'Copied!');
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
