@@ -1667,10 +1667,18 @@
                 console.log('Telegram User Data:', user);
                 
                 if (user) {
-                    // Set user avatar
+                    // Set user avatar - FIXED: wait for image to load
                     if (user.photo_url) {
-                        elements.userAvatar.src = user.photo_url;
-                        elements.userAvatar.style.display = 'block';
+                        const avatarImg = elements.userAvatar;
+                        avatarImg.src = user.photo_url;
+                        avatarImg.onload = function() {
+                            avatarImg.style.display = 'block';
+                            document.querySelector('#userAvatar + i').style.display = 'none';
+                        };
+                        avatarImg.onerror = function() {
+                            avatarImg.style.display = 'none';
+                            document.querySelector('#userAvatar + i').style.display = 'flex';
+                        };
                     } else {
                         elements.userAvatar.style.display = 'none';
                         document.querySelector('#userAvatar + i').style.display = 'flex';
@@ -1696,6 +1704,8 @@
                     // Fallback if no user data
                     elements.userName.textContent = 'Пользователь Telegram';
                     elements.userId.textContent = 'ID: Неизвестен';
+                    elements.userAvatar.style.display = 'none';
+                    document.querySelector('#userAvatar + i').style.display = 'flex';
                     initializeUserData('telegram_user');
                 }
             } else {
