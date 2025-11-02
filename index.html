@@ -96,13 +96,6 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            overflow: hidden;
-        }
-
-        .logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .header-actions {
@@ -122,7 +115,6 @@
             align-items: center;
             gap: 6px;
             color: var(--text-primary);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .lang-switcher:hover, .theme-switcher:hover, .open-mini-app:hover {
@@ -162,7 +154,6 @@
             color: var(--text-secondary);
             font-size: 0.75rem;
             min-width: 60px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .nav-item.active {
@@ -251,7 +242,6 @@
             text-decoration: none;
             color: inherit;
             box-shadow: var(--shadow);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .category-card:hover {
@@ -298,7 +288,6 @@
             transition: var(--transition);
             cursor: pointer;
             box-shadow: var(--shadow);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .product-card:hover {
@@ -347,7 +336,6 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .buy-btn:hover {
@@ -363,7 +351,6 @@
             font-size: 1.25rem;
             transition: var(--transition);
             padding: 4px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .favorite-btn.active {
@@ -390,13 +377,6 @@
             justify-content: center;
             margin: 0 auto 16px;
             border: 3px solid var(--primary-color);
-            overflow: hidden;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
 
         .avatar i {
@@ -468,7 +448,6 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .stat-action:hover {
@@ -496,7 +475,6 @@
             color: inherit;
             text-decoration: none;
             box-shadow: var(--shadow);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .action-btn:hover {
@@ -549,7 +527,6 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--text-muted);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .modal-body {
@@ -588,7 +565,6 @@
             transition: var(--transition);
             text-align: center;
             box-shadow: var(--shadow);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .method-btn:hover {
@@ -629,7 +605,6 @@
             transition: var(--transition);
             font-weight: 600;
             box-shadow: var(--shadow);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .amount-btn.active {
@@ -667,7 +642,6 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .confirm-btn:hover {
@@ -702,7 +676,6 @@
             transition: var(--transition);
             margin-left: 8px;
             box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .copy-btn:hover {
@@ -772,7 +745,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .participate-btn:hover {
@@ -1017,7 +989,6 @@
             cursor: pointer;
             font-size: 0.875rem;
             margin-bottom: 16px;
-            -webkit-tap-highlight-color: transparent;
         }
 
         /* Responsive */
@@ -1061,10 +1032,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon">
-                        <img src="https://i.pinimg.com/736x/3f/4f/f3/3f4ff36e3545648808d9eb1f04e1c9c8.jpg" alt="Stoke Shop Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; font-weight: bold;">S</div>
-                    </div>
+                    <div class="logo-icon">S</div>
                     <span class="logo-text">Stoke Shop</span>
                 </div>
                 <div class="header-actions">
@@ -1088,11 +1056,11 @@
         <div class="nav-container">
             <button class="nav-item active" data-tab="accounts">
                 <i class="fas fa-store"></i>
-                <span data-lang="categories">Аккаунты</span>
+                <span>Аккаунты</span>
             </button>
             <button class="nav-item" data-tab="profile">
                 <i class="fas fa-user"></i>
-                <span data-lang="profile">Профиль</span>
+                <span>Профиль</span>
             </button>
             <button class="nav-item" data-tab="favorites">
                 <i class="fas fa-heart"></i>
@@ -1111,12 +1079,12 @@
             <!-- Accounts Tab -->
             <div class="tab-content active" id="accounts-tab">
                 <div class="section-header">
-                    <h2 data-lang="categories">Категории аккаунтов</h2>
+                    <h2>Категории аккаунтов</h2>
                 </div>
                 
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Поиск..." data-lang-placeholder="search_placeholder">
+                    <input type="text" id="searchInput" placeholder="Поиск...">
                 </div>
 
                 <div class="categories-grid" id="categoriesGrid">
@@ -1124,13 +1092,11 @@
                 </div>
 
                 <div class="products-section hidden" id="productsSection">
-                    <div class="products-header">
-                        <button class="back-button" id="backToCategories">
-                            <i class="fas fa-arrow-left"></i>
-                            <span data-lang="back_to_categories">Назад к категориям</span>
-                        </button>
-                        <h3 id="categoryTitle">Категория</h3>
-                    </div>
+                    <button class="back-button" id="backToCategories">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Назад к категориям</span>
+                    </button>
+                    <h3 id="categoryTitle">Категория</h3>
                     <div class="products-grid" id="productsGrid">
                         <!-- Products will be loaded here -->
                     </div>
@@ -1141,12 +1107,11 @@
             <div class="tab-content" id="profile-tab">
                 <div class="profile-header">
                     <div class="avatar">
-                        <img src="" alt="User Avatar" id="userAvatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <i class="fas fa-user" style="display: none;"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="profile-info">
-                        <h3 id="userName">Загрузка...</h3>
-                        <p class="user-id" id="userId">ID: Загрузка...</p>
+                        <h3 id="userName">Пользователь</h3>
+                        <p class="user-id" id="userId">ID: 123456789</p>
                     </div>
                 </div>
 
@@ -1156,10 +1121,10 @@
                             <i class="fas fa-wallet"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label" data-lang="balance">Баланс</span>
+                            <span class="stat-label">Баланс</span>
                             <span class="stat-value" id="userBalance">$0.00</span>
                         </div>
-                        <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
+                        <button class="stat-action" id="depositBtn">Пополнить</button>
                     </div>
 
                     <div class="stat-card">
@@ -1167,17 +1132,17 @@
                             <i class="fas fa-shopping-bag"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label" data-lang="orders_history">Заказы</span>
+                            <span class="stat-label">Заказы</span>
                             <span class="stat-value" id="ordersCount">0</span>
                         </div>
-                        <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
+                        <button class="stat-action" id="viewOrdersBtn">Смотреть</button>
                     </div>
                 </div>
 
                 <div class="profile-actions">
                     <button class="action-btn" id="referralBtn">
                         <i class="fas fa-users"></i>
-                        <span data-lang="referral">Рефералы</span>
+                        <span>Рефералы</span>
                     </button>
                 </div>
             </div>
@@ -1207,36 +1172,36 @@
                 <div class="referral-header">
                     <div class="referral-hero">
                         <i class="fas fa-users"></i>
-                        <h2 data-lang="referral_system">Реферальная система</h2>
-                        <p data-lang="referral_description">Приглашайте друзей и получайте бонусы</p>
+                        <h2>Реферальная система</h2>
+                        <p>Приглашайте друзей и получайте бонусы</p>
                     </div>
                 </div>
 
                 <div class="referral-stats">
                     <div class="referral-stat">
                         <span class="stat-number" id="referralsCount">0</span>
-                        <span class="stat-label" data-lang="referrals">Рефералов</span>
+                        <span class="stat-label">Рефералов</span>
                     </div>
                     <div class="referral-stat">
                         <span class="stat-number" id="referralEarnings">$0</span>
-                        <span class="stat-label" data-lang="earnings">Заработано</span>
+                        <span class="stat-label">Заработано</span>
                     </div>
                 </div>
 
                 <div class="referral-link">
-                    <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
+                    <label>Ваша реферальная ссылка:</label>
                     <div class="link-container">
                         <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref123456">
-                        <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
+                        <button class="copy-btn" id="copyReferralBtn">Копировать</button>
                     </div>
                 </div>
 
                 <div class="referral-rules">
-                    <h3 data-lang="how_it_works">Как это работает?</h3>
+                    <h3>Как это работает?</h3>
                     <ul>
-                        <li data-lang="ref_rule_1">Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
-                        <li data-lang="ref_rule_2">Ваш друг получает 5% бонус на первый депозит</li>
-                        <li data-lang="ref_rule_3">Нет ограничений по количеству приглашенных</li>
+                        <li>Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
+                        <li>Ваш друг получает 5% бонус на первый депозит</li>
+                        <li>Нет ограничений по количеству приглашенных</li>
                     </ul>
                 </div>
             </div>
@@ -1247,13 +1212,13 @@
     <div class="modal hidden" id="depositModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 data-lang="deposit">Пополнение баланса</h3>
+                <h3>Пополнение баланса</h3>
                 <button class="modal-close" id="closeDepositModal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="payment-methods">
                     <div class="method-category">
-                        <h4 data-lang="crypto_payments">Криптовалюты</h4>
+                        <h4>Криптовалюты</h4>
                         <div class="methods-grid">
                             <button class="method-btn" data-method="crypto_bot">
                                 <i class="fas fa-robot"></i>
@@ -1276,7 +1241,7 @@
                 </div>
 
                 <div class="amount-selector hidden" id="amountSelector">
-                    <h4 data-lang="select_amount">Выберите сумму</h4>
+                    <h4>Выберите сумму</h4>
                     <div class="amount-buttons">
                         <button class="amount-btn" data-amount="10">$10</button>
                         <button class="amount-btn" data-amount="25">$25</button>
@@ -1288,7 +1253,7 @@
                     <div class="custom-amount">
                         <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
                     </div>
-                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Продолжить</button>
+                    <button class="confirm-btn" id="confirmDeposit">Продолжить</button>
                 </div>
 
                 <div class="payment-info hidden" id="paymentInfo">
@@ -1332,45 +1297,23 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <p data-lang="loading">Загрузка...</p>
+        <p>Загрузка...</p>
     </div>
 
     <script>
-        // Translation data
-        const translations = {
-            ru: {
-                categories: "Аккаунты",
-                profile: "Профиль",
-                search_placeholder: "Поиск...",
-                balance: "Баланс",
-                deposit: "Пополнить",
-                orders_history: "Заказы",
-                view: "Смотреть",
-                referral: "Рефералы",
-                referral_system: "Реферальная система",
-                referral_description: "Приглашайте друзей и получайте бонусы",
-                referrals: "Рефералов",
-                earnings: "Заработано",
-                your_referral_link: "Ваша реферальная ссылка:",
-                copy: "Копировать",
-                how_it_works: "Как это работает?",
-                ref_rule_1: "Вы получаете 10% от первого пополнения каждого приглашенного друга",
-                ref_rule_2: "Ваш друг получает 5% бонус на первый депозит",
-                ref_rule_3: "Нет ограничений по количеству приглашенных",
-                crypto_payments: "Криптовалюты",
-                select_amount: "Выберите сумму",
-                continue: "Продолжить",
-                loading: "Загрузка...",
-                back_to_categories: "Назад к категориям"
-            }
-        };
-
         // Sample data
         const categories = [
-            { id: 1, name_ru: "Telegram", description_ru: "Аккаунты Telegram", icon: "fab fa-telegram" },
-            { id: 2, name_ru: "ВКонтакте", description_ru: "Аккаунты ВК", icon: "fab fa-vk" },
-            { id: 3, name_ru: "Vinted", description_ru: "Аккаунты Vinted", icon: "fas fa-tshirt" },
-            { id: 4, name_ru: "Wallapop", description_ru: "Аккаунты Wallapop", icon: "fas fa-store" }
+            { id: 1, name: "Telegram", description: "Аккаунты Telegram", icon: "fab fa-telegram" },
+            { id: 2, name: "ВКонтакте", description: "Аккаунты ВК", icon: "fab fa-vk" },
+            { id: 3, name: "Vinted", description: "Аккаунты Vinted", icon: "fas fa-tshirt" },
+            { id: 4, name: "Wallapop", description: "Аккаунты Wallapop", icon: "fas fa-store" },
+            { id: 5, name: "Facebook", description: "Аккаунты Facebook", icon: "fab fa-facebook" },
+            { id: 6, name: "Telegram Stars", description: "Звезды Telegram", icon: "fas fa-star" },
+            { id: 7, name: "Telegram Premium", description: "Премиум подписки", icon: "fas fa-crown" },
+            { id: 8, name: "Яндекс", description: "Аккаунты Яндекс", icon: "fas fa-search" },
+            { id: 9, name: "Ozon", description: "Аккаунты Ozon", icon: "fas fa-box" },
+            { id: 10, name: "Wildberries", description: "Аккаунты Wildberries", icon: "fas fa-shopping-bag" },
+            { id: 11, name: "Госуслуги", description: "Аккаунты Госуслуг", icon: "fas fa-landmark" }
         ];
 
         const products = {
@@ -1577,24 +1520,6 @@
             }
             
             updateUserStats();
-            
-            // Set user info from Telegram
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                const user = tg.initDataUnsafe.user;
-                
-                if (user) {
-                    document.getElementById('userName').textContent = 
-                        `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Пользователь';
-                    document.getElementById('userId').textContent = `ID: ${user.id}`;
-                    
-                    if (user.photo_url) {
-                        const avatar = document.getElementById('userAvatar');
-                        avatar.src = user.photo_url;
-                        avatar.style.display = 'block';
-                    }
-                }
-            }
         }
 
         // Save user data
@@ -1622,8 +1547,8 @@
                     <div class="category-icon">
                         <i class="${category.icon}"></i>
                     </div>
-                    <h3>${category.name_ru}</h3>
-                    <p>${category.description_ru}</p>
+                    <h3>${category.name}</h3>
+                    <p>${category.description}</p>
                 `;
                 card.addEventListener('click', () => showProducts(category.id));
                 grid.appendChild(card);
@@ -1634,7 +1559,7 @@
         function showProducts(categoryId) {
             currentCategory = categoryId;
             const category = categories.find(c => c.id === categoryId);
-            document.getElementById('categoryTitle').textContent = category.name_ru;
+            document.getElementById('categoryTitle').textContent = category.name;
             
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
@@ -1647,7 +1572,7 @@
                     card.innerHTML = `
                         <div class="product-header">
                             <div>
-                                <div class="product-name">${product.name_ru}</div>
+                                <div class="product-name">${product.name}</div>
                                 <div class="product-stock">В наличии: ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
@@ -1657,7 +1582,7 @@
                                 <div class="product-price">$${product.price}</div>
                             </div>
                         </div>
-                        <div class="product-description">${product.description_ru}</div>
+                        <div class="product-description">${product.description}</div>
                         <button class="buy-btn" data-product-id="${product.id}">Купить</button>
                     `;
                     grid.appendChild(card);
@@ -1734,7 +1659,7 @@
                     card.innerHTML = `
                         <div class="product-header">
                             <div>
-                                <div class="product-name">${product.name_ru}</div>
+                                <div class="product-name">${product.name}</div>
                                 <div class="product-stock">В наличии: ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
@@ -1744,7 +1669,7 @@
                                 <div class="product-price">$${product.price}</div>
                             </div>
                         </div>
-                        <div class="product-description">${product.description_ru}</div>
+                        <div class="product-description">${product.description}</div>
                         <button class="buy-btn" data-product-id="${product.id}">Купить</button>
                     `;
                     grid.appendChild(card);
@@ -1885,8 +1810,8 @@
             document.getElementById('purchaseTitle').textContent = 'Подтверждение покупки';
             document.getElementById('purchaseInfo').innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h4>${product.name_ru}</h4>
-                    <p>${product.description_ru}</p>
+                    <h4>${product.name}</h4>
+                    <p>${product.description}</p>
                     <p style="font-size: 1.25rem; font-weight: bold; color: var(--primary-color); margin: 10px 0;">$${product.price}</p>
                     <p>Ваш баланс: $${userData.balance.toFixed(2)}</p>
                     <p>После покупки: $${(userData.balance - product.price).toFixed(2)}</p>
@@ -1906,7 +1831,7 @@
                 userData.balance -= selectedProduct.price;
                 userData.orders.unshift({
                     id: Date.now(),
-                    product: selectedProduct.name_ru,
+                    product: selectedProduct.name,
                     price: selectedProduct.price,
                     date: new Date().toISOString().split('T')[0],
                     status: 'completed'
@@ -2162,19 +2087,7 @@
 
         // Update UI
         function updateUI() {
-            document.querySelectorAll('[data-lang]').forEach(element => {
-                const key = element.getAttribute('data-lang');
-                if (translations[currentLanguage][key]) {
-                    element.textContent = translations[currentLanguage][key];
-                }
-            });
-
-            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-lang-placeholder');
-                if (translations[currentLanguage][key]) {
-                    element.placeholder = translations[currentLanguage][key];
-                }
-            });
+            // Update UI elements if needed
         }
 
         // Reset payment modal
