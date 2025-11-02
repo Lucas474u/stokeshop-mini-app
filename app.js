@@ -21,7 +21,7 @@ class StokeShopApp {
         
         // Crypto Pay API credentials - ЗАМЕНИ НА СВОЙ КЛЮЧ ИЗ @CryptoBot (/api)
         this.cryptoPayConfig = {
-            apiKey: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
+            apiKey: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE', // Замени на реальный ключ
             baseUrl: 'https://pay.crypt.bot/api/'
         };
         
@@ -348,7 +348,6 @@ class StokeShopApp {
     }
 
     setupEventListeners() {
-        // ... все твои обработчики событий без изменений ...
         document.getElementById('languageBtn').addEventListener('click', () => {
             this.showModal('languageSelector');
         });
@@ -580,169 +579,180 @@ class StokeShopApp {
         }
     }
 
-async processCryptoBotDeposit() {
-    this.showModal('cryptoBotModal');
-    
-    // Update crypto modal
-    document.getElementById('cryptoAmount').textContent = this.selectedAmount;
-    document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].creating_invoice;
-    
-    try {
-        // Create invoice via Crypto Pay API
-        console.log('Creating invoice for amount:', this.selectedAmount);
-        const invoiceData = await this.createRealCryptoInvoice(this.selectedAmount);
+    async processCryptoBotDeposit() {
+        this.showModal('cryptoBotModal');
         
-        if (invoiceData.success) {
-            this.cryptoInvoiceId = invoiceData.result.invoice_id;
-            document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].invoice_created;
-            
-            // Set up REAL payment link
-            const openCryptoBotBtn = document.getElementById('openCryptoBotBtn');
-            openCryptoBotBtn.onclick = () => {
-                // Правильная ссылка для открытия Crypto Bot с инвойсом
-                const botInvoiceUrl = invoiceData.result.bot_invoice_url;
-                console.log('Opening Crypto Bot with URL:', botInvoiceUrl);
-                // Открываем в новом окне
-                window.open(botInvoiceUrl, '_blank');
-                // Также можно попробовать открыть через Telegram
-                this.tg.openTelegramLink(botInvoiceUrl);
-            };
-            
-            // Start payment timer (15 минут)
-            this.startPaymentTimer();
-            
-            console.log('Real invoice created successfully:', invoiceData.result);
-        } else {
-            throw new Error(invoiceData.error || 'Failed to create invoice');
-        }
+        // Update crypto modal
+        document.getElementById('cryptoAmount').textContent = this.selectedAmount;
+        document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].creating_invoice;
+        document.getElementById('cryptoStatus').style.color = 'var(--ios-text)';
         
-    } catch (error) {
-        console.error('Error creating real invoice:', error);
-        document.getElementById('cryptoStatus').textContent = 'Ошибка создания инвойса: ' + error.message;
-        document.getElementById('cryptoStatus').style.color = 'var(--danger)';
-        
-        // Показываем кнопку для ручного создания инвойса
+        // Сбрасываем предыдущие состояния
         const openCryptoBotBtn = document.getElementById('openCryptoBotBtn');
-        openCryptoBotBtn.onclick = () => {
-            this.showMessage('Сначала настройте Crypto Pay API ключ в настройках бота');
-        };
-    }
-}
-
-async createRealCryptoInvoice(amount) {
-    // Проверяем допустимые суммы
-    const allowedAmounts = [10, 25, 50, 100, 200, 500];
-    if (!allowedAmounts.includes(amount)) {
-        throw new Error(`Invalid amount selected: $${amount}`);
-    }
-
-    // Проверяем API ключ
-    if (!this.cryptoPayConfig.apiKey || this.cryptoPayConfig.apiKey === '12345:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
-        throw new Error('Crypto Pay API ключ не настроен. Получите ключ в @CryptoBot командой /api');
-    }
-
-    try {
-        console.log('Sending request to Crypto Pay API...');
+        const checkCryptoPaymentBtn = document.getElementById('checkCryptoPaymentBtn');
         
-        const response = await fetch(this.cryptoPayConfig.baseUrl + 'createInvoice', {
-            method: 'POST',
-            headers: {
-                'Crypto-Pay-API-Token': this.cryptoPayConfig.apiKey,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                asset: 'USDT', // Можно использовать: USDT, BTC, ETH, TON, LTC, etc.
-                amount: amount.toString(),
-                description: `Deposit $${amount} to Stoke Shop`,
-                hidden_message: 'Thank you for your payment! 🎉',
-                paid_btn_name: 'view_item',
-                paid_btn_url: 'https://t.me/stokeshopbot',
-                payload: JSON.stringify({
-                    user_id: this.user?.id || 'unknown',
-                    username: this.user?.username || 'unknown',
-                    amount: amount,
-                    type: 'balance_deposit',
-                    currency: 'USD',
-                    timestamp: Date.now(),
-                    shop: 'Stoke Shop'
-                }),
-                allow_comments: true,
-                allow_anonymous: false,
-                expires_in: 3600 // 1 час
-            })
-        });
-
-        console.log('Response status:', response.status);
+        openCryptoBotBtn.style.display = 'none';
+        checkCryptoPaymentBtn.style.display = 'none';
         
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('HTTP Error:', errorText);
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-        }
-
-        const data = await response.json();
-        console.log('API Response:', data);
-        
-        if (data.ok) {
-            return {
-                success: true,
-                result: data.result
+        try {
+            console.log('Creating invoice for amount:', this.selectedAmount);
+            const invoiceData = await this.createRealCryptoInvoice(this.selectedAmount);
+            
+            if (invoiceData.success) {
+                this.cryptoInvoiceId = invoiceData.result.invoice_id;
+                document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].invoice_created;
+                
+                // Показываем кнопки
+                openCryptoBotBtn.style.display = 'block';
+                checkCryptoPaymentBtn.style.display = 'block';
+                
+                // Настраиваем кнопку открытия Crypto Bot
+                openCryptoBotBtn.onclick = () => {
+                    const botInvoiceUrl = invoiceData.result.bot_invoice_url;
+                    console.log('Opening Crypto Bot with URL:', botInvoiceUrl);
+                    // Открываем через Telegram
+                    this.tg.openTelegramLink(botInvoiceUrl);
+                };
+                
+                // Настраиваем кнопку проверки платежа
+                checkCryptoPaymentBtn.onclick = () => {
+                    this.checkCryptoPayment();
+                };
+                
+                // Start payment timer (15 минут)
+                this.startPaymentTimer();
+                // Start auto payment check
+                this.startAutoPaymentCheck();
+                
+                console.log('Real invoice created successfully:', invoiceData.result);
+            } else {
+                throw new Error(invoiceData.error || 'Failed to create invoice');
+            }
+            
+        } catch (error) {
+            console.error('Error creating real invoice:', error);
+            document.getElementById('cryptoStatus').textContent = 'Ошибка создания инвойса: ' + error.message;
+            document.getElementById('cryptoStatus').style.color = 'var(--danger)';
+            
+            // Показываем кнопку для получения API ключа
+            openCryptoBotBtn.style.display = 'block';
+            openCryptoBotBtn.textContent = 'Получить API ключ';
+            openCryptoBotBtn.onclick = () => {
+                this.tg.openTelegramLink('https://t.me/CryptoBot?start=pay-api');
             };
-        } else {
-            console.error('API Error:', data.error);
-            throw new Error(data.error?.name || `API Error: ${JSON.stringify(data.error)}`);
-        }
-    } catch (error) {
-        console.error('Crypto Pay API error:', error);
-        
-        // Более детальная информация об ошибке
-        if (error.message.includes('Failed to fetch')) {
-            throw new Error('Не удалось подключиться к Crypto Pay API. Проверьте интернет соединение.');
-        } else if (error.message.includes('401')) {
-            throw new Error('Неверный API ключ. Проверьте ключ в @CryptoBot');
-        } else if (error.message.includes('403')) {
-            throw new Error('Доступ запрещен. Проверьте настройки API в @CryptoBot');
-        } else {
-            throw error;
         }
     }
-}
 
-async checkCryptoPayment() {
-    if (!this.cryptoInvoiceId) {
-        this.showMessage('No active invoice found');
-        return;
+    async createRealCryptoInvoice(amount) {
+        // Проверяем допустимые суммы
+        const allowedAmounts = [10, 25, 50, 100, 200, 500];
+        if (!allowedAmounts.includes(amount)) {
+            throw new Error(`Invalid amount selected: $${amount}`);
+        }
+
+        // Проверяем API ключ
+        if (!this.cryptoPayConfig.apiKey || this.cryptoPayConfig.apiKey === '12345:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA') {
+            throw new Error('Crypto Pay API ключ не настроен. Получите ключ в @CryptoBot командой /api');
+        }
+
+        try {
+            console.log('Sending request to Crypto Pay API...');
+            
+            const response = await fetch(this.cryptoPayConfig.baseUrl + 'createInvoice', {
+                method: 'POST',
+                headers: {
+                    'Crypto-Pay-API-Token': this.cryptoPayConfig.apiKey,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    asset: 'USDT',
+                    amount: amount.toString(),
+                    description: `Deposit $${amount} to Stoke Shop`,
+                    hidden_message: 'Thank you for your payment! 🎉',
+                    paid_btn_name: 'view_item',
+                    paid_btn_url: 'https://t.me/stokeshopbot',
+                    payload: JSON.stringify({
+                        user_id: this.user?.id || 'unknown',
+                        type: 'deposit'
+                    }),
+                    allow_comments: false,
+                    allow_anonymous: false,
+                    expires_in: 900 // 15 минут
+                })
+            });
+
+            console.log('Response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('HTTP Error:', errorText);
+                
+                if (response.status === 401) {
+                    throw new Error('Неверный API ключ. Получите новый ключ в @CryptoBot');
+                } else if (response.status === 403) {
+                    throw new Error('Доступ запрещен. Проверьте настройки бота');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+            }
+
+            const data = await response.json();
+            console.log('API Response:', data);
+            
+            if (data.ok) {
+                return {
+                    success: true,
+                    result: data.result
+                };
+            } else {
+                console.error('API Error:', data.error);
+                throw new Error(data.error?.name || `API Error: ${JSON.stringify(data.error)}`);
+            }
+        } catch (error) {
+            console.error('Crypto Pay API error:', error);
+            
+            // Более детальная информация об ошибке
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error('Не удалось подключиться к Crypto Pay API. Проверьте интернет соединение.');
+            } else if (error.message.includes('CORS')) {
+                throw new Error('CORS ошибка. Возможно, проблема с сервером Crypto Bot.');
+            } else {
+                throw error;
+            }
+        }
     }
 
-    // Если это демо-инвойс, не проверяем
-    if (this.cryptoInvoiceId.startsWith('demo_')) {
-        document.getElementById('cryptoStatus').textContent = 'Демо-режим: оплата не проверяется';
-        return;
-    }
+    async checkCryptoPayment() {
+        if (!this.cryptoInvoiceId) {
+            this.showMessage('No active invoice found');
+            return;
+        }
 
-    const statusElement = document.getElementById('cryptoStatus');
-    statusElement.textContent = this.currentLanguage === 'ru' ? '🔄 Проверка оплаты...' : '🔄 Checking payment...';
-    statusElement.style.color = 'var(--ios-text)';
-    
-    try {
-        const paymentStatus = await this.checkRealInvoiceStatus(this.cryptoInvoiceId);
+        const statusElement = document.getElementById('cryptoStatus');
+        statusElement.textContent = this.currentLanguage === 'ru' ? '🔄 Проверка оплаты...' : '🔄 Checking payment...';
+        statusElement.style.color = 'var(--ios-text)';
         
-        if (paymentStatus.paid) {
-            await this.handleSuccessfulPayment();
-        } else if (paymentStatus.expired) {
-            statusElement.textContent = this.translations[this.currentLanguage].invoice_expired;
+        try {
+            const paymentStatus = await this.checkRealInvoiceStatus(this.cryptoInvoiceId);
+            
+            if (paymentStatus.paid) {
+                await this.handleSuccessfulPayment();
+            } else if (paymentStatus.expired) {
+                statusElement.textContent = this.translations[this.currentLanguage].invoice_expired;
+                statusElement.style.color = 'var(--danger)';
+                this.stopPaymentTimer();
+                this.stopAutoPaymentCheck();
+            } else {
+                statusElement.textContent = this.currentLanguage === 'ru' ? '⏳ Ожидание оплаты...' : '⏳ Waiting for payment...';
+                statusElement.style.color = 'var(--warning)';
+            }
+            
+        } catch (error) {
+            console.error('Payment check error:', error);
+            statusElement.textContent = 'Ошибка проверки: ' + error.message;
             statusElement.style.color = 'var(--danger)';
-        } else {
-            statusElement.textContent = this.currentLanguage === 'ru' ? '⏳ Ожидание оплаты...' : '⏳ Waiting for payment...';
-            statusElement.style.color = 'var(--warning)';
         }
-        
-    } catch (error) {
-        console.error('Payment check error:', error);
-        statusElement.textContent = 'Ошибка проверки: ' + error.message;
-        statusElement.style.color = 'var(--danger)';
     }
-}
 
     async checkRealInvoiceStatus(invoiceId) {
         try {
@@ -779,6 +789,7 @@ async checkCryptoPayment() {
         document.getElementById('cryptoStatus').textContent = this.translations[this.currentLanguage].payment_success;
         document.getElementById('cryptoStatus').style.color = 'var(--success)';
         
+        // Обновляем баланс
         this.userData.balance += this.selectedAmount;
         this.userData.totalDeposited += this.selectedAmount;
         this.saveUserData();
@@ -786,6 +797,10 @@ async checkCryptoPayment() {
         
         this.stopPaymentTimer();
         this.stopAutoPaymentCheck();
+        
+        // Скрываем кнопки после успешной оплаты
+        document.getElementById('openCryptoBotBtn').style.display = 'none';
+        document.getElementById('checkCryptoPaymentBtn').style.display = 'none';
         
         setTimeout(() => {
             this.hideModal('cryptoBotModal');
@@ -798,6 +813,7 @@ async checkCryptoPayment() {
     }
 
     startAutoPaymentCheck() {
+        this.stopAutoPaymentCheck(); // Останавливаем предыдущий интервал
         this.autoCheckInterval = setInterval(() => {
             this.checkCryptoPayment();
         }, 10000); // Проверка каждые 10 секунд
@@ -811,6 +827,7 @@ async checkCryptoPayment() {
     }
 
     startPaymentTimer() {
+        this.stopPaymentTimer(); // Останавливаем предыдущий таймер
         let timeLeft = 15 * 60;
         const timerElement = document.getElementById('cryptoTimer');
         
@@ -1007,11 +1024,14 @@ async checkCryptoPayment() {
             buttons: [{ type: 'ok' }]
         });
     }
+
+    openCryptoBot() {
+        // Этот метод будет переопределен при создании инвойса
+        this.showMessage('Сначала создайте инвойс для оплаты');
+    }
 }
 
 Telegram.WebApp.ready();
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new StokeShopApp();
 });
-
-
