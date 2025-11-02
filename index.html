@@ -3,284 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STOKE SHOP • Premium Accounts</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Stoke Shop - Accounts Store</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Professional Header -->
-        <header class="professional-header">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
             <div class="header-content">
-                <div class="brand-section">
-                    <div class="logo-container">
-                        <img src="logo.png" alt="STOKE SHOP" class="logo-image" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';">
-                        <div class="logo-fallback" id="logoFallback">🛒</div>
-                    </div>
-                    <div class="brand-text">
-                        <h1 class="brand-name">STOKE SHOP</h1>
-                        <div class="brand-subtitle">PREMIUM ACCOUNTS</div>
-                    </div>
+                <div class="logo">
+                    <img src="images/logo.png" alt="Stoke Shop">
+                    <span class="logo-text">Stoke Shop</span>
                 </div>
-                <div class="user-section">
-                    <div class="balance-display">
-                        <div class="balance-amount">$<span id="userBalance">150.00</span></div>
-                    </div>
-                    <div class="avatar-container" id="userAvatar">
-                        <img id="avatarImage" src="" alt="Profile" onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
-                        <div class="avatar-fallback" id="avatarFallback">U</div>
-                    </div>
+                <div class="header-actions">
+                    <button class="lang-switcher" id="langSwitch">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-text">RU</span>
+                    </button>
+                    <button class="theme-switcher" id="themeSwitch">
+                        <i class="icon-moon"></i>
+                    </button>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Stats Section -->
-            <section class="stats-section">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number">99+</div>
-                        <div class="stat-label">Premium Accounts</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">4.9</div>
-                        <div class="stat-label">Quality Rating</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Support</div>
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" data-tab="accounts">
+                <i class="icon-shop"></i>
+                <span data-lang="categories">Аккаунты</span>
+            </button>
+            <button class="nav-item" data-tab="profile">
+                <i class="icon-user"></i>
+                <span data-lang="profile">Профиль</span>
+            </button>
+            <button class="nav-item" data-tab="news">
+                <i class="icon-news"></i>
+                <span data-lang="news">Новости</span>
+            </button>
+            <button class="nav-item" data-tab="referral">
+                <i class="icon-referral"></i>
+                <span data-lang="referral">Рефералы</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Accounts Tab -->
+            <div class="tab-content active" id="accounts-tab">
+                <div class="section-header">
+                    <h2 data-lang="categories">Категории аккаунтов</h2>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Поиск..." data-lang-placeholder="search_placeholder">
+                        <i class="icon-search"></i>
                     </div>
                 </div>
-            </section>
 
-            <!-- Categories -->
-            <section class="categories-section">
-                <h2 class="section-title">Categories</h2>
                 <div class="categories-grid" id="categoriesGrid">
                     <!-- Categories will be loaded here -->
                 </div>
-            </section>
 
-            <!-- Featured Products -->
-            <section class="products-section">
+                <div class="products-section hidden" id="productsSection">
+                    <div class="products-header">
+                        <button class="back-button" id="backToCategories">
+                            <i class="icon-arrow-left"></i>
+                            <span data-lang="back_to_categories">Назад к категориям</span>
+                        </button>
+                        <h3 id="categoryTitle">Категория</h3>
+                    </div>
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="product-detail hidden" id="productDetail">
+                    <!-- Product detail will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div class="tab-content" id="profile-tab">
+                <div class="profile-header">
+                    <div class="avatar">
+                        <i class="icon-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="userName">Пользователь</h3>
+                        <p class="user-id" id="userId">ID: 123456</p>
+                    </div>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon balance">
+                            <i class="icon-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" data-lang="balance">Баланс</span>
+                            <span class="stat-value" id="userBalance">$0.00</span>
+                        </div>
+                        <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="icon-orders"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label" data-lang="orders_history">Заказы</span>
+                            <span class="stat-value" id="ordersCount">0</span>
+                        </div>
+                        <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <button class="action-btn" id="favoritesBtn">
+                        <i class="icon-heart"></i>
+                        <span data-lang="favorites">Избранное</span>
+                    </button>
+                    <button class="action-btn" id="giveawayBtn">
+                        <i class="icon-gift"></i>
+                        <span data-lang="giveaway">Розыгрыш</span>
+                    </button>
+                    <button class="action-btn" id="supportBtn">
+                        <i class="icon-support"></i>
+                        <span data-lang="support">Поддержка</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- News Tab -->
+            <div class="tab-content" id="news-tab">
                 <div class="section-header">
-                    <h2 class="section-title">Featured Products</h2>
-                    <button class="view-all-btn" id="viewAllBtn">View All</button>
+                    <h2 data-lang="news">Новости и обновления</h2>
                 </div>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Products will be loaded here -->
-                </div>
-            </section>
-
-            <!-- Payment Methods -->
-            <section class="payment-section">
-                <h2 class="section-title">Payment Methods</h2>
-                <div class="payment-methods-grid">
-                    <div class="payment-method" data-method="ton">
-                        <div class="payment-icon">TON</div>
-                        <div class="payment-name">TON</div>
+                <div class="news-container">
+                    <div class="news-card">
+                        <div class="news-header">
+                            <h3 data-lang="news_welcome">Добро пожаловать в Stoke Shop!</h3>
+                            <span class="news-date">Сегодня</span>
+                        </div>
+                        <p data-lang="news_welcome_text">Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.</p>
                     </div>
-                    <div class="payment-method" data-method="usdt">
-                        <div class="payment-icon">USDT</div>
-                        <div class="payment-name">USDT TRC20</div>
-                    </div>
-                    <div class="payment-method" data-method="btc">
-                        <div class="payment-icon">BTC</div>
-                        <div class="payment-name">Bitcoin</div>
-                    </div>
-                    <div class="payment-method" data-method="crypto-bot">
-                        <div class="payment-icon">🤖</div>
-                        <div class="payment-name">Crypto Bot</div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Navigation -->
-        <nav class="bottom-navigation">
-            <button class="nav-btn active" data-page="home">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">Home</span>
-            </button>
-            <button class="nav-btn" data-page="shop">
-                <span class="nav-icon">🛍️</span>
-                <span class="nav-label">Shop</span>
-            </button>
-            <button class="nav-btn" data-page="balance">
-                <span class="nav-icon">💰</span>
-                <span class="nav-label">Balance</span>
-            </button>
-            <button class="nav-btn" data-page="profile">
-                <span class="nav-icon">👤</span>
-                <span class="nav-label">Profile</span>
-            </button>
-        </nav>
-    </div>
-
-    <!-- Product Modal -->
-    <div class="modal" id="productModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalProductName">Product Name</h3>
-                <button class="modal-close" id="closeProductModal">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="product-image" id="modalProductImage">🛍️</div>
-                <div class="product-info">
-                    <div class="price-section">
-                        <div class="price" id="modalProductPrice">$0.00</div>
-                        <div class="stock" id="modalProductStock">In stock: 0</div>
-                    </div>
-                    <div class="description" id="modalProductDescription">
-                        Product description...
-                    </div>
-                    <div class="details" id="modalProductDetails">
-                        Product details...
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="addToFavoritesBtn">Add to Favorites</button>
-                <button class="btn btn-primary" id="buyProductBtn">Buy Now</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div class="modal" id="paymentModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Payment</h3>
-                <button class="modal-close" id="closePaymentModal">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="payment-info">
-                    <div class="info-row">
-                        <span>Product:</span>
-                        <span id="paymentProductName">-</span>
-                    </div>
-                    <div class="info-row">
-                        <span>Price:</span>
-                        <span id="paymentProductPrice">$0.00</span>
-                    </div>
-                    <div class="info-row">
-                        <span>Your Balance:</span>
-                        <span id="paymentUserBalance">$0.00</span>
-                    </div>
-                </div>
-                <div class="payment-options">
-                    <h4>Select Payment Method:</h4>
-                    <div class="options-grid">
-                        <div class="payment-option" data-method="balance">
-                            <div class="option-icon">💰</div>
-                            <div class="option-info">
-                                <div class="option-name">Account Balance</div>
-                                <div class="option-desc">Instant payment</div>
+                    <div class="channel-promo">
+                        <div class="promo-content">
+                            <i class="icon-telegram"></i>
+                            <div class="promo-text">
+                                <h4 data-lang="subscribe_channel">Подпишитесь на наш канал</h4>
+                                <p data-lang="subscribe_text">Будьте в курсе последних новостей и акций</p>
                             </div>
                         </div>
-                        <div class="payment-option" data-method="crypto">
-                            <div class="option-icon">💎</div>
-                            <div class="option-info">
-                                <div class="option-name">Cryptocurrency</div>
-                                <div class="option-desc">TON, USDT, BTC</div>
-                            </div>
-                        </div>
-                        <div class="payment-option" data-method="crypto-bot">
-                            <div class="option-icon">🤖</div>
-                            <div class="option-info">
-                                <div class="option-name">Crypto Bot</div>
-                                <div class="option-desc">Recommended</div>
-                            </div>
-                        </div>
+                        <button class="promo-btn" id="joinChannelBtn" data-lang="join_channel">Присоединиться</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Referral Tab -->
+            <div class="tab-content" id="referral-tab">
+                <div class="referral-header">
+                    <div class="referral-hero">
+                        <i class="icon-users"></i>
+                        <h2 data-lang="referral_system">Реферальная система</h2>
+                        <p data-lang="referral_description">Приглашайте друзей и получайте бонусы</p>
+                    </div>
+                </div>
+
+                <div class="referral-stats">
+                    <div class="referral-stat">
+                        <span class="stat-number" id="referralsCount">0</span>
+                        <span class="stat-label" data-lang="referrals">Рефералов</span>
+                    </div>
+                    <div class="referral-stat">
+                        <span class="stat-number" id="referralEarnings">$0</span>
+                        <span class="stat-label" data-lang="earnings">Заработано</span>
+                    </div>
+                </div>
+
+                <div class="referral-link">
+                    <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
+                    <div class="link-container">
+                        <input type="text" id="referralLink" readonly>
+                        <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
+                    </div>
+                </div>
+
+                <div class="referral-rules">
+                    <h3 data-lang="how_it_works">Как это работает?</h3>
+                    <ul>
+                        <li data-lang="ref_rule_1">Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
+                        <li data-lang="ref_rule_2">Ваш друг получает 5% бонус на первый депозит</li>
+                        <li data-lang="ref_rule_3">Нет ограничений по количеству приглашенных</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Crypto Bot Deposit Modal -->
-    <div class="modal" id="cryptoBotModal">
-        <div class="modal-backdrop"></div>
+    <!-- Deposit Modal -->
+    <div class="modal hidden" id="depositModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Deposit via Crypto Bot</h3>
-                <button class="modal-close" id="closeCryptoBotModal">×</button>
+                <h3 data-lang="deposit">Пополнение баланса</h3>
+                <button class="modal-close" id="closeDepositModal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="amount-input-section">
-                    <label for="depositAmount">Enter amount (USD):</label>
-                    <input type="number" id="depositAmount" placeholder="10.00" min="10" max="1000" step="0.01">
+                <div class="payment-methods">
+                    <div class="method-category">
+                        <h4 data-lang="crypto_payments">Криптовалюты</h4>
+                        <div class="methods-grid">
+                            <button class="method-btn" data-method="crypto_bot">
+                                <i class="icon-crypto-bot"></i>
+                                <span>Crypto Bot</span>
+                            </button>
+                            <button class="method-btn" data-method="ton">
+                                <i class="icon-ton"></i>
+                                <span>TON</span>
+                            </button>
+                            <button class="method-btn" data-method="usdt">
+                                <i class="icon-usdt"></i>
+                                <span>USDT</span>
+                            </button>
+                            <button class="method-btn" data-method="btc">
+                                <i class="icon-btc"></i>
+                                <span>Bitcoin</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="amount-selector hidden" id="amountSelector">
+                    <h4 data-lang="select_amount">Выберите сумму</h4>
                     <div class="amount-buttons">
                         <button class="amount-btn" data-amount="10">$10</button>
+                        <button class="amount-btn" data-amount="25">$25</button>
                         <button class="amount-btn" data-amount="50">$50</button>
                         <button class="amount-btn" data-amount="100">$100</button>
+                        <button class="amount-btn" data-amount="200">$200</button>
+                        <button class="amount-btn" data-amount="500">$500</button>
                     </div>
+                    <div class="custom-amount">
+                        <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
+                    </div>
+                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Продолжить</button>
                 </div>
-                <button class="btn btn-primary" id="createInvoiceBtn">Create Payment Invoice</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Invoice Modal -->
-    <div class="modal" id="invoiceModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Crypto Bot Invoice</h3>
-                <button class="modal-close" id="closeInvoiceModal">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="invoice-info">
-                    <div class="invoice-amount">
-                        <span>Amount to pay:</span>
-                        <span class="amount" id="invoiceAmount">$0.00</span>
-                    </div>
-                    <div class="invoice-link">
-                        <a href="#" id="invoiceLink" target="_blank" class="btn btn-primary">Pay with Crypto Bot</a>
-                    </div>
-                    <div class="invoice-status">
-                        <div class="status pending" id="invoiceStatus">
-                            Waiting for payment...
-                        </div>
-                    </div>
+                <div class="payment-info hidden" id="paymentInfo">
+                    <!-- Payment instructions will be shown here -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Wallet Modal -->
-    <div class="modal" id="walletModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="walletModalTitle">Crypto Wallet</h3>
-                <button class="modal-close" id="closeWalletModal">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="wallet-info">
-                    <div class="wallet-address-container">
-                        <div class="wallet-address" id="walletAddress">Loading...</div>
-                        <button class="btn btn-secondary" id="copyAddressBtn">Copy Address</button>
-                    </div>
-                    <div class="wallet-instructions">
-                        <p><strong>Instructions:</strong></p>
-                        <p>1. Send only <span id="walletCurrency">CRYPTO</span> to this address</p>
-                        <p>2. Minimum deposit: $10</p>
-                        <p>3. Network: <span id="walletNetwork">NETWORK</span></p>
-                        <p>4. Balance will update automatically after confirmation</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p data-lang="loading">Загрузка...</p>
     </div>
 
-    <script src="script.js"></script>
-    <script src="crypto-pay.js"></script>
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="js/language.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
