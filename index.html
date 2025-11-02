@@ -667,14 +667,6 @@
             padding: 20px;
         }
 
-        .payment-qr {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
         .payment-address {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -703,14 +695,27 @@
             box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
         }
 
-        /* News Styles */
-        .news-container {
-            display: flex;
-            flex-direction: column;
+        /* Giveaway Styles */
+        .giveaway-grid {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .news-card {
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .giveaway-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -718,61 +723,133 @@
             box-shadow: var(--shadow);
         }
 
-        .news-header {
+        .giveaway-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 12px;
         }
 
-        .news-header h3 {
+        .giveaway-prize {
             font-size: 1.125rem;
             font-weight: 600;
+            color: var(--primary-color);
         }
 
-        .news-date {
+        .giveaway-date {
             color: var(--text-muted);
             font-size: 0.875rem;
         }
 
-        .channel-promo {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        .participants-count {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .participate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-color), #eab308);
             color: white;
-            border-radius: var(--radius);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: var(--shadow);
-        }
-
-        .promo-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .promo-content i {
-            font-size: 2rem;
-        }
-
-        .promo-text h4 {
-            margin-bottom: 4px;
-        }
-
-        .promo-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: none;
             border-radius: 8px;
-            padding: 10px 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .promo-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .participate-btn:hover {
             transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .participate-btn.disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .participate-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .countdown-timer {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 16px 0;
+            font-weight: 600;
+        }
+
+        .countdown-numbers {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .countdown-labels {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .giveaway-conditions {
+            background: var(--surface-dark);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        .giveaway-conditions h4 {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .giveaway-conditions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .giveaway-conditions li {
+            padding: 6px 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .giveaway-conditions li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary-color);
+        }
+
+        .user-deposit-amount {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .deposit-progress {
+            background: var(--surface-dark);
+            height: 8px;
+            border-radius: 4px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .deposit-progress-bar {
+            background: linear-gradient(135deg, var(--success-color), #22c55e);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
         }
 
         /* Referral Styles */
@@ -841,6 +918,10 @@
             color: var(--text-primary);
         }
 
+        .referral-rules {
+            margin-top: 24px;
+        }
+
         .referral-rules h3 {
             margin-bottom: 12px;
             font-size: 1.125rem;
@@ -867,73 +948,12 @@
             font-weight: bold;
         }
 
-        /* Favorites & Giveaway Styles */
-        .favorites-grid, .giveaway-grid {
+        /* Favorites Styles */
+        .favorites-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 16px;
             margin-bottom: 24px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .giveaway-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .giveaway-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .giveaway-prize {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .giveaway-date {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .participants-count {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 12px;
-        }
-
-        .participate-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--secondary-color), #eab308);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .participate-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
         }
 
         /* Utility Classes */
@@ -1138,10 +1158,6 @@
                 </div>
 
                 <div class="profile-actions">
-                    <button class="action-btn" id="supportBtn">
-                        <i class="fas fa-headset"></i>
-                        <span data-lang="support">Поддержка</span>
-                    </button>
                     <button class="action-btn" id="referralBtn">
                         <i class="fas fa-users"></i>
                         <span data-lang="referral">Рефералы</span>
@@ -1162,10 +1178,10 @@
             <!-- Giveaway Tab -->
             <div class="tab-content" id="giveaway-tab">
                 <div class="section-header">
-                    <h2>Розыгрыши</h2>
+                    <h2>🎉 РОЗЫГРЫШ 3x iPhone 17 Pro Max 🎉</h2>
                 </div>
                 <div class="giveaway-grid" id="giveawayGrid">
-                    <!-- Giveaways will be loaded here -->
+                    <!-- Giveaway will be loaded here -->
                 </div>
             </div>
 
@@ -1193,7 +1209,7 @@
                 <div class="referral-link">
                     <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
                     <div class="link-container">
-                        <input type="text" id="referralLink" readonly value="https://t.me/stokeshopbot?start=ref123456">
+                        <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref123456">
                         <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
                     </div>
                 </div>
@@ -1521,43 +1537,28 @@
         let selectedPaymentMethod = null;
         let selectedAmount = 0;
         let selectedProduct = null;
+        let countdownInterval = null;
         
-        // Real user data
+        // Real user data - ALL ZERO INITIALLY
         let userData = {
             balance: 0,
             orders: [],
             favorites: [],
             referralCount: 0,
-            referralEarnings: 0
+            referralEarnings: 0,
+            totalDeposited: 0 // For giveaway eligibility
         };
 
-        // Giveaways data
-        const giveaways = [
-            {
-                id: 1,
-                prize: "Telegram Premium на 1 год",
-                description: "Выиграйте годовую подписку Telegram Premium",
-                endDate: "2024-12-31",
-                participants: 154,
-                image: "fas fa-crown"
-            },
-            {
-                id: 2,
-                prize: "$50 на баланс",
-                description: "Получите $50 для покупок в нашем магазине",
-                endDate: "2024-11-30",
-                participants: 287,
-                image: "fas fa-coins"
-            },
-            {
-                id: 3,
-                prize: "Набор аккаунтов Vinted",
-                description: "5 премиум аккаунтов Vinted разных стран",
-                endDate: "2024-12-15",
-                participants: 89,
-                image: "fas fa-tshirt"
-            }
-        ];
+        // Giveaway data - SINGLE GIVEAWAY
+        const giveaway = {
+            id: 1,
+            prize: "3x iPhone 17 Pro Max",
+            description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
+            endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+            participants: 4586,
+            image: "fas fa-mobile-alt",
+            requiredDeposit: 30
+        };
 
         // DOM elements
         const elements = {
@@ -1605,7 +1606,6 @@
             giveawayGrid: document.getElementById('giveawayGrid'),
             referralsCount: document.getElementById('referralsCount'),
             referralEarnings: document.getElementById('referralEarnings'),
-            supportBtn: document.getElementById('supportBtn'),
             referralBtn: document.getElementById('referralBtn')
         };
 
@@ -1616,9 +1616,10 @@
             loadUserData();
             loadCategories();
             loadFavorites();
-            loadGiveaways();
+            loadGiveaway();
             setupEventListeners();
             updateUI();
+            startCountdown();
         }
 
         // Initialize Telegram WebApp
@@ -1719,35 +1720,21 @@
             }
         }
 
-        // Initialize user data
+        // Initialize user data - ALL ZERO INITIALLY
         function initializeUserData(userId) {
             // Load from localStorage or initialize default data
             const savedData = localStorage.getItem(`userData_${userId}`);
             if (savedData) {
                 userData = JSON.parse(savedData);
             } else {
-                // Default data for new users
+                // Default data for new users - ALL ZERO
                 userData = {
-                    balance: 25.50,
-                    orders: [
-                        {
-                            id: 1,
-                            product: "НОВОРЕГ Telegram",
-                            price: 4.0,
-                            date: "2024-01-15",
-                            status: "completed"
-                        },
-                        {
-                            id: 2,
-                            product: "ВК PREMIUM",
-                            price: 10.0,
-                            date: "2024-01-10",
-                            status: "completed"
-                        }
-                    ],
-                    favorites: [1, 3, 7], // Product IDs
-                    referralCount: 5,
-                    referralEarnings: 12.50
+                    balance: 0,
+                    orders: [],
+                    favorites: [],
+                    referralCount: 0,
+                    referralEarnings: 0,
+                    totalDeposited: 0
                 };
                 saveUserData(userId);
             }
@@ -1943,48 +1930,113 @@
             });
         }
 
-        // Load giveaways
-        function loadGiveaways() {
+        // Load SINGLE giveaway
+        function loadGiveaway() {
             elements.giveawayGrid.innerHTML = '';
             
-            giveaways.forEach(giveaway => {
-                const giveawayCard = document.createElement('div');
-                giveawayCard.className = 'giveaway-card';
-                giveawayCard.innerHTML = `
-                    <div class="giveaway-header">
-                        <div>
-                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <i class="${giveaway.image}" style="color: var(--secondary-color);"></i>
-                                <h3 class="giveaway-prize">${giveaway.prize}</h3>
-                            </div>
-                            <p>${giveaway.description}</p>
+            const isEligible = userData.totalDeposited >= giveaway.requiredDeposit;
+            const progressPercentage = Math.min((userData.totalDeposited / giveaway.requiredDeposit) * 100, 100);
+            
+            const giveawayCard = document.createElement('div');
+            giveawayCard.className = 'giveaway-card';
+            giveawayCard.innerHTML = `
+                <div class="giveaway-header">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <i class="${giveaway.image}" style="color: var(--secondary-color); font-size: 2rem;"></i>
+                            <h3 class="giveaway-prize" style="font-size: 1.25rem;">🎉 ${giveaway.prize} 🎉</h3>
                         </div>
+                        <p style="font-size: 1rem; line-height: 1.5;">${giveaway.description}</p>
                     </div>
-                    <div class="participants-count">
-                        <i class="fas fa-users"></i> Участников: ${giveaway.participants}
+                </div>
+                
+                <div class="countdown-timer">
+                    <div>До конца розыгрыша:</div>
+                    <div class="countdown-numbers" id="countdownTimer">00:00:00</div>
+                    <div class="countdown-labels">
+                        <span>Дни</span>
+                        <span>Часы</span>
+                        <span>Минуты</span>
+                        <span>Секунды</span>
                     </div>
-                    <div class="giveaway-date">
-                        <i class="fas fa-clock"></i> До: ${giveaway.endDate}
+                </div>
+                
+                <div class="participants-count">
+                    <i class="fas fa-users"></i> Участников: ${giveaway.participants.toLocaleString()}
+                </div>
+                
+                <div class="user-deposit-amount">
+                    <div>💰 Ваша сумма пополнений: $${userData.totalDeposited.toFixed(2)}</div>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 4px;">
+                        Требуется: $${giveaway.requiredDeposit} для участия
                     </div>
-                    <button class="participate-btn" data-giveaway-id="${giveaway.id}">
-                        Участвовать
-                    </button>
-                `;
-                elements.giveawayGrid.appendChild(giveawayCard);
-            });
+                    <div class="deposit-progress">
+                        <div class="deposit-progress-bar" style="width: ${progressPercentage}%"></div>
+                    </div>
+                </div>
+                
+                <div class="giveaway-conditions">
+                    <h4>Условия участия:</h4>
+                    <ul>
+                        <li>Общая сумма пополнений от $${giveaway.requiredDeposit}</li>
+                        <li>Активный аккаунт в боте</li>
+                        <li>Участие бесплатное для подходящих пользователей</li>
+                    </ul>
+                </div>
+                
+                <button class="participate-btn ${isEligible ? '' : 'disabled'}" id="participateBtn" ${isEligible ? '' : 'disabled'}>
+                    ${isEligible ? '🎯 Участвовать в розыгрыше!' : '❌ Недостаточно пополнений'}
+                </button>
+            `;
+            elements.giveawayGrid.appendChild(giveawayCard);
 
-            // Add event listeners for giveaways
-            document.querySelectorAll('.participate-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const giveawayId = parseInt(e.target.getAttribute('data-giveaway-id'));
-                    participateInGiveaway(giveawayId);
-                });
-            });
+            // Add event listener for participate button
+            const participateBtn = document.getElementById('participateBtn');
+            if (participateBtn && isEligible) {
+                participateBtn.addEventListener('click', participateInGiveaway);
+            }
+        }
+
+        // Start real-time countdown
+        function startCountdown() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Initial call
+        }
+
+        // Update countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = giveaway.endDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdownTimer').textContent = "00:00:00:00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            const countdownElement = document.getElementById('countdownTimer');
+            if (countdownElement) {
+                countdownElement.textContent = 
+                    `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
         }
 
         // Participate in giveaway
-        function participateInGiveaway(giveawayId) {
-            showNotification('Вы успешно участвуете в розыгрыше! Удачи! 🎉');
+        function participateInGiveaway() {
+            if (userData.totalDeposited >= giveaway.requiredDeposit) {
+                showNotification('🎉 Вы успешно участвуете в розыгрыше iPhone 17 Pro Max! Удачи!');
+            } else {
+                showNotification('❌ Для участия необходимо пополнить баланс на $30 или более');
+            }
         }
 
         // Handle product purchase
@@ -2180,11 +2232,6 @@
                 showNotification('Ссылка скопирована!');
             });
 
-            // Support button
-            elements.supportBtn.addEventListener('click', () => {
-                window.open('https://t.me/stokeshopsupport', '_blank');
-            });
-
             // Referral button
             elements.referralBtn.addEventListener('click', () => {
                 switchTab('referral');
@@ -2276,21 +2323,17 @@
             setTimeout(() => {
                 showLoading(false);
                 
-                // Simulate random payment status
-                const isPaid = Math.random() > 0.5;
+                // Simulate successful payment
+                userData.balance += selectedAmount;
+                userData.totalDeposited += selectedAmount; // Add to total deposits for giveaway
                 
-                if (isPaid) {
-                    // Simulate successful payment
-                    userData.balance += selectedAmount;
-                    saveUserData(getUserId());
-                    updateUserStats();
-                    
-                    showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
-                    elements.depositModal.classList.add('hidden');
-                    resetPaymentModal();
-                } else {
-                    showNotification('⏳ Платеж еще не подтвержден. Попробуйте позже.');
-                }
+                saveUserData(getUserId());
+                updateUserStats();
+                loadGiveaway(); // Reload giveaway to update eligibility
+                
+                showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
+                elements.depositModal.classList.add('hidden');
+                resetPaymentModal();
             }, 2000);
         }
 
@@ -2518,4 +2561,4 @@
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
-</html>
+</html> 
