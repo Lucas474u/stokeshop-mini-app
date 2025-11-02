@@ -3,339 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stoke Shop</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Stoke Shop - Premium Accounts</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div id="app">
-        <!-- Language Selector -->
-        <div id="languageSelector" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>🌐 Select Language</h3>
-                    <button class="close-btn" id="closeLanguageModal">×</button>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🛒</div>
+                    <h1>Stoke Shop</h1>
                 </div>
-                <div class="modal-body">
-                    <div class="language-options">
-                        <button class="language-option active" data-lang="ru">
-                            <span class="flag">🇷🇺</span>
-                            Русский
-                        </button>
-                        <button class="language-option" data-lang="en">
-                            <span class="flag">🇬🇧</span>
-                            English
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Screen -->
-        <div id="main" class="screen active">
-            <!-- Header -->
-            <div class="header">
                 <div class="user-info">
-                    <div class="avatar-container">
-                        <img id="userAvatar" src="" alt="Avatar" class="avatar-img" onerror="this.style.display='none'">
-                        <div class="avatar-fallback" id="avatarFallback">👤</div>
+                    <span class="balance" id="userBalance">$0.00</span>
+                    <div class="avatar" id="userAvatar"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>Premium Accounts Marketplace</h2>
+                    <p>Качественные аккаунты с гарантией и мгновенной доставкой</p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">10K+</span>
+                            <span class="stat-label">Продаж</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4.9★</span>
+                            <span class="stat-label">Рейтинг</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Поддержка</span>
+                        </div>
                     </div>
-                    <div class="user-details">
-                        <div class="username" id="username">User</div>
-                        <div class="user-id">ID: <span id="userId">---</span></div>
-                    </div>
                 </div>
-                <div class="header-actions">
-                    <button class="icon-btn" id="languageBtn" title="Language">
-                        🌐
-                    </button>
-                    <button class="icon-btn" id="refreshBtn" title="Refresh">
-                        🔄
-                    </button>
-                </div>
-            </div>
+            </section>
 
-            <!-- Balance Card -->
-            <div class="balance-card">
-                <div class="balance-info">
-                    <div class="balance-label" data-i18n="balance">Balance</div>
-                    <div class="balance-amount">$<span id="userBalance">0.00</span></div>
-                </div>
-                <button class="deposit-btn" id="depositBtn" data-i18n="deposit">💳 Deposit</button>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="quick-actions">
-                <button class="action-btn" id="shopAction">
-                    <div class="action-icon">🛍️</div>
-                    <div class="action-text" data-i18n="shop">Shop</div>
-                </button>
-                <button class="action-btn" id="ordersAction">
-                    <div class="action-icon">📦</div>
-                    <div class="action-text" data-i18n="orders">Orders</div>
-                </button>
-                <button class="action-btn" id="favoritesAction">
-                    <div class="action-icon">❤️</div>
-                    <div class="action-text" data-i18n="favorites">Favorites</div>
-                </button>
-                <button class="action-btn" id="supportAction">
-                    <div class="action-icon">💬</div>
-                    <div class="action-text" data-i18n="support">Support</div>
-                </button>
-            </div>
-
-            <!-- Navigation Tabs -->
-            <nav class="tabs">
-                <button class="tab active" data-tab="categories">
-                    <span class="tab-text" data-i18n="categories">📁 Categories</span>
-                </button>
-                <button class="tab" data-tab="products">
-                    <span class="tab-text" data-i18n="all_products">🛒 All Products</span>
-                </button>
-                <button class="tab" data-tab="profile">
-                    <span class="tab-text" data-i18n="profile">👤 Profile</span>
-                </button>
-            </nav>
-
-            <!-- Categories Content -->
-            <div id="categories" class="tab-content active">
-                <h2 class="section-title" data-i18n="categories">📁 Categories</h2>
+            <!-- Categories Grid -->
+            <section class="categories-section">
+                <h3 class="section-title">Категории</h3>
                 <div class="categories-grid" id="categoriesGrid">
-                    <!-- Categories loaded by JavaScript -->
+                    <!-- Categories will be loaded here -->
                 </div>
-            </div>
+            </section>
 
-            <!-- Products Content -->
-            <div id="products" class="tab-content">
-                <div class="search-container">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Search products..." class="search-input" data-i18n-ph="search_placeholder">
-                        <span class="search-icon">🔍</span>
-                    </div>
+            <!-- Featured Products -->
+            <section class="products-section">
+                <div class="section-header">
+                    <h3 class="section-title">Популярные товары</h3>
+                    <button class="view-all" id="viewAll">Все товары</button>
                 </div>
-                <div class="products-container">
-                    <div class="products-grid" id="productsGrid">
-                        <!-- Products loaded by JavaScript -->
-                    </div>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
                 </div>
-            </div>
+            </section>
 
-            <!-- Profile Content -->
-            <div id="profile" class="tab-content">
-                <div class="profile-header">
-                    <div class="profile-avatar-container">
-                        <img id="profileAvatar" src="" alt="Avatar" class="profile-avatar-img" onerror="this.style.display='none'">
-                        <div class="profile-avatar-fallback" id="profileAvatarFallback">👤</div>
+            <!-- Crypto Payment Methods -->
+            <section class="payment-section">
+                <h3 class="section-title">Способы оплаты</h3>
+                <div class="crypto-grid">
+                    <div class="crypto-item" data-coin="ton">
+                        <div class="crypto-icon">💎</div>
+                        <span>TON</span>
                     </div>
-                    <div class="profile-info">
-                        <div class="profile-name" id="profileName">User</div>
-                        <div class="profile-id">ID: <span id="profileUserId">---</span></div>
+                    <div class="crypto-item" data-coin="usdt">
+                        <div class="crypto-icon">💰</div>
+                        <span>USDT</span>
+                    </div>
+                    <div class="crypto-item" data-coin="btc">
+                        <div class="crypto-icon">₿</div>
+                        <span>Bitcoin</span>
+                    </div>
+                    <div class="crypto-item" data-coin="eth">
+                        <div class="crypto-icon">◇</div>
+                        <span>Ethereum</span>
+                    </div>
+                    <div class="crypto-item" data-coin="crypto-bot">
+                        <div class="crypto-icon">🤖</div>
+                        <span>Crypto Bot</span>
                     </div>
                 </div>
+            </section>
+        </main>
 
-                <div class="profile-stats">
-                    <div class="stat-item">
-                        <div class="stat-value" id="ordersCount">0</div>
-                        <div class="stat-label" data-i18n="orders">📦 Orders</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" id="favoritesCount">0</div>
-                        <div class="stat-label" data-i18n="favorites">❤️ Favorites</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">$<span id="totalSpent">0</span></div>
-                        <div class="stat-label" data-i18n="total_spent">💰 Total Spent</div>
-                    </div>
-                </div>
-
-                <!-- Admin Panel -->
-                <div id="adminPanel" class="admin-panel hidden">
-                    <h3 class="admin-title">🛡️ Admin Panel</h3>
-                    <div class="admin-actions">
-                        <button class="admin-btn" id="adminStatsBtn">
-                            📊 Statistics
-                        </button>
-                        <button class="admin-btn" id="adminKassaBtn">
-                            💰 Cash Desk
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Deposit Modal -->
-        <div id="depositModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 data-i18n="deposit">💳 Deposit</h3>
-                    <button class="close-btn" id="closeDepositModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="amount-section">
-                        <h4 data-i18n="select_amount">💰 Select amount</h4>
-                        <div class="amount-grid">
-                            <button class="amount-option" data-amount="10">$10</button>
-                            <button class="amount-option" data-amount="25">$25</button>
-                            <button class="amount-option" data-amount="50">$50</button>
-                            <button class="amount-option" data-amount="100">$100</button>
-                            <button class="amount-option" data-amount="200">$200</button>
-                            <button class="amount-option" data-amount="500">$500</button>
-                        </div>
-                    </div>
-                    
-                    <div class="payment-section">
-                        <h4 data-i18n="payment_method">💸 Payment method</h4>
-                        <div class="payment-methods">
-                            <div class="payment-method active" data-method="crypto_bot">
-                                <div class="method-icon">🤖</div>
-                                <div class="method-info">
-                                    <div class="method-name">Crypto Bot</div>
-                                    <div class="method-desc" data-i18n="crypto_bot_desc">Instant • No fees</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="ton">
-                                <div class="method-icon">💎</div>
-                                <div class="method-info">
-                                    <div class="method-name">TON</div>
-                                    <div class="method-desc">The Open Network</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="usdt">
-                                <div class="method-icon">💸</div>
-                                <div class="method-info">
-                                    <div class="method-name">USDT</div>
-                                    <div class="method-desc">TRC20 • TRON</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="btc">
-                                <div class="method-icon">₿</div>
-                                <div class="method-info">
-                                    <div class="method-name">BTC</div>
-                                    <div class="method-desc">Bitcoin</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="ltc">
-                                <div class="method-icon">Ł</div>
-                                <div class="method-info">
-                                    <div class="method-name">LTC</div>
-                                    <div class="method-desc">Litecoin</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="sol">
-                                <div class="method-icon">◎</div>
-                                <div class="method-info">
-                                    <div class="method-name">SOL</div>
-                                    <div class="method-desc">Solana</div>
-                                </div>
-                            </div>
-                            <div class="payment-method" data-method="usdc">
-                                <div class="method-icon">💵</div>
-                                <div class="method-info">
-                                    <div class="method-name">USDC</div>
-                                    <div class="method-desc">ERC20</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button class="confirm-btn" id="confirmDepositBtn">
-                        💳 <span data-i18n="deposit">Deposit</span> $<span id="selectedDepositAmount">10</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Crypto Bot Modal -->
-        <div id="cryptoBotModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>🤖 Crypto Bot</h3>
-                    <button class="close-btn" id="closeCryptoModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="crypto-info">
-                        <div class="crypto-amount">$<span id="cryptoAmount">10</span></div>
-                        <div class="crypto-status" id="cryptoStatus" data-i18n="creating_invoice">⏳ Creating invoice...</div>
-                        <div class="crypto-timer" id="cryptoTimer">⏰ 15:00</div>
-                    </div>
-                    <div class="crypto-actions">
-                        <button class="crypto-btn primary" id="openCryptoBotBtn">
-                            🔗 <span data-i18n="open_crypto_bot">Open Crypto Bot</span>
-                        </button>
-                        <button class="crypto-btn secondary" id="checkCryptoPaymentBtn">
-                            🔄 <span data-i18n="check_payment">Check Payment</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Wallet Modal -->
-        <div id="walletModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="walletModalTitle">👛 Wallet</h3>
-                    <button class="close-btn" id="closeWalletModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="wallet-info">
-                        <div class="wallet-address" id="walletAddress">Loading...</div>
-                        <div class="wallet-instructions" data-i18n="wallet_instructions">
-                            📝 Send the exact amount to this address. Your balance will be updated automatically after confirmation.
-                        </div>
-                    </div>
-                    <button class="copy-btn" id="copyWalletBtn">
-                        📋 <span data-i18n="copy_address">Copy Address</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Product Modal -->
-        <div id="productModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="productModalTitle">📦 Product</h3>
-                    <button class="close-btn" id="closeProductModal">×</button>
-                </div>
-                <div class="modal-body">
-                    <div class="product-price">$<span id="productModalPrice">0</span></div>
-                    <div class="product-stock" id="productModalStock" data-i18n="in_stock">📊 In stock: 0</div>
-                    <div class="product-description" id="productModalDescription">Description</div>
-                    
-                    <div class="product-actions">
-                        <button class="buy-btn" id="buyNowBtn">
-                            🛒 <span data-i18n="buy_now">Buy Now</span>
-                        </button>
-                        <button class="favorite-btn" id="addFavoriteBtn">
-                            ❤️ <span data-i18n="add_to_favorites">Add to Favorites</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mini Menu -->
-        <div class="mini-menu">
-            <button class="menu-btn active" data-action="main">
-                <span class="menu-icon">🏠</span>
-                <span class="menu-text" data-i18n="main">Main</span>
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-page="home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Главная</span>
             </button>
-            <button class="menu-btn" data-action="shop">
-                <span class="menu-icon">🛍️</span>
-                <span class="menu-text" data-i18n="shop">Shop</span>
+            <button class="nav-item" data-page="shop">
+                <span class="nav-icon">🛍️</span>
+                <span class="nav-label">Магазин</span>
             </button>
-            <button class="menu-btn" data-action="balance">
-                <span class="menu-icon">💰</span>
-                <span class="menu-text" data-i18n="balance">Balance</span>
+            <button class="nav-item" data-page="balance">
+                <span class="nav-icon">💰</span>
+                <span class="nav-label">Баланс</span>
             </button>
-            <button class="menu-btn" data-action="support">
-                <span class="menu-icon">💬</span>
-                <span class="menu-text" data-i18n="support">Support</span>
+            <button class="nav-item" data-page="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Профиль</span>
             </button>
+        </nav>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalProductName">Product Name</h3>
+                <button class="close-modal" id="closeModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="product-image">
+                    <img src="" alt="" id="modalProductImage">
+                </div>
+                <div class="product-info">
+                    <div class="price-section">
+                        <span class="price" id="modalProductPrice">$0.00</span>
+                        <span class="stock" id="modalProductStock">В наличии: 0</span>
+                    </div>
+                    <div class="description" id="modalProductDescription">
+                        Описание товара...
+                    </div>
+                    <div class="product-details" id="modalProductDetails">
+                        Детали товара...
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="addToFavorites">⭐ В избранное</button>
+                <button class="btn-primary" id="buyProduct">🛒 Купить сейчас</button>
+            </div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Оплата товара</h3>
+                <button class="close-modal" id="closePaymentModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-info">
+                    <div class="payment-item">
+                        <span>Товар:</span>
+                        <span id="paymentProductName">-</span>
+                    </div>
+                    <div class="payment-item">
+                        <span>Цена:</span>
+                        <span id="paymentProductPrice">$0.00</span>
+                    </div>
+                    <div class="payment-item">
+                        <span>Ваш баланс:</span>
+                        <span id="paymentUserBalance">$0.00</span>
+                    </div>
+                </div>
+                <div class="payment-methods">
+                    <h4>Выберите способ оплаты:</h4>
+                    <div class="payment-options">
+                        <div class="payment-option" data-method="balance">
+                            <div class="payment-icon">💰</div>
+                            <span>Баланс аккаунта</span>
+                        </div>
+                        <div class="payment-option" data-method="crypto">
+                            <div class="payment-icon">💎</div>
+                            <span>Криптовалюта</span>
+                        </div>
+                        <div class="payment-option" data-method="crypto-bot">
+                            <div class="payment-icon">🤖</div>
+                            <span>Crypto Bot</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crypto Invoice Modal -->
+    <div class="modal" id="invoiceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Оплата через Crypto Bot</h3>
+                <button class="close-modal" id="closeInvoiceModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="invoice-info">
+                    <div class="invoice-amount">
+                        <span>Сумма к оплате:</span>
+                        <span class="amount" id="invoiceAmount">$0.00</span>
+                    </div>
+                    <div class="invoice-qr" id="invoiceQR">
+                        <!-- QR code will be generated here -->
+                    </div>
+                    <div class="invoice-link">
+                        <a href="#" id="invoiceLink" target="_blank" class="btn-primary">🔗 Перейти к оплате</a>
+                    </div>
+                    <div class="invoice-status">
+                        <div class="status pending" id="invoiceStatus">
+                            ⏳ Ожидание оплаты...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="crypto-pay.js"></script>
 </body>
 </html>
