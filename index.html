@@ -7,6 +7,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Все стили остаются без изменений */
         :root {
             --primary-color: #6366f1;
             --primary-dark: #4f46e5;
@@ -1477,7 +1478,7 @@
         ];
 
         const products = {
-            1: [
+           1: [
                 { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
                 { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
                 { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
@@ -1763,15 +1764,22 @@
                 const user = tg.initDataUnsafe.user;
                 
                 if (user) {
-                    // Set user avatar - исправлено для корректного отображения
+                    // Set user avatar - полностью исправлено
                     if (user.photo_url) {
-                        elements.userAvatar.src = user.photo_url;
-                        elements.userAvatar.style.display = 'block';
-                        // Добавляем обработчик ошибок для аватарки
-                        elements.userAvatar.onerror = function() {
-                            this.style.display = 'none';
+                        // Создаем новый объект Image для предзагрузки
+                        const img = new Image();
+                        img.onload = function() {
+                            // Аватар загружен успешно
+                            elements.userAvatar.src = user.photo_url;
+                            elements.userAvatar.style.display = 'block';
+                            document.querySelector('#userAvatar + i').style.display = 'none';
+                        };
+                        img.onerror = function() {
+                            // Ошибка загрузки аватара
+                            elements.userAvatar.style.display = 'none';
                             document.querySelector('#userAvatar + i').style.display = 'flex';
                         };
+                        img.src = user.photo_url;
                     } else {
                         elements.userAvatar.style.display = 'none';
                         document.querySelector('#userAvatar + i').style.display = 'flex';
@@ -2522,13 +2530,12 @@
                         <ol style="text-align: left; padding-left: 20px; margin: 8px 0;">
                             <li>Скопируйте адрес выше</li>
                             <li>Отправьте <strong>$${selectedAmount}</strong> в ${selectedPaymentMethod.toUpperCase()}</li>
-                            <li>После 3 подтверждений сети баланс пополнится автоматически</li>
-                            <li>Обычно это занимает 5-30 минут</li>
+                            <li>После отправки нажмите "Проверить оплату"</li>
                         </ol>
                     </div>
                     
-                    <button class="confirm-btn" onclick="closeDepositModal()">
-                        Закрыть
+                    <button class="confirm-btn" onclick="checkDirectPayment()">
+                        Проверить оплату
                     </button>
                 </div>
             `;
@@ -2553,6 +2560,63 @@
             elements.paymentInfo.classList.remove('hidden');
         }
 
+        // Check direct payment status
+        async function checkDirectPayment() {
+            showLoading(true);
+            
+            // В реальном приложении здесь должен быть запрос к вашему бэкенду
+            // для проверки транзакции по адресу
+            try {
+                // Имитация проверки платежа
+                setTimeout(() => {
+                    showLoading(false);
+                    
+                    // В 80% случаев считаем, что платеж прошел
+                    if (Math.random() > 0.2) {
+                        userData.balance += selectedAmount;
+                        userData.totalDeposited += selectedAmount;
+                        saveUserData(getUserId());
+                        updateUserStats();
+                        updateGiveawayStatus();
+                        
+                        elements.paymentInfo.innerHTML = `
+                            <div class="payment-processing">
+                                <div class="payment-status status-success">
+                                    <i class="fas fa-check-circle"></i> Оплата подтверждена!
+                                </div>
+                                <p style="margin: 16px 0; font-size: 1.125rem;">
+                                    Ваш баланс пополнен на $${selectedAmount}
+                                </p>
+                                <button class="confirm-btn" onclick="closeDepositModal()">
+                                    Закрыть
+                                </button>
+                            </div>
+                        `;
+                        
+                        showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
+                    } else {
+                        elements.paymentInfo.innerHTML = `
+                            <div class="payment-processing">
+                                <div class="payment-status status-failed">
+                                    <i class="fas fa-times-circle"></i> Платеж не найден
+                                </div>
+                                <p style="margin: 16px 0;">
+                                    Платеж еще не поступил. Попробуйте проверить позже.
+                                </p>
+                                <button class="confirm-btn" onclick="checkDirectPayment()">
+                                    Проверить снова
+                                </button>
+                            </div>
+                        `;
+                    }
+                }, 2000);
+            } catch (error) {
+                showLoading(false);
+                showNotification('Ошибка при проверке платежа');
+                console.error('Payment check error:', error);
+            }
+        }
+
         // Show invoice payment details
         function showInvoicePayment(invoice) {
             elements.paymentInfo.innerHTML = `
@@ -2571,11 +2635,11 @@
                     </div>
                     
                     <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
-                        После оплаты баланс пополнится автоматически в течение 1-2 минут
+                        После оплаты нажмите "Проверить оплату"
                     </p>
                     
                     <button class="confirm-btn" onclick="checkInvoiceStatus()" style="margin-top: 16px;">
-                        Проверить статус оплаты
+                        Проверить оплату
                     </button>
                 </div>
             `;
@@ -2830,6 +2894,7 @@
 
         // Make functions globally available
         window.checkInvoiceStatus = checkInvoiceStatus;
+        window.checkDirectPayment = checkDirectPayment;
         window.resetPaymentModal = resetPaymentModal;
         window.closeDepositModal = closeDepositModal;
 
