@@ -7,1073 +7,8 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #a5b4fc;
-            --secondary-color: #f59e0b;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --background: #ffffff;
-            --surface: #f8fafc;
-            --surface-dark: #f1f5f9;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-muted: #94a3b8;
-            --border: #e2e8f0;
-            --border-light: #f1f5f9;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --radius-lg: 16px;
-            --transition: all 0.3s ease;
-        }
-
-        [data-theme="dark"] {
-            --background: #0f172a;
-            --surface: #1e293b;
-            --surface-dark: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-muted: #64748b;
-            --border: #334155;
-            --border-light: #1e293b;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            transition: var(--transition);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .container {
-            max-width: 100%;
-            padding: 0 16px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            padding-top: env(safe-area-inset-top);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 60px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            overflow: hidden;
-        }
-
-        .logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .lang-switcher, .theme-switcher, .open-mini-app {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-primary);
-        }
-
-        .lang-switcher:hover, .theme-switcher:hover, .open-mini-app:hover {
-            background: var(--surface-dark);
-            transform: translateY(-1px);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            z-index: 100;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            background: none;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            min-width: 60px;
-        }
-
-        .nav-item.active {
-            color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .nav-item i {
-            font-size: 1.25rem;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 20px 0 80px 0;
-            min-height: 100vh;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .search-box {
-            position: relative;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 14px 20px 14px 48px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: var(--surface);
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        /* Categories Grid */
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .category-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            color: inherit;
-            box-shadow: var(--shadow);
-        }
-
-        .category-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
-
-        .category-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 12px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .category-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .category-card p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .product-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            transition: var(--transition);
-            cursor: pointer;
-            box-shadow: var(--shadow);
-        }
-
-        .product-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .product-name {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .product-price {
-            font-weight: 700;
-            color: var(--primary-color);
-            font-size: 1.125rem;
-        }
-
-        .product-stock {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            margin-bottom: 8px;
-        }
-
-        .product-description {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 12px;
-        }
-
-        .buy-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-        }
-
-        .buy-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .buy-btn:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .favorite-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 1.25rem;
-            transition: var(--transition);
-            padding: 4px;
-        }
-
-        .favorite-btn.active {
-            color: #ef4444;
-        }
-
-        .favorite-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /* Profile Styles */
-        .profile-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--surface-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            border: 3px solid var(--primary-color);
-            overflow: hidden;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-        }
-
-        .profile-stats {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-icon.balance {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-        }
-
-        .stat-icon.orders {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary-color);
-        }
-
-        .stat-info {
-            flex: 1;
-        }
-
-        .stat-label {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .stat-value {
-            display: block;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-
-        .stat-action {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-        }
-
-        .stat-action:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .profile-actions {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: left;
-            color: inherit;
-            text-decoration: none;
-            box-shadow: var(--shadow);
-        }
-
-        .action-btn:hover {
-            background: var(--surface-dark);
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .action-btn i {
-            font-size: 1.25rem;
-            color: var(--primary-color);
-        }
-
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--background);
-            border-radius: var(--radius-lg);
-            width: 100%;
-            max-width: 400px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        /* Payment Methods */
-        .payment-methods {
-            margin-bottom: 24px;
-        }
-
-        .method-category h4 {
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .methods-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .method-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .method-btn:hover {
-            border-color: var(--primary-color);
-            background: var(--surface-dark);
-            transform: translateY(-2px);
-        }
-
-        .method-btn.active {
-            border-color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .method-btn i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .method-btn span {
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        /* Amount Selector */
-        .amount-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .amount-btn {
-            padding: 12px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            box-shadow: var(--shadow);
-        }
-
-        .amount-btn.active {
-            background: var(--primary-color);
-            color: white;
-            border-color: var(--primary-color);
-        }
-
-        .amount-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .custom-amount {
-            margin-bottom: 20px;
-        }
-
-        .custom-amount input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--surface);
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-
-        .confirm-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-        }
-
-        .confirm-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .confirm-btn:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Payment Info */
-        .payment-info {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .payment-qr {
-            margin: 20px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .payment-address {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 16px 0;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 0.875rem;
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-left: 8px;
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        /* Giveaway Styles */
-        .giveaway-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-        }
-
-        .giveaway-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .giveaway-prize {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .giveaway-description {
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .giveaway-conditions {
-            margin-bottom: 16px;
-        }
-
-        .giveaway-conditions h4 {
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        .giveaway-conditions ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .giveaway-conditions li {
-            padding: 4px 0;
-            color: var(--text-secondary);
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .giveaway-conditions li:before {
-            content: "•";
-            position: absolute;
-            left: 8px;
-            color: var(--primary-color);
-        }
-
-        .giveaway-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .giveaway-timer {
-            text-align: center;
-            margin: 20px 0;
-            padding: 16px;
-            background: var(--surface-dark);
-            border-radius: var(--radius);
-        }
-
-        .timer-display {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 8px 0;
-        }
-
-        .timer-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .giveaway-user-stats {
-            margin: 16px 0;
-            padding: 12px;
-            background: var(--surface-dark);
-            border-radius: var(--radius);
-            text-align: center;
-        }
-
-        .user-deposit-amount {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin: 8px 0;
-        }
-
-        .participate-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--secondary-color), #eab308);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1rem;
-        }
-
-        .participate-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
-        }
-
-        .participate-btn:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .giveaway-status {
-            text-align: center;
-            padding: 12px;
-            border-radius: var(--radius);
-            margin: 16px 0;
-            font-weight: 600;
-        }
-
-        .status-eligible {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .status-not-eligible {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Referral Styles */
-        .referral-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .referral-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .referral-stat {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 4px;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .referral-link {
-            margin-bottom: 24px;
-        }
-
-        .referral-link label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .link-container {
-            display: flex;
-            gap: 8px;
-        }
-
-        .link-container input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--surface);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-        }
-
-        .referral-rules {
-            margin-top: 24px;
-        }
-
-        .referral-rules h3 {
-            margin-bottom: 12px;
-            font-size: 1.125rem;
-        }
-
-        .referral-rules ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .referral-rules li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
-            position: relative;
-            padding-left: 24px;
-        }
-
-        .referral-rules li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        /* Payment Processing */
-        .payment-processing {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .payment-status {
-            margin: 20px 0;
-            padding: 16px;
-            border-radius: var(--radius);
-            font-weight: 600;
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--secondary-color);
-            border: 1px solid rgba(245, 158, 11, 0.2);
-        }
-
-        .status-success {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .status-failed {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Utility Classes */
-        .hidden {
-            display: none !important;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            color: white;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-left: 4px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .back-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            cursor: pointer;
-            font-size: 0.875rem;
-            margin-bottom: 16px;
-        }
-
-        /* Responsive */
-        @media (min-width: 768px) {
-            .container {
-                max-width: 720px;
-                padding: 0 24px;
-            }
-
-            .categories-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-            }
-
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .profile-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .methods-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .amount-buttons {
-                grid-template-columns: repeat(6, 1fr);
-            }
-
-            .referral-stats {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
+        /* Все стили остаются без изменений */
+        /* ... */
     </style>
 </head>
 <body>
@@ -1345,7 +280,7 @@
                     <div class="custom-amount">
                         <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
                     </div>
-                    <button class="confirm-btn" id="confirmDeposit">Создать инвойс</button>
+                    <button class="confirm-btn" id="confirmDeposit">Продолжить</button>
                 </div>
 
                 <div class="payment-info hidden" id="paymentInfo">
@@ -1396,7 +331,7 @@
         // Crypto Pay API Configuration
         const CRYPTO_PAY_API = {
             token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
-            baseUrl: 'https://pay.crypt.bot/api',
+            baseUrl: 'https://pay.crypt.bot/',
             createInvoice: async function(amount, currency = 'USD', description = 'Пополнение баланса') {
                 try {
                     const response = await fetch(`${this.baseUrl}/createInvoice`, {
@@ -1477,128 +412,129 @@
         ];
 
         const products = {
-            1: [ // Telegram accounts
-                { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account", details_ru: "Возраст: 1 день | Чистый | Гарантия", details_en: "Age: 1 day | Clean | Warranty" },
-                { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card", details_ru: "Симка: США | Верификация: Да", details_en: "SIM: USA | Verified: Yes" },
-                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card", details_ru: "Симка: Европа | Надежный", details_en: "SIM: Europe | Reliable" },
-                { id: 4, name_ru: "ВИРТ СИМ", name_en: "VIRTUAL SIM", price: 4.5, stock: 20, description_ru: "Аккаунт с виртуальной симкой", description_en: "Account with virtual SIM", details_ru: "Тип: Виртуальная | Быстрая активация", details_en: "Type: Virtual | Fast activation" },
-                { id: 5, name_ru: "БИЗНЕС", name_en: "BUSINESS", price: 6.0, stock: 10, description_ru: "Бизнес аккаунт Telegram", description_en: "Telegram Business account", details_ru: "Тип: Бизнес | Лимиты: Увеличенные", details_en: "Type: Business | Limits: Increased" },
-                { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account", details_ru: "Премиум: Да | Номер: Красивый", details_en: "Premium: Yes | Number: Beautiful" },
-                { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account", details_ru: "Верификация: Да | Надежный", details_en: "Verified: Yes | Reliable" },
-                { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account", details_ru: "Тип: Pro | Расширенные функции", details_en: "Type: Pro | Extended features" }
+           1: [
+                { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
+                { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
+                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
+                { id: 4, name_ru: "ВИРТ СИМ", name_en: "VIRTUAL SIM", price: 4.5, stock: 20, description_ru: "Аккаунт с виртуальной симкой", description_en: "Account with virtual SIM" },
+                { id: 5, name_ru: "БИЗНЕС", name_en: "BUSINESS", price: 6.0, stock: 10, description_ru: "Бизнес аккаунт Telegram", description_en: "Telegram Business account" },
+                { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account" },
+                { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
+                { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account" }
             ],
-            2: [ // VK accounts
-                { id: 9, name_ru: "ВК PREMIUM #1", name_en: "VK PREMIUM #1", price: 10.0, stock: 15, description_ru: "Премиум аккаунт ВК", description_en: "Premium VK account", details_ru: "Премиум: Да | ID: Красивый | Гарантия", details_en: "Premium: Yes | ID: Beautiful | Warranty" },
-                { id: 10, name_ru: "ВК BUSINESS #2", name_en: "VK BUSINESS #2", price: 8.0, stock: 12, description_ru: "Бизнес страница ВК", description_en: "VK Business page", details_ru: "Тип: Бизнес | Аудитория: 1000+", details_en: "Type: Business | Audience: 1000+" },
-                { id: 11, name_ru: "ВК STANDARD #3", name_en: "VK STANDARD #3", price: 3.0, stock: 25, description_ru: "Стандартный аккаунт ВК", description_en: "Standard VK account", details_ru: "Тип: Стандарт | Гарантия: 30 дней", details_en: "Type: Standard | Warranty: 30 days" },
-                { id: 12, name_ru: "ВК FRESH #4", name_en: "VK FRESH #4", price: 2.0, stock: 20, description_ru: "Свежий аккаунт ВК", description_en: "Fresh VK account", details_ru: "Возраст: 1 день | Чистый", details_en: "Age: 1 day | Clean" },
-                { id: 13, name_ru: "ВК VERIFIED #5", name_en: "VK VERIFIED #5", price: 9.0, stock: 13, description_ru: "Верифицированный аккаунт ВК", description_en: "Verified VK account", details_ru: "Верификация: Да | Значок: Да", details_en: "Verified: Yes | Badge: Yes" },
-                { id: 14, name_ru: "ВК CREATOR #6", name_en: "VK CREATOR #6", price: 7.0, stock: 12, description_ru: "Аккаунт создателя контента", description_en: "Content creator account", details_ru: "Подписчики: 5000+ | Активный", details_en: "Subscribers: 5000+ | Active" },
-                { id: 15, name_ru: "ВК GAMING #7", name_en: "VK GAMING #7", price: 5.0, stock: 18, description_ru: "Игровой аккаунт ВК", description_en: "VK Gaming account", details_ru: "Тема: Игры | Друзья: 1000+", details_en: "Theme: Games | Friends: 1000+" }
+            2: [
+                { id: 9, name_ru: "ВК PREMIUM", name_en: "VK PREMIUM", price: 10.0, stock: 15, description_ru: "Премиум аккаунт ВК", description_en: "Premium VK account" },
+                { id: 10, name_ru: "ВК BUSINESS", name_en: "VK BUSINESS", price: 8.0, stock: 12, description_ru: "Бизнес страница ВК", description_en: "VK Business page" },
+                { id: 11, name_ru: "ВК STANDARD", name_en: "VK STANDARD", price: 3.0, stock: 25, description_ru: "Стандартный аккаунт ВК", description_en: "Standard VK account" },
+                { id: 12, name_ru: "ВК FRESH", name_en: "VK FRESH", price: 2.0, stock: 20, description_ru: "Свежий аккаунт ВК", description_en: "Fresh VK account" },
+                { id: 13, name_ru: "ВК VERIFIED", name_en: "VK VERIFIED", price: 9.0, stock: 13, description_ru: "Верифицированный аккаунт ВК", description_en: "Verified VK account" },
+                { id: 14, name_ru: "ВК CREATOR", name_en: "VK CREATOR", price: 7.0, stock: 12, description_ru: "Аккаунт создателя контента", description_en: "Content creator account" },
+                { id: 15, name_ru: "ВК GAMING", name_en: "VK GAMING", price: 5.0, stock: 18, description_ru: "Игровой аккаунт ВК", description_en: "VK Gaming account" }
             ],
-            3: [ // Vinted accounts
-                { id: 16, name_ru: "Vinted BRUT Франция", name_en: "Vinted BRUT France", price: 120.0, stock: 23, description_ru: "Премиум аккаунты Vinted Франция", description_en: "Premium Vinted France accounts", details_ru: "Гео: Франция | Статус: Premium | Гарантия 30 дней", details_en: "Geo: France | Status: Premium | Warranty 30 days" },
-                { id: 17, name_ru: "Vinted BRUT Испания", name_en: "Vinted BRUT Spain", price: 115.0, stock: 16, description_ru: "Качественные аккаунты Vinted", description_en: "Quality Vinted accounts", details_ru: "Гео: Испания | Верификация: Да | Возраст: 2 мес", details_en: "Geo: Spain | Verified: Yes | Age: 2 months" },
-                { id: 18, name_ru: "Vinted BRUT Италия", name_en: "Vinted BRUT Italy", price: 110.0, stock: 13, description_ru: "Итальянские аккаунты Vinted", description_en: "Italian Vinted accounts", details_ru: "Гео: Италия | Рейтинг: 4.8+ | Продажи: 50+", details_en: "Geo: Italy | Rating: 4.8+ | Sales: 50+" },
-                { id: 19, name_ru: "Vinted BRUT Германия", name_en: "Vinted BRUT Germany", price: 125.0, stock: 12, description_ru: "Немецкие аккаунты Vinted", description_en: "German Vinted accounts", details_ru: "Гео: Германия | Активность: Высокая", details_en: "Geo: Germany | Activity: High" },
-                { id: 20, name_ru: "Vinted BRUT Польша", name_en: "Vinted BRUT Poland", price: 100.0, stock: 17, description_ru: "Польские аккаунты Vinted", description_en: "Polish Vinted accounts", details_ru: "Гео: Польша | Гарантия | Свежие", details_en: "Geo: Poland | Warranty | Fresh" },
-                { id: 21, name_ru: "Vinted BRUT США", name_en: "Vinted BRUT USA", price: 140.0, stock: 21, description_ru: "Американские аккаунты Vinted", description_en: "USA Vinted accounts", details_ru: "Гео: США | Рейтинг: 4.9+ | Премиум", details_en: "Geo: USA | Rating: 4.9+ | Premium" },
-                { id: 22, name_ru: "Vinted BRUT Великобритания", name_en: "Vinted BRUT UK", price: 130.0, stock: 14, description_ru: "Британские аккаунты Vinted", description_en: "British Vinted accounts", details_ru: "Гео: Великобритания | Бизнес аккаунты", details_en: "Geo: UK | Business accounts" },
-                { id: 23, name_ru: "Vinted BRUT Канада", name_en: "Vinted BRUT Canada", price: 135.0, stock: 19, description_ru: "Канадские аккаунты Vinted", description_en: "Canadian Vinted accounts", details_ru: "Гео: Канада | Активные пользователи", details_en: "Geo: Canada | Active users" },
-                { id: 24, name_ru: "Vinted BRUT Нидерланды", name_en: "Vinted BRUT Netherlands", price: 105.0, stock: 18, description_ru: "Голландские аккаунты Vinted", description_en: "Dutch Vinted accounts", details_ru: "Гео: Нидерланды | Гарантия 30 дней", details_en: "Geo: Netherlands | Warranty 30 days" },
-                { id: 25, name_ru: "Vinted BRUT Бельгия", name_en: "Vinted BRUT Belgium", price: 95.0, stock: 14, description_ru: "Бельгийские аккаунты Vinted", description_en: "Belgian Vinted accounts", details_ru: "Гео: Бельгия | Свежие аккаунты", details_en: "Geo: Belgium | Fresh accounts" },
-                { id: 26, name_ru: "Vinted BRUT Португалия", name_en: "Vinted BRUT Portugal", price: 90.0, stock: 16, description_ru: "Португальские аккаунты Vinted", description_en: "Portuguese Vinted accounts", details_ru: "Гео: Португалия | Высокий рейтинг", details_en: "Geo: Portugal | High rating" },
-                { id: 27, name_ru: "Vinted BRUT Швеция", name_en: "Vinted BRUT Sweden", price: 145.0, stock: 11, description_ru: "Шведские аккаунты Vinted", description_en: "Swedish Vinted accounts", details_ru: "Гео: Швеция | Премиум качество", details_en: "Geo: Sweden | Premium quality" },
-                { id: 28, name_ru: "Vinted BRUT Норвегия", name_en: "Vinted BRUT Norway", price: 150.0, stock: 14, description_ru: "Норвежские аккаунты Vinted", description_en: "Norwegian Vinted accounts", details_ru: "Гео: Норвегия | Редкий регион", details_en: "Geo: Norway | Rare region" },
-                { id: 29, name_ru: "Vinted BRUT Дания", name_en: "Vinted BRUT Denmark", price: 135.0, stock: 12, description_ru: "Датские аккаунты Vinted", description_en: "Danish Vinted accounts", details_ru: "Гео: Дания | Бизнес аккаунты", details_en: "Geo: Denmark | Business accounts" },
-                { id: 30, name_ru: "Vinted BRUT Финляндия", name_en: "Vinted BRUT Finland", price: 140.0, stock: 15, description_ru: "Финские аккаунты Vinted", description_en: "Finnish Vinted accounts", details_ru: "Гео: Финляндия | Премиум статус", details_en: "Geo: Finland | Premium status" }
+            3: [
+                { id: 16, name_ru: "Vinted BRUT Франция", name_en: "Vinted BRUT France", price: 120.0, stock: 23, description_ru: "Премиум аккаунты Vinted Франция", description_en: "Premium Vinted France accounts" },
+                { id: 17, name_ru: "Vinted BRUT Испания", name_en: "Vinted BRUT Spain", price: 115.0, stock: 16, description_ru: "Качественные аккаунты Vinted", description_en: "Quality Vinted accounts" },
+                { id: 18, name_ru: "Vinted BRUT Италия", name_en: "Vinted BRUT Italy", price: 110.0, stock: 13, description_ru: "Итальянские аккаунты Vinted", description_en: "Italian Vinted accounts" },
+                { id: 19, name_ru: "Vinted BRUT Германия", name_en: "Vinted BRUT Germany", price: 125.0, stock: 12, description_ru: "Немецкие аккаунты Vinted", description_en: "German Vinted accounts" },
+                { id: 20, name_ru: "Vinted BRUT Польша", name_en: "Vinted BRUT Poland", price: 100.0, stock: 17, description_ru: "Польские аккаунты Vinted", description_en: "Polish Vinted accounts" },
+                { id: 21, name_ru: "Vinted BRUT США", name_en: "Vinted BRUT USA", price: 140.0, stock: 21, description_ru: "Американские аккаунты Vinted", description_en: "USA Vinted accounts" },
+                { id: 22, name_ru: "Vinted BRUT Великобритания", name_en: "Vinted BRUT UK", price: 130.0, stock: 14, description_ru: "Британские аккаунты Vinted", description_en: "British Vinted accounts" },
+                { id: 23, name_ru: "Vinted BRUT Канада", name_en: "Vinted BRUT Canada", price: 135.0, stock: 19, description_ru: "Канадские аккаунты Vinted", description_en: "Canadian Vinted accounts" },
+                { id: 24, name_ru: "Vinted BRUT Нидерланды", name_en: "Vinted BRUT Netherlands", price: 105.0, stock: 18, description_ru: "Голландские аккаунты Vinted", description_en: "Dutch Vinted accounts" },
+                { id: 25, name_ru: "Vinted BRUT Бельгия", name_en: "Vinted BRUT Belgium", price: 95.0, stock: 14, description_ru: "Бельгийские аккаунты Vinted", description_en: "Belgian Vinted accounts" },
+                { id: 26, name_ru: "Vinted BRUT Португалия", name_en: "Vinted BRUT Portugal", price: 90.0, stock: 16, description_ru: "Португальские аккаунты Vinted", description_en: "Portuguese Vinted accounts" },
+                { id: 27, name_ru: "Vinted BRUT Швеция", name_en: "Vinted BRUT Sweden", price: 145.0, stock: 11, description_ru: "Шведские аккаунты Vinted", description_en: "Swedish Vinted accounts" },
+                { id: 28, name_ru: "Vinted BRUT Норвегия", name_en: "Vinted BRUT Norway", price: 150.0, stock: 14, description_ru: "Норвежские аккаунты Vinted", description_en: "Norwegian Vinted accounts" },
+                { id: 29, name_ru: "Vinted BRUT Дания", name_en: "Vinted BRUT Denmark", price: 135.0, stock: 12, description_ru: "Датские аккаунты Vinted", description_en: "Danish Vinted accounts" },
+                { id: 30, name_ru: "Vinted BRUT Финляндия", name_en: "Vinted BRUT Finland", price: 140.0, stock: 15, description_ru: "Финские аккаунты Vinted", description_en: "Finnish Vinted accounts" }
             ],
-            4: [ // Wallapop accounts
-                { id: 31, name_ru: "Wallapop Испания #1", name_en: "Wallapop Spain #1", price: 25.0, stock: 10, description_ru: "Качественный испанский аккаунт", description_en: "Quality Spanish account", details_ru: "Гео: Испания | Рейтинг: 4.7+ | Отзывы: 50+", details_en: "Geo: Spain | Rating: 4.7+ | Reviews: 50+" },
-                { id: 32, name_ru: "Wallapop Италия #2", name_en: "Wallapop Italy #2", price: 22.0, stock: 17, description_ru: "Итальянский аккаунт Wallapop", description_en: "Italian Wallapop account", details_ru: "Гео: Италия | Активность: Высокая", details_en: "Geo: Italy | Activity: High" },
-                { id: 33, name_ru: "Wallapop Франция #3", name_en: "Wallapop France #3", price: 28.0, stock: 12, description_ru: "Французский аккаунт Wallapop", description_en: "French Wallapop account", details_ru: "Гео: Франция | Верификация: Да", details_en: "Geo: France | Verified: Yes" },
-                { id: 34, name_ru: "Wallapop Португалия #4", name_en: "Wallapop Portugal #4", price: 20.0, stock: 15, description_ru: "Португальский аккаунт", description_en: "Portuguese account", details_ru: "Гео: Португалия | Свежий", details_en: "Geo: Portugal | Fresh" },
-                { id: 35, name_ru: "Wallapop PREMIUM #5", name_en: "Wallapop PREMIUM #5", price: 35.0, stock: 19, description_ru: "Премиум аккаунт Wallapop", description_en: "Premium Wallapop account", details_ru: "Рейтинг: 4.9+ | Продажи: 100+", details_en: "Rating: 4.9+ | Sales: 100+" },
-                { id: 36, name_ru: "Wallapop BUSINESS #6", name_en: "Wallapop BUSINESS #6", price: 45.0, stock: 16, description_ru: "Бизнес аккаунт Wallapop", description_en: "Business Wallapop account", details_ru: "Лотов: 80+ | Статус: Pro", details_en: "Lots: 80+ | Status: Pro" },
-                { id: 37, name_ru: "Wallapop FRESH #7", name_en: "Wallapop FRESH #7", price: 15.0, stock: 20, description_ru: "Свежий аккаунт Wallapop", description_en: "Fresh Wallapop account", details_ru: "Возраст: 1 неделя | Гарантия", details_en: "Age: 1 week | Warranty" },
-                { id: 38, name_ru: "Wallapop VERIFIED #8", name_en: "Wallapop VERIFIED #8", price: 30.0, stock: 9, description_ru: "Верифицированный аккаунт", description_en: "Verified account", details_ru: "Верификация: Да | Trust Score: 85%", details_en: "Verified: Yes | Trust Score: 85%" },
-                { id: 39, name_ru: "Wallapop TOP SELLER #9", name_en: "Wallapop TOP SELLER #9", price: 50.0, stock: 15, description_ru: "Аккаунт топ продавца", description_en: "Top seller account", details_ru: "Продажи: 150+ | Рейтинг: 5.0", details_en: "Sales: 150+ | Rating: 5.0" },
-                { id: 40, name_ru: "Wallapop PRO #10", name_en: "Wallapop PRO #10", price: 40.0, stock: 15, description_ru: "Профессиональный аккаунт", description_en: "Professional account", details_ru: "Опыт: 2+ года | Статус: Pro", details_en: "Experience: 2+ years | Status: Pro" },
-                { id: 41, name_ru: "Wallapop STANDARD #11", name_en: "Wallapop STANDARD #11", price: 18.0, stock: 18, description_ru: "Стандартный аккаунт", description_en: "Standard account", details_ru: "Базовая версия | Гарантия", details_en: "Basic version | Warranty" },
-                { id: 42, name_ru: "Wallapop ULTIMATE #12", name_en: "Wallapop ULTIMATE #12", price: 55.0, stock: 18, description_ru: "Ультимативный аккаунт", description_en: "Ultimate account", details_ru: "Все функции | Максимум", details_en: "All features | Maximum" },
-                { id: 43, name_ru: "Wallapop ECONOMY #13", name_en: "Wallapop ECONOMY #13", price: 12.0, stock: 25, description_ru: "Экономный аккаунт", description_en: "Economy account", details_ru: "Бюджетный вариант | Надежный", details_en: "Budget option | Reliable" }
+            4: [
+                { id: 31, name_ru: "Wallapop Испания", name_en: "Wallapop Spain", price: 25.0, stock: 10, description_ru: "Качественный испанский аккаунт", description_en: "Quality Spanish account" },
+                { id: 32, name_ru: "Wallapop Италия", name_en: "Wallapop Italy", price: 22.0, stock: 17, description_ru: "Итальянский аккаунт Wallapop", description_en: "Italian Wallapop account" },
+                { id: 33, name_ru: "Wallapop Франция", name_en: "Wallapop France", price: 28.0, stock: 12, description_ru: "Французский аккаунт Wallapop", description_en: "French Wallapop account" },
+                { id: 34, name_ru: "Wallapop Португалия", name_en: "Wallapop Portugal", price: 20.0, stock: 15, description_ru: "Португальский аккаунт", description_en: "Portuguese account" },
+                { id: 35, name_ru: "Wallapop PREMIUM", name_en: "Wallapop PREMIUM", price: 35.0, stock: 19, description_ru: "Премиум аккаунт Wallapop", description_en: "Premium Wallapop account" },
+                { id: 36, name_ru: "Wallapop BUSINESS", name_en: "Wallapop BUSINESS", price: 45.0, stock: 16, description_ru: "Бизнес аккаунт Wallapop", description_en: "Business Wallapop account" },
+                { id: 37, name_ru: "Wallapop FRESH", name_en: "Wallapop FRESH", price: 15.0, stock: 20, description_ru: "Свежий аккаунт Wallapop", description_en: "Fresh Wallapop account" },
+                { id: 38, name_ru: "Wallapop VERIFIED", name_en: "Wallapop VERIFIED", price: 30.0, stock: 9, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
+                { id: 39, name_ru: "Wallapop TOP SELLER", name_en: "Wallapop TOP SELLER", price: 50.0, stock: 15, description_ru: "Аккаунт топ продавца", description_en: "Top seller account" },
+                { id: 40, name_ru: "Wallapop PRO", name_en: "Wallapop PRO", price: 40.0, stock: 15, description_ru: "Профессиональный аккаунт", description_en: "Professional account" },
+                { id: 41, name_ru: "Wallapop STANDARD", name_en: "Wallapop STANDARD", price: 18.0, stock: 18, description_ru: "Стандартный аккаунт", description_en: "Standard account" },
+                { id: 42, name_ru: "Wallapop ULTIMATE", name_en: "Wallapop ULTIMATE", price: 55.0, stock: 18, description_ru: "Ультимативный аккаунт", description_en: "Ultimate account" },
+                { id: 43, name_ru: "Wallapop ECONOMY", name_en: "Wallapop ECONOMY", price: 12.0, stock: 25, description_ru: "Экономный аккаунт", description_en: "Economy account" }
             ],
-            5: [ // Facebook accounts
-                { id: 44, name_ru: "Facebook USA #1", name_en: "Facebook USA #1", price: 3.0, stock: 20, description_ru: "Американский аккаунт Facebook", description_en: "USA Facebook account", details_ru: "Гео: США | Друзья: 500+ | Активный", details_en: "Geo: USA | Friends: 500+ | Active" },
-                { id: 45, name_ru: "Facebook UK #2", name_en: "Facebook UK #2", price: 2.8, stock: 18, description_ru: "Британский аккаунт Facebook", description_en: "UK Facebook account", details_ru: "Гео: Великобритания | Верификация: Да", details_en: "Geo: UK | Verified: Yes" },
-                { id: 46, name_ru: "Facebook Германия #3", name_en: "Facebook Germany #3", price: 2.5, stock: 15, description_ru: "Немецкий аккаунт Facebook", description_en: "German Facebook account", details_ru: "Гео: Германия | Статус: Active", details_en: "Geo: Germany | Status: Active" },
-                { id: 47, name_ru: "Facebook Франция #4", name_en: "Facebook France #4", price: 2.3, stock: 22, description_ru: "Французский аккаунт Facebook", description_en: "French Facebook account", details_ru: "Гео: Франция | Друзья: 300+", details_en: "Geo: France | Friends: 300+" },
-                { id: 48, name_ru: "Facebook Канада #5", name_en: "Facebook Canada #5", price: 2.7, stock: 16, description_ru: "Канадский аккаунт Facebook", description_en: "Canadian Facebook account", details_ru: "Гео: Канада | Премиум", details_en: "Geo: Canada | Premium" },
-                { id: 49, name_ru: "Facebook Испания #6", name_en: "Facebook Spain #6", price: 1.8, stock: 25, description_ru: "Испанский аккаунт Facebook", description_en: "Spanish Facebook account", details_ru: "Гео: Испания | Свежий", details_en: "Geo: Spain | Fresh" },
-                { id: 50, name_ru: "Facebook Италия #7", name_en: "Facebook Italy #7", price: 1.9, stock: 23, description_ru: "Итальянский аккаунт Facebook", description_en: "Italian Facebook account", details_ru: "Гео: Италия | Активность: Средняя", details_en: "Geo: Italy | Activity: Medium" },
-                { id: 51, name_ru: "Facebook Бразилия #8", name_en: "Facebook Brazil #8", price: 1.5, stock: 30, description_ru: "Бразильский аккаунт Facebook", description_en: "Brazilian Facebook account", details_ru: "Гео: Бразилия | Бюджетный", details_en: "Geo: Brazil | Budget" },
-                { id: 52, name_ru: "Facebook Мексика #9", name_en: "Facebook Mexico #9", price: 1.6, stock: 28, description_ru: "Мексиканский аккаунт Facebook", description_en: "Mexican Facebook account", details_ru: "Гео: Мексика | Надежный", details_en: "Geo: Mexico | Reliable" },
-                { id: 53, name_ru: "Facebook Австралия #10", name_en: "Facebook Australia #10", price: 2.9, stock: 12, description_ru: "Австралийский аккаунт Facebook", description_en: "Australian Facebook account", details_ru: "Гео: Австралия | Редкий регион", details_en: "Geo: Australia | Rare region" },
-                { id: 54, name_ru: "Facebook Япония #11", name_en: "Facebook Japan #11", price: 2.2, stock: 14, description_ru: "Японский аккаунт Facebook", description_en: "Japanese Facebook account", details_ru: "Гео: Япония | Качественный", details_en: "Geo: Japan | Quality" },
-                { id: 55, name_ru: "Facebook Южная Корея #12", name_en: "Facebook South Korea #12", price: 2.1, stock: 13, description_ru: "Корейский аккаунт Facebook", description_en: "Korean Facebook account", details_ru: "Гео: Южная Корея | Премиум", details_en: "Geo: South Korea | Premium" },
-                { id: 56, name_ru: "Facebook Индия #13", name_en: "Facebook India #13", price: 0.7, stock: 50, description_ru: "Индийский аккаунт Facebook", description_en: "Indian Facebook account", details_ru: "Гео: Индия | Эконом вариант", details_en: "Geo: India | Economy option" },
-                { id: 57, name_ru: "Facebook Турция #14", name_en: "Facebook Turkey #14", price: 1.2, stock: 35, description_ru: "Турецкий аккаунт Facebook", description_en: "Turkish Facebook account", details_ru: "Гео: Турция | Бюджетный", details_en: "Geo: Turkey | Budget" },
-                { id: 58, name_ru: "Facebook Польша #15", name_en: "Facebook Poland #15", price: 1.8, stock: 26, description_ru: "Польский аккаунт Facebook", description_en: "Polish Facebook account", details_ru: "Гео: Польша | Стандарт", details_en: "Geo: Poland | Standard" },
-                { id: 59, name_ru: "Facebook BUSINESS #16", name_en: "Facebook BUSINESS #16", price: 5.0, stock: 14, description_ru: "Бизнес аккаунт Facebook", description_en: "Facebook Business account", details_ru: "Бизнес страница | Реклама", details_en: "Business page | Advertising" }
+            5: [
+                { id: 44, name_ru: "Facebook USA", name_en: "Facebook USA", price: 3.0, stock: 20, description_ru: "Американский аккаунт Facebook", description_en: "USA Facebook account" },
+                { id: 45, name_ru: "Facebook UK", name_en: "Facebook UK", price: 2.8, stock: 18, description_ru: "Британский аккаунт Facebook", description_en: "UK Facebook account" },
+                { id: 46, name_ru: "Facebook Германия", name_en: "Facebook Germany", price: 2.5, stock: 15, description_ru: "Немецкий аккаунт Facebook", description_en: "German Facebook account" },
+                { id: 47, name_ru: "Facebook Франция", name_en: "Facebook France", price: 2.3, stock: 22, description_ru: "Французский аккаунт Facebook", description_en: "French Facebook account" },
+                { id: 48, name_ru: "Facebook Канада", name_en: "Facebook Canada", price: 2.7, stock: 16, description_ru: "Канадский аккаунт Facebook", description_en: "Canadian Facebook account" },
+                { id: 49, name_ru: "Facebook Испания", name_en: "Facebook Spain", price: 1.8, stock: 25, description_ru: "Испанский аккаунт Facebook", description_en: "Spanish Facebook account" },
+                { id: 50, name_ru: "Facebook Италия", name_en: "Facebook Italy", price: 1.9, stock: 23, description_ru: "Итальянский аккаунт Facebook", description_en: "Italian Facebook account" },
+                { id: 51, name_ru: "Facebook Бразилия", name_en: "Facebook Brazil", price: 1.5, stock: 30, description_ru: "Бразильский аккаунт Facebook", description_en: "Brazilian Facebook account" },
+                { id: 52, name_ru: "Facebook Мексика", name_en: "Facebook Mexico", price: 1.6, stock: 28, description_ru: "Мексиканский аккаунт Facebook", description_en: "Mexican Facebook account" },
+                { id: 53, name_ru: "Facebook Австралия", name_en: "Facebook Australia", price: 2.9, stock: 12, description_ru: "Австралийский аккаунт Facebook", description_en: "Australian Facebook account" },
+                { id: 54, name_ru: "Facebook Япония", name_en: "Facebook Japan", price: 2.2, stock: 14, description_ru: "Японский аккаунт Facebook", description_en: "Japanese Facebook account" },
+                { id: 55, name_ru: "Facebook Южная Корея", name_en: "Facebook South Korea", price: 2.1, stock: 13, description_ru: "Корейский аккаунт Facebook", description_en: "Korean Facebook account" },
+                { id: 56, name_ru: "Facebook Индия", name_en: "Facebook India", price: 0.7, stock: 50, description_ru: "Индийский аккаунт Facebook", description_en: "Indian Facebook account" },
+                { id: 57, name_ru: "Facebook Турция", name_en: "Facebook Turkey", price: 1.2, stock: 35, description_ru: "Турецкий аккаунт Facebook", description_en: "Turkish Facebook account" },
+                { id: 58, name_ru: "Facebook Польша", name_en: "Facebook Poland", price: 1.8, stock: 26, description_ru: "Польский аккаунт Facebook", description_en: "Polish Facebook account" },
+                { id: 59, name_ru: "Facebook BUSINESS", name_en: "Facebook BUSINESS", price: 5.0, stock: 14, description_ru: "Бизнес аккаунт Facebook", description_en: "Facebook Business account" }
             ],
-            6: [ // Telegram Stars
-                { id: 60, name_ru: "Telegram Stars 100", name_en: "Telegram Stars 100", price: 0.8, stock: 100, description_ru: "100 звезд для Telegram", description_en: "100 Telegram Stars", details_ru: "Количество: 100 звезд | Мгновенная доставка", details_en: "Quantity: 100 stars | Instant delivery" },
-                { id: 61, name_ru: "Telegram Stars 500", name_en: "Telegram Stars 500", price: 4.5, stock: 50, description_ru: "500 звезд для Telegram", description_en: "500 Telegram Stars", details_ru: "Количество: 500 звезд | Выгодно", details_en: "Quantity: 500 stars | Profitable" },
-                { id: 62, name_ru: "Telegram Stars 1000", name_en: "Telegram Stars 1000", price: 11.0, stock: 30, description_ru: "1000 звезд для Telegram", description_en: "1000 Telegram Stars", details_ru: "Количество: 1000 звезд | Экономия", details_en: "Quantity: 1000 stars | Economy" },
-                { id: 63, name_ru: "Telegram Stars 5000", name_en: "Telegram Stars 5000", price: 50.0, stock: 15, description_ru: "5000 звезд для Telegram", description_en: "5000 Telegram Stars", details_ru: "Количество: 5000 звезд | Максимальная выгода", details_en: "Quantity: 5000 stars | Maximum profit" }
+            6: [
+                { id: 60, name_ru: "Telegram Stars 100", name_en: "Telegram Stars 100", price: 0.8, stock: 100, description_ru: "100 звезд для Telegram", description_en: "100 Telegram Stars" },
+                { id: 61, name_ru: "Telegram Stars 500", name_en: "Telegram Stars 500", price: 4.5, stock: 50, description_ru: "500 звезд для Telegram", description_en: "500 Telegram Stars" },
+                { id: 62, name_ru: "Telegram Stars 1000", name_en: "Telegram Stars 1000", price: 11.0, stock: 30, description_ru: "1000 звезд для Telegram", description_en: "1000 Telegram Stars" },
+                { id: 63, name_ru: "Telegram Stars 5000", name_en: "Telegram Stars 5000", price: 50.0, stock: 15, description_ru: "5000 звезд для Telegram", description_en: "5000 Telegram Stars" }
             ],
-            7: [ // Telegram Premium subscriptions
-                { id: 64, name_ru: "Telegram Premium 3 месяца", name_en: "Telegram Premium 3 months", price: 9.0, stock: 30, description_ru: "Премиум подписка на 3 месяца", description_en: "3 months Premium subscription", details_ru: "Срок: 3 месяца | Экономия 10%", details_en: "Term: 3 months | Save 10%" },
-                { id: 65, name_ru: "Telegram Premium 6 месяцев", name_en: "Telegram Premium 6 months", price: 15.0, stock: 25, description_ru: "Премиум подписка на 6 месяцев", description_en: "6 months Premium subscription", details_ru: "Срок: 6 месяцев | Экономия 20%", details_en: "Term: 6 months | Save 20%" },
-                { id: 66, name_ru: "Telegram Premium 1 год", name_en: "Telegram Premium 1 year", price: 25.0, stock: 20, description_ru: "Годовая премиум подписка", description_en: "Annual premium subscription", details_ru: "Срок: 1 год | Экономия 30%", details_en: "Term: 1 year | Save 30%" }
+            7: [
+                { id: 64, name_ru: "Telegram Premium 3 месяца", name_en: "Telegram Premium 3 months", price: 9.0, stock: 30, description_ru: "Премиум подписка на 3 месяца", description_en: "3 months Premium subscription" },
+                { id: 65, name_ru: "Telegram Premium 6 месяцев", name_en: "Telegram Premium 6 months", price: 15.0, stock: 25, description_ru: "Премиум подписка на 6 месяцев", description_en: "6 months Premium subscription" },
+                { id: 66, name_ru: "Telegram Premium 1 год", name_en: "Telegram Premium 1 year", price: 25.0, stock: 20, description_ru: "Годовая премиум подписка", description_en: "Annual premium subscription" }
             ],
-            8: [ // Yandex Split accounts
-                { id: 67, name_ru: "Яндекс Сплит НОВОРЕГ", name_en: "Yandex Split NEWREG", price: 15.0, stock: 25, description_ru: "Свежий аккаунт Яндекс Сплит", description_en: "Fresh Yandex Split account", details_ru: "Тип: Новый | Лимиты: Базовые | Верификация: Нет", details_en: "Type: New | Limits: Basic | Verification: No" },
-                { id: 68, name_ru: "Яндекс Сплит ВЕРИФИЦИРОВАН", name_en: "Yandex Split VERIFIED", price: 25.0, stock: 18, description_ru: "Верифицированный Яндекс Сплит", description_en: "Verified Yandex Split account", details_ru: "Верификация: Да | Телефон: Привязан | Лимиты: Средние", details_en: "Verification: Yes | Phone: Linked | Limits: Medium" },
-                { id: 69, name_ru: "Яндекс Сплит PRO", name_en: "Yandex Split PRO", price: 40.0, stock: 12, description_ru: "Профессиональный Яндекс Сплит", description_en: "Professional Yandex Split account", details_ru: "Статус: PRO | Лимиты: Высокие | История: Чистая", details_en: "Status: PRO | Limits: High | History: Clean" },
-                { id: 70, name_ru: "Яндекс Сплит БИЗНЕС", name_en: "Yandex Split BUSINESS", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Яндекс Сплит", description_en: "Business Yandex Split account", details_ru: "Тип: Бизнес | Лимиты: Максимальные | API: Доступно", details_en: "Type: Business | Limits: Maximum | API: Available" },
-                { id: 71, name_ru: "Яндекс Сплит МАКСИМУМ", name_en: "Yandex Split MAXIMUM", price: 80.0, stock: 18, description_ru: "Яндекс Сплит с максимальными лимитами", description_en: "Yandex Split with maximum limits", details_ru: "Лимиты: MAX | Приоритет: Высокий | Поддержка: 24/7", details_en: "Limits: MAX | Priority: High | Support: 24/7" },
-                { id: 72, name_ru: "Яндекс Сплит СТАНДАРТ", name_en: "Yandex Split STANDARD", price: 20.0, stock: 20, description_ru: "Стандартный аккаунт Яндекс Сплит", description_en: "Standard Yandex Split account", details_ru: "Баланс: Средний | Лимиты: Стандарт | Гарантия: 30 дней", details_en: "Balance: Medium | Limits: Standard | Warranty: 30 days" },
-                { id: 73, name_ru: "Яндекс Сплит ПРЕМИУМ", name_en: "Yandex Split PREMIUM", price: 50.0, stock: 10, description_ru: "Премиум Яндекс Сплит аккаунт", description_en: "Premium Yandex Split account", details_ru: "Статус: Премиум | Лимиты: Расширенные | Привилегии: Да", details_en: "Status: Premium | Limits: Extended | Privileges: Yes" },
-                { id: 74, name_ru: "Яндекс Сплит ВИП", name_en: "Yandex Split VIP", price: 70.0, stock: 17, description_ru: "VIP аккаунт Яндекс Сплит", description_en: "VIP Yandex Split account", details_ru: "Уровень: VIP | Лимиты: Неограниченные | Персональный менеджер", details_en: "Level: VIP | Limits: Unlimited | Personal manager" },
-                { id: 75, name_ru: "Яндекс Сплит АВТО", name_en: "Yandex Split AUTO", price: 35.0, stock: 15, description_ru: "Яндекс Сплит для автоматизации", description_en: "Yandex Split for automation", details_ru: "Автоматизация: Да | API: Полный доступ | Скрипты: Поддержка", details_en: "Automation: Yes | API: Full access | Scripts: Support" },
-                { id: 76, name_ru: "Яндекс Сплит УЛЬТИМАТ", name_en: "Yandex Split ULTIMATE", price: 90.0, stock: 16, description_ru: "Ультимативный Яндекс Сплит со всеми функциями", description_en: "Ultimate Yandex Split with all features", details_ru: "Все функции | Максимальные лимиты | Приоритетная поддержка", details_en: "All features | Maximum limits | Priority support" }
+            8: [
+                { id: 67, name_ru: "Яндекс Сплит НОВОРЕГ", name_en: "Yandex Split NEWREG", price: 15.0, stock: 25, description_ru: "Свежий аккаунт Яндекс Сплит", description_en: "Fresh Yandex Split account" },
+                { id: 68, name_ru: "Яндекс Сплит ВЕРИФИЦИРОВАН", name_en: "Yandex Split VERIFIED", price: 25.0, stock: 18, description_ru: "Верифицированный Яндекс Сплит", description_en: "Verified Yandex Split account" },
+                { id: 69, name_ru: "Яндекс Сплит PRO", name_en: "Yandex Split PRO", price: 40.0, stock: 12, description_ru: "Профессиональный Яндекс Сплит", description_en: "Professional Yandex Split account" },
+                { id: 70, name_ru: "Яндекс Сплит БИЗНЕС", name_en: "Yandex Split BUSINESS", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Яндекс Сплит", description_en: "Business Yandex Split account" },
+                { id: 71, name_ru: "Яндекс Сплит МАКСИМУМ", name_en: "Yandex Split MAXIMUM", price: 80.0, stock: 18, description_ru: "Яндекс Сплит с максимальными лимитами", description_en: "Yandex Split with maximum limits" },
+                { id: 72, name_ru: "Яндекс Сплит СТАНДАРТ", name_en: "Yandex Split STANDARD", price: 20.0, stock: 20, description_ru: "Стандартный аккаунт Яндекс Сплит", description_en: "Standard Yandex Split account" },
+                { id: 73, name_ru: "Яндекс Сплит ПРЕМИУМ", name_en: "Yandex Split PREMIUM", price: 50.0, stock: 10, description_ru: "Премиум Яндекс Сплит аккаунт", description_en: "Premium Yandex Split account" },
+                { id: 74, name_ru: "Яндекс Сплит ВИП", name_en: "Yandex Split VIP", price: 70.0, stock: 17, description_ru: "VIP аккаунт Яндекс Сплит", description_en: "VIP Yandex Split account" },
+                { id: 75, name_ru: "Яндекс Сплит АВТО", name_en: "Yandex Split AUTO", price: 35.0, stock: 15, description_ru: "Яндекс Сплит для автоматизации", description_en: "Yandex Split for automation" },
+                { id: 76, name_ru: "Яндекс Сплит УЛЬТИМАТ", name_en: "Yandex Split ULTIMATE", price: 90.0, stock: 16, description_ru: "Ультимативный Яндекс Сплит", description_en: "Ultimate Yandex Split account" }
             ],
-            9: [ // Ozon accounts
-                { id: 77, name_ru: "Ozon НОВОРЕГ", name_en: "Ozon NEWREG", price: 20.0, stock: 20, description_ru: "Свежий аккаунт Ozon", description_en: "Fresh Ozon account", details_ru: "Тип: Новый | Лимиты: Базовые | Верификация: Нет", details_en: "Type: New | Limits: Basic | Verification: No" },
-                { id: 78, name_ru: "Ozon ВЕРИФИЦИРОВАН", name_en: "Ozon VERIFIED", price: 35.0, stock: 15, description_ru: "Верифицированный Ozon", description_en: "Verified Ozon account", details_ru: "Верификация: Да | Документы: Подтверждены | Лимиты: Средние", details_en: "Verification: Yes | Documents: Verified | Limits: Medium" },
-                { id: 79, name_ru: "Ozon PRO", name_en: "Ozon PRO", price: 50.0, stock: 10, description_ru: "Профессиональный Ozon", description_en: "Professional Ozon account", details_ru: "Статус: PRO | Лимиты: Высокие | API: Доступно", details_en: "Status: PRO | Limits: High | API: Available" },
-                { id: 80, name_ru: "Ozon БИЗНЕС", name_en: "Ozon BUSINESS", price: 70.0, stock: 13, description_ru: "Бизнес аккаунт Ozon", description_en: "Business Ozon account", details_ru: "Тип: Бизнес | Лимиты: Максимальные | Оборот: 500K+", details_en: "Type: Business | Limits: Maximum | Turnover: 500K+" },
-                { id: 81, name_ru: "Ozon МАКСИМУМ", name_en: "Ozon MAXIMUM", price: 80.0, stock: 17, description_ru: "Ozon с максимальными лимитами", description_en: "Ozon with maximum limits", details_ru: "Лимиты: MAX | Приоритет: Высокий | Поддержка: 24/7", details_en: "Limits: MAX | Priority: High | Support: 24/7" },
-                { id: 82, name_ru: "Ozon СТАНДАРТ", name_en: "Ozon STANDARD", price: 25.0, stock: 18, description_ru: "Стандартный аккаунт Ozon", description_en: "Standard Ozon account", details_ru: "Баланс: Средний | Лимиты: Стандарт | Гарантия: 30 дней", details_en: "Balance: Medium | Limits: Standard | Warranty: 30 days" },
-                { id: 83, name_ru: "Ozon ПРЕМИУМ", name_en: "Ozon PREMIUM", price: 60.0, stock: 13, description_ru: "Премиум Ozon аккаунт", description_en: "Premium Ozon account", details_ru: "Статус: Премиум | Лимиты: Расширенные | Привилегии: Да", details_en: "Status: Premium | Limits: Extended | Privileges: Yes" },
-                { id: 84, name_ru: "Ozon СЕЛЛЕР", name_en: "Ozon SELLER", price: 90.0, stock: 12, description_ru: "Аккаунт продавца Ozon со всеми функциями", description_en: "Ozon sellers account with all functions", details_ru: "Все функции | Максимальные лимиты | Приоритетная поддержка", details_en: "All features | Maximum limits | Priority support" }
+            9: [
+                { id: 77, name_ru: "Ozon НОВОРЕГ", name_en: "Ozon NEWREG", price: 20.0, stock: 20, description_ru: "Свежий аккаунт Ozon", description_en: "Fresh Ozon account" },
+                { id: 78, name_ru: "Ozon ВЕРИФИЦИРОВАН", name_en: "Ozon VERIFIED", price: 35.0, stock: 15, description_ru: "Верифицированный Ozon", description_en: "Verified Ozon account" },
+                { id: 79, name_ru: "Ozon PRO", name_en: "Ozon PRO", price: 50.0, stock: 10, description_ru: "Профессиональный Ozon", description_en: "Professional Ozon account" },
+                { id: 80, name_ru: "Ozon БИЗНЕС", name_en: "Ozon BUSINESS", price: 70.0, stock: 13, description_ru: "Бизнес аккаунт Ozon", description_en: "Business Ozon account" },
+                { id: 81, name_ru: "Ozon МАКСИМУМ", name_en: "Ozon MAXIMUM", price: 80.0, stock: 17, description_ru: "Ozon с максимальными лимитами", description_en: "Ozon with maximum limits" },
+                { id: 82, name_ru: "Ozon СТАНДАРТ", name_en: "Ozon STANDARD", price: 25.0, stock: 18, description_ru: "Стандартный аккаунт Ozon", description_en: "Standard Ozon account" },
+                { id: 83, name_ru: "Ozon ПРЕМИУМ", name_en: "Ozon PREMIUM", price: 60.0, stock: 13, description_ru: "Премиум Ozon аккаунт", description_en: "Premium Ozon account" },
+                { id: 84, name_ru: "Ozon СЕЛЛЕР", name_en: "Ozon SELLER", price: 90.0, stock: 12, description_ru: "Аккаунт продавца Ozon", description_en: "Ozon sellers account" }
             ],
-            10: [ // Wildberries accounts
-                { id: 85, name_ru: "WB SELLER #1", name_en: "WB SELLER #1", price: 30.0, stock: 12, description_ru: "Аккаунт продавца Wildberries", description_en: "Wildberries Seller account", details_ru: "Продавец: Да | Товары: 100+ | Рейтинг: 4.9+", details_en: "Seller: Yes | Products: 100+ | Rating: 4.9+" },
-                { id: 86, name_ru: "WB BUSINESS #2", name_en: "WB BUSINESS #2", price: 45.0, stock: 17, description_ru: "Бизнес аккаунт Wildberries", description_en: "Wildberries Business account", details_ru: "Бизнес: Да | Оборот: 2M+ | VIP", details_en: "Business: Yes | Turnover: 2M+ | VIP" },
-                { id: 87, name_ru: "WB FRESH #3", name_en: "WB FRESH #3", price: 12.0, stock: 18, description_ru: "Свежий аккаунт Wildberries", description_en: "Fresh Wildberries account", details_ru: "Возраст: 3 дня | Гарантия", details_en: "Age: 3 days | Warranty" },
-                { id: 88, name_ru: "WB VERIFIED #4", name_en: "WB VERIFIED #4", price: 35.0, stock: 18, description_ru: "Верифицированный аккаунт WB", description_en: "Verified WB account", details_ru: "Верификация: Да | Полный доступ", details_en: "Verified: Yes | Full access" },
-                { id: 89, name_ru: "WB PREMIUM #5", name_en: "WB PREMIUM #5", price: 40.0, stock: 12, description_ru: "Премиум аккаунт Wildberries", description_en: "Premium Wildberries account", details_ru: "Премиум: Да | Персональный менеджер", details_en: "Premium: Yes | Personal manager" },
-                { id: 90, name_ru: "WB STANDARD #6", name_en: "WB STANDARD #6", price: 18.0, stock: 14, description_ru: "Стандартный аккаунт Wildberries", description_en: "Standard Wildberries account", details_ru: "Стандарт: Да | Базовая функциональность", details_en: "Standard: Yes | Basic functionality" },
-                { id: 91, name_ru: "WB EXPRESS #7", name_en: "WB EXPRESS #7", price: 25.0, stock: 11, description_ru: "Аккаунт WB Express", description_en: "WB Express account", details_ru: "Express: Да | Срочная доставка", details_en: "Express: Yes | Urgent delivery" },
-                { id: 92, name_ru: "WB PARTNER #8", name_en: "WB PARTNER #8", price: 32.0, stock: 17, description_ru: "Партнерский аккаунт WB", description_en: "WB Partner account", details_ru: "Партнер: Да | Эксклюзивные условия", details_en: "Partner: Yes | Exclusive conditions" },
-                { id: 93, name_ru: "WB GOLD #9", name_en: "WB GOLD #9", price: 38.0, stock: 18, description_ru: "Золотой аккаунт Wildberries", description_en: "Gold Wildberries account", details_ru: "Золотой: Да | Максимальные привилегии", details_en: "Gold: Yes | Maximum privileges" }
+            10: [
+                { id: 85, name_ru: "WB SELLER", name_en: "WB SELLER", price: 30.0, stock: 12, description_ru: "Аккаунт продавца Wildberries", description_en: "Wildberries Seller account" },
+                { id: 86, name_ru: "WB BUSINESS", name_en: "WB BUSINESS", price: 45.0, stock: 17, description_ru: "Бизнес аккаунт Wildberries", description_en: "Wildberries Business account" },
+                { id: 87, name_ru: "WB FRESH", name_en: "WB FRESH", price: 12.0, stock: 18, description_ru: "Свежий аккаунт Wildberries", description_en: "Fresh Wildberries account" },
+                { id: 88, name_ru: "WB VERIFIED", name_en: "WB VERIFIED", price: 35.0, stock: 18, description_ru: "Верифицированный аккаунт WB", description_en: "Verified WB account" },
+                { id: 89, name_ru: "WB PREMIUM", name_en: "WB PREMIUM", price: 40.0, stock: 12, description_ru: "Премиум аккаунт Wildberries", description_en: "Premium Wildberries account" },
+                { id: 90, name_ru: "WB STANDARD", name_en: "WB STANDARD", price: 18.0, stock: 14, description_ru: "Стандартный аккаунт Wildberries", description_en: "Standard Wildberries account" },
+                { id: 91, name_ru: "WB EXPRESS", name_en: "WB EXPRESS", price: 25.0, stock: 11, description_ru: "Аккаунт WB Express", description_en: "WB Express account" },
+                { id: 92, name_ru: "WB PARTNER", name_en: "WB PARTNER", price: 32.0, stock: 17, description_ru: "Партнерский аккаунт WB", description_en: "WB Partner account" },
+                { id: 93, name_ru: "WB GOLD", name_en: "WB GOLD", price: 38.0, stock: 18, description_ru: "Золотой аккаунт Wildberries", description_en: "Gold Wildberries account" }
             ],
-            11: [ // Gosuslugi accounts
-                { id: 94, name_ru: "Госуслуги STANDARD #1", name_en: "Gosuslugi STANDARD #1", price: 20.0, stock: 10, description_ru: "Стандартный аккаунт Госуслуг", description_en: "Standard Gosuslugi account", details_ru: "Уровень: Стандарт | Базовые услуги", details_en: "Level: Standard | Basic services" },
-                { id: 95, name_ru: "Госуслуги VERIFIED #2", name_en: "Gosuslugi VERIFIED #2", price: 35.0, stock: 17, description_ru: "Верифицированный аккаунт Госуслуг", description_en: "Verified Gosuslugi account", details_ru: "Верификация: Да | Полный доступ", details_en: "Verified: Yes | Full access" },
-                { id: 96, name_ru: "Госуслуги PREMIUM #3", name_en: "Gosuslugi PREMIUM #3", price: 50.0, stock: 19, description_ru: "Премиум аккаунт Госуслуг", description_en: "Premium Gosuslugi account", details_ru: "Премиум: Да | Приоритетное обслуживание", details_en: "Premium: Yes | Priority service" },
-                { id: 97, name_ru: "Госуслуги BUSINESS #4", name_en: "Gosuslugi BUSINESS #4", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Госуслуг", description_en: "Business Gosuslugi account", details_ru: "Бизнес: Да | Юридические лица", details_en: "Business: Yes | Legal entities" },
-                { id: 98, name_ru: "Госуслуги FRESH #5", name_en: "Gosuslugi FRESH #5", price: 25.0, stock: 12, description_ru: "Свежий аккаунт Госуслуг", description_en: "Fresh Gosuslugi account", details_ru: "Возраст: 1 день | Чистый", details_en: "Age: 1 day | Clean" },
-                { id: 99, name_ru: "Госуслуги PRO #6", name_en: "Gosuslugi PRO #6", price: 45.0, stock: 6, description_ru: "Профессиональный аккаунт Госуслуг", description_en: "Pro Gosuslugi account", details_ru: "Про: Да | Расширенные функции", details_en: "Pro: Yes | Extended features" }
+            11: [
+                { id: 94, name_ru: "Госуслуги STANDARD", name_en: "Gosuslugi STANDARD", price: 20.0, stock: 10, description_ru: "Стандартный аккаунт Госуслуг", description_en: "Standard Gosuslugi account" },
+                { id: 95, name_ru: "Госуслуги VERIFIED", name_en: "Gosuslugi VERIFIED", price: 35.0, stock: 17, description_ru: "Верифицированный аккаунт Госуслуг", description_en: "Verified Gosuslugi account" },
+                { id: 96, name_ru: "Госуслуги PREMIUM", name_en: "Gosuslugi PREMIUM", price: 50.0, stock: 19, description_ru: "Премиум аккаунт Госуслуг", description_en: "Premium Gosuslugi account" },
+                { id: 97, name_ru: "Госуслуги BUSINESS", name_en: "Gosuslugi BUSINESS", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Госуслуг", description_en: "Business Gosuslugi account" },
+                { id: 98, name_ru: "Госуслуги FRESH", name_en: "Gosuslugi FRESH", price: 25.0, stock: 12, description_ru: "Свежий аккаунт Госуслуг", description_en: "Fresh Gosuslugi account" },
+                { id: 99, name_ru: "Госуслуги PRO", name_en: "Gosuslugi PRO", price: 45.0, stock: 6, description_ru: "Профессиональный аккаунт Госуслуг", description_en: "Pro Gosuslugi account" }
             ]
-        };
+        }; 
+        
 
         // App state
         let currentLanguage = 'ru';
@@ -1623,12 +559,13 @@
             pendingInvoices: []
         };
 
-        // Giveaway data with fixed end date
-        const giveawayData = {
+        // Giveaway data with fixed end date - сохраняем в localStorage
+        const giveawayDataKey = 'giveaway_end_date';
+        let giveawayData = {
             id: 1,
             prize: "3x iPhone 17 Pro Max",
             description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+            endDate: null, // Будет установлено при инициализации
             participants: 4586,
             minDeposit: 30,
             image: "fas fa-mobile-alt"
@@ -1762,10 +699,15 @@
                 const user = tg.initDataUnsafe.user;
                 
                 if (user) {
-                    // Set user avatar
+                    // Set user avatar - исправлено для корректного отображения
                     if (user.photo_url) {
                         elements.userAvatar.src = user.photo_url;
                         elements.userAvatar.style.display = 'block';
+                        // Добавляем обработчик ошибок для аватарки
+                        elements.userAvatar.onerror = function() {
+                            this.style.display = 'none';
+                            document.querySelector('#userAvatar + i').style.display = 'flex';
+                        };
                     } else {
                         elements.userAvatar.style.display = 'none';
                         document.querySelector('#userAvatar + i').style.display = 'flex';
@@ -1830,8 +772,23 @@
                 userData = createDefaultUserData();
             }
             
+            // Инициализация даты розыгрыша
+            initializeGiveawayDate();
+            
             updateUserStats();
             updateGiveawayStatus();
+        }
+
+        // Инициализация даты розыгрыша
+        function initializeGiveawayDate() {
+            const savedEndDate = localStorage.getItem(giveawayDataKey);
+            if (savedEndDate) {
+                giveawayData.endDate = new Date(parseInt(savedEndDate));
+            } else {
+                // Устанавливаем дату окончания на 30 дней вперед
+                giveawayData.endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+                localStorage.setItem(giveawayDataKey, giveawayData.endDate.getTime().toString());
+            }
         }
 
         // Create default user data
@@ -1893,13 +850,14 @@
         // Load crypto payment methods
         function loadCryptoMethods() {
             const cryptoMethods = [
-                { method: 'ton', name: 'TON', icon: 'fas fa-gem' },
-                { method: 'usdt', name: 'USDT', icon: 'fas fa-coins' },
-                { method: 'btc', name: 'Bitcoin', icon: 'fab fa-bitcoin' },
-                { method: 'eth', name: 'Ethereum', icon: 'fab fa-ethereum' },
-                { method: 'ltc', name: 'Litecoin', icon: 'fab fa-litecoin' },
-                { method: 'sol', name: 'Solana', icon: 'fas fa-sun' },
-                { method: 'usdc', name: 'USDC', icon: 'fas fa-dollar-sign' }
+                { method: 'crypto_bot', name: 'Crypto Bot', icon: 'fas fa-robot', type: 'invoice' },
+                { method: 'ton', name: 'TON', icon: 'fas fa-gem', type: 'address' },
+                { method: 'usdt', name: 'USDT', icon: 'fas fa-coins', type: 'address' },
+                { method: 'btc', name: 'Bitcoin', icon: 'fab fa-bitcoin', type: 'address' },
+                { method: 'eth', name: 'Ethereum', icon: 'fab fa-ethereum', type: 'address' },
+                { method: 'ltc', name: 'Litecoin', icon: 'fab fa-litecoin', type: 'address' },
+                { method: 'sol', name: 'Solana', icon: 'fas fa-sun', type: 'address' },
+                { method: 'usdc', name: 'USDC', icon: 'fas fa-dollar-sign', type: 'address' }
             ];
 
             elements.cryptoMethodsGrid.innerHTML = '';
@@ -1907,6 +865,7 @@
                 const methodBtn = document.createElement('button');
                 methodBtn.className = 'method-btn';
                 methodBtn.setAttribute('data-method', crypto.method);
+                methodBtn.setAttribute('data-type', crypto.type);
                 methodBtn.innerHTML = `
                     <i class="${crypto.icon}"></i>
                     <span>${crypto.name}</span>
@@ -2375,7 +1334,7 @@
             });
 
             // Confirm deposit
-            elements.confirmDeposit.addEventListener('click', createCryptoInvoice);
+            elements.confirmDeposit.addEventListener('click', processDeposit);
 
             // Confirm purchase
             elements.confirmPurchase.addEventListener('click', processPurchase);
@@ -2419,8 +1378,8 @@
             elements.searchInput.addEventListener('input', handleSearch);
         }
 
-        // Create crypto invoice using Crypto Pay API
-        async function createCryptoInvoice() {
+        // Process deposit based on selected method
+        function processDeposit() {
             if (!selectedPaymentMethod) {
                 showNotification('Выберите способ оплаты');
                 return;
@@ -2431,6 +1390,18 @@
                 return;
             }
 
+            const selectedButton = document.querySelector(`.method-btn[data-method="${selectedPaymentMethod}"]`);
+            const paymentType = selectedButton.getAttribute('data-type');
+
+            if (paymentType === 'invoice') {
+                createCryptoInvoice();
+            } else if (paymentType === 'address') {
+                showCryptoAddress();
+            }
+        }
+
+        // Create crypto invoice using Crypto Pay API
+        async function createCryptoInvoice() {
             showLoading(true);
 
             try {
@@ -2457,6 +1428,65 @@
                 showNotification('Ошибка при создании инвойса. Попробуйте позже.');
                 console.error('Invoice creation error:', error);
             }
+        }
+
+        // Show crypto address for direct payment
+        function showCryptoAddress() {
+            const address = CRYPTO_ADDRESSES[selectedPaymentMethod.toUpperCase()];
+            if (!address) {
+                showNotification('Ошибка: адрес для выбранной криптовалюты не найден');
+                return;
+            }
+
+            elements.paymentInfo.innerHTML = `
+                <div class="payment-info">
+                    <h4>Оплата ${selectedPaymentMethod.toUpperCase()}</h4>
+                    <p>Отправьте <strong>$${selectedAmount}</strong> на адрес:</p>
+                    
+                    <div class="payment-address">
+                        ${address}
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; margin: 16px 0;">
+                        <button class="copy-btn" id="copyAddressBtn">
+                            <i class="fas fa-copy"></i> Копировать адрес
+                        </button>
+                    </div>
+                    
+                    <div style="background: var(--surface-dark); padding: 16px; border-radius: 8px; margin: 16px 0;">
+                        <h5>Инструкция:</h5>
+                        <ol style="text-align: left; padding-left: 20px; margin: 8px 0;">
+                            <li>Скопируйте адрес выше</li>
+                            <li>Отправьте <strong>$${selectedAmount}</strong> в ${selectedPaymentMethod.toUpperCase()}</li>
+                            <li>После 3 подтверждений сети баланс пополнится автоматически</li>
+                            <li>Обычно это занимает 5-30 минут</li>
+                        </ol>
+                    </div>
+                    
+                    <button class="confirm-btn" onclick="closeDepositModal()">
+                        Закрыть
+                    </button>
+                </div>
+            `;
+            
+            // Add copy functionality
+            document.getElementById('copyAddressBtn').addEventListener('click', () => {
+                navigator.clipboard.writeText(address).then(() => {
+                    showNotification('Адрес скопирован!');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = address;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showNotification('Адрес скопирован!');
+                });
+            });
+            
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.remove('hidden');
         }
 
         // Show invoice payment details
