@@ -348,6 +348,13 @@
             box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
         }
 
+        .buy-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         .favorite-btn {
             background: none;
             border: none;
@@ -661,6 +668,13 @@
             box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
         }
 
+        .confirm-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         /* Payment Info */
         .payment-info {
             text-align: center;
@@ -725,11 +739,13 @@
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 8px;
+            text-align: center;
         }
 
         .giveaway-description {
             color: var(--text-secondary);
             margin-bottom: 16px;
+            text-align: center;
         }
 
         .giveaway-conditions {
@@ -848,6 +864,133 @@
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
+        /* Referral Styles */
+        .referral-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .referral-stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .referral-link {
+            margin-bottom: 24px;
+        }
+
+        .referral-link label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .link-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .link-container input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .referral-rules {
+            margin-top: 24px;
+        }
+
+        .referral-rules h3 {
+            margin-bottom: 12px;
+            font-size: 1.125rem;
+        }
+
+        .referral-rules ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .referral-rules li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .referral-rules li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Payment Processing */
+        .payment-processing {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .payment-status {
+            margin: 20px 0;
+            padding: 16px;
+            border-radius: var(--radius);
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--secondary-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-failed {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         /* Utility Classes */
         .hidden {
             display: none !important;
@@ -922,6 +1065,10 @@
 
             .amount-buttons {
                 grid-template-columns: repeat(6, 1fr);
+            }
+
+            .referral-stats {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
@@ -1074,7 +1221,7 @@
                 </div>
                 <div class="giveaway-card">
                     <div class="giveaway-header">
-                        <div>
+                        <div style="width: 100%;">
                             <div class="giveaway-prize">🎉 РОЗЫГРЫШ 3x iPhone 17 Pro Max 🎉</div>
                             <div class="giveaway-description">Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!</div>
                         </div>
@@ -1094,13 +1241,13 @@
                             <i class="fas fa-users"></i> Участников: <span id="participantsCount">4586</span>
                         </div>
                         <div class="giveaway-date">
-                            <i class="fas fa-clock"></i> До конца розыгрыша: <span id="giveawayTimer">5 дней 18 часов</span>
+                            <i class="fas fa-clock"></i> До конца розыгрыша: <span id="giveawayTimer">5 дней 17 часов</span>
                         </div>
                     </div>
                     
                     <div class="giveaway-timer">
                         <div class="timer-label">До конца розыгрыша осталось:</div>
-                        <div class="timer-display" id="timerDisplay">5:18:24:36</div>
+                        <div class="timer-display" id="timerDisplay">5:17:59:41</div>
                     </div>
                     
                     <div class="giveaway-user-stats">
@@ -1120,40 +1267,49 @@
 
             <!-- Referral Tab -->
             <div class="tab-content" id="referral-tab">
-                <div class="referral-header">
-                    <div class="referral-hero">
-                        <i class="fas fa-users"></i>
-                        <h2 data-lang="referral_system">Реферальная система</h2>
-                        <p data-lang="referral_description">Приглашайте друзей и получайте бонусы</p>
-                    </div>
+                <div class="section-header">
+                    <h2>Реферальная система</h2>
                 </div>
-
-                <div class="referral-stats">
-                    <div class="referral-stat">
-                        <span class="stat-number" id="referralsCount">0</span>
-                        <span class="stat-label" data-lang="referrals">Рефералов</span>
+                
+                <div class="referral-card">
+                    <div class="referral-stats">
+                        <div class="referral-stat">
+                            <span class="stat-number" id="referralsCount">0</span>
+                            <span class="stat-label">Приглашено друзей</span>
+                        </div>
+                        <div class="referral-stat">
+                            <span class="stat-number" id="referralEarnings">$0</span>
+                            <span class="stat-label">Заработано</span>
+                        </div>
+                        <div class="referral-stat">
+                            <span class="stat-number">10%</span>
+                            <span class="stat-label">Ваш бонус</span>
+                        </div>
+                        <div class="referral-stat">
+                            <span class="stat-number">5%</span>
+                            <span class="stat-label">Бонус другу</span>
+                        </div>
                     </div>
-                    <div class="referral-stat">
-                        <span class="stat-number" id="referralEarnings">$0</span>
-                        <span class="stat-label" data-lang="earnings">Заработано</span>
-                    </div>
-                </div>
 
-                <div class="referral-link">
-                    <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
-                    <div class="link-container">
-                        <input type="text" id="referralLink" readonly value="https://t.me/stokeshopbot?start=ref123456">
-                        <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
+                    <div class="referral-link">
+                        <label>Ваша реферальная ссылка:</label>
+                        <div class="link-container">
+                            <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref_">
+                            <button class="copy-btn" id="copyReferralBtn">
+                                <i class="fas fa-copy"></i> Копировать
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="referral-rules">
-                    <h3 data-lang="how_it_works">Как это работает?</h3>
-                    <ul>
-                        <li data-lang="ref_rule_1">Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
-                        <li data-lang="ref_rule_2">Ваш друг получает 5% бонус на первый депозит</li>
-                        <li data-lang="ref_rule_3">Нет ограничений по количеству приглашенных</li>
-                    </ul>
+                    <div class="referral-rules">
+                        <h3>Как это работает?</h3>
+                        <ul>
+                            <li>Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
+                            <li>Ваш друг получает 5% бонус на первый депозит</li>
+                            <li>Нет ограничений по количеству приглашенных</li>
+                            <li>Реферальные выплаты начисляются мгновенно</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1171,10 +1327,6 @@
                     <div class="method-category">
                         <h4 data-lang="crypto_payments">Криптовалюты</h4>
                         <div class="methods-grid">
-                            <button class="method-btn" data-method="crypto_bot">
-                                <i class="fas fa-robot"></i>
-                                <span>Crypto Bot</span>
-                            </button>
                             <button class="method-btn" data-method="ton">
                                 <i class="fas fa-gem"></i>
                                 <span>TON</span>
@@ -1186,6 +1338,10 @@
                             <button class="method-btn" data-method="btc">
                                 <i class="fab fa-bitcoin"></i>
                                 <span>Bitcoin</span>
+                            </button>
+                            <button class="method-btn" data-method="eth">
+                                <i class="fab fa-ethereum"></i>
+                                <span>Ethereum</span>
                             </button>
                         </div>
                     </div>
@@ -1204,7 +1360,7 @@
                     <div class="custom-amount">
                         <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
                     </div>
-                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Продолжить</button>
+                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Создать инвойс</button>
                 </div>
 
                 <div class="payment-info hidden" id="paymentInfo">
@@ -1252,6 +1408,63 @@
     </div>
 
     <script>
+        // Crypto Pay API Configuration
+        const CRYPTO_PAY_API = {
+            token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
+            baseUrl: 'https://pay.crypt.bot/api',
+            createInvoice: async function(amount, currency = 'USD', description = 'Пополнение баланса') {
+                try {
+                    const response = await fetch(`${this.baseUrl}/createInvoice`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Crypto-Pay-API-Token': this.token
+                        },
+                        body: JSON.stringify({
+                            amount: amount,
+                            asset: 'USDT',
+                            description: description,
+                            hidden_message: `Пополнение баланса на $${amount}`,
+                            paid_btn_name: 'callback',
+                            paid_btn_url: 'https://t.me/cryptosending_bot',
+                            payload: JSON.stringify({
+                                userId: getUserId(),
+                                type: 'deposit',
+                                amount: amount
+                            })
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    return data.ok ? data.result : null;
+                } catch (error) {
+                    console.error('Error creating invoice:', error);
+                    return null;
+                }
+            },
+            
+            getInvoices: async function(invoice_ids = []) {
+                try {
+                    const response = await fetch(`${this.baseUrl}/getInvoices`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Crypto-Pay-API-Token': this.token
+                        },
+                        body: JSON.stringify({
+                            invoice_ids: invoice_ids
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    return data.ok ? data.result : null;
+                } catch (error) {
+                    console.error('Error getting invoices:', error);
+                    return null;
+                }
+            }
+        };
+
         // Translation data
         const translations = {
             ru: {
@@ -1267,60 +1480,11 @@
                 favorites: "Избранное",
                 giveaway: "Розыгрыш",
                 support: "Поддержка",
-                news_welcome: "Добро пожаловать в Stoke Shop!",
-                news_welcome_text: "Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.",
-                subscribe_channel: "Подпишитесь на наш канал",
-                subscribe_text: "Будьте в курсе последних новостей и акций",
-                join_channel: "Присоединиться",
-                referral_system: "Реферальная система",
-                referral_description: "Приглашайте друзей и получайте бонусы",
-                referrals: "Рефералов",
-                earnings: "Заработано",
-                your_referral_link: "Ваша реферальная ссылка:",
-                copy: "Копировать",
-                how_it_works: "Как это работает?",
-                ref_rule_1: "Вы получаете 10% от первого пополнения каждого приглашенного друга",
-                ref_rule_2: "Ваш друг получает 5% бонус на первый депозит",
-                ref_rule_3: "Нет ограничений по количеству приглашенных",
                 crypto_payments: "Криптовалюты",
                 select_amount: "Выберите сумму",
                 continue: "Продолжить",
                 loading: "Загрузка...",
                 back_to_categories: "Назад к категориям"
-            },
-            en: {
-                categories: "Accounts",
-                profile: "Profile",
-                news: "News",
-                referral: "Referrals",
-                search_placeholder: "Search...",
-                balance: "Balance",
-                deposit: "Deposit",
-                orders_history: "Orders",
-                view: "View",
-                favorites: "Favorites",
-                giveaway: "Giveaway",
-                support: "Support",
-                news_welcome: "Welcome to Stoke Shop!",
-                news_welcome_text: "We are glad to welcome you to our accounts store. New categories and improved payment system are now available.",
-                subscribe_channel: "Subscribe to our channel",
-                subscribe_text: "Stay updated with latest news and promotions",
-                join_channel: "Join",
-                referral_system: "Referral System",
-                referral_description: "Invite friends and get bonuses",
-                referrals: "Referrals",
-                earnings: "Earnings",
-                your_referral_link: "Your referral link:",
-                copy: "Copy",
-                how_it_works: "How it works?",
-                ref_rule_1: "You get 10% from the first deposit of each invited friend",
-                ref_rule_2: "Your friend gets 5% bonus on first deposit",
-                ref_rule_3: "No limits on the number of invited users",
-                crypto_payments: "Cryptocurrencies",
-                select_amount: "Select amount",
-                continue: "Continue",
-                loading: "Loading...",
-                back_to_categories: "Back to categories"
             }
         };
 
@@ -1349,38 +1513,6 @@
                 { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account" },
                 { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
                 { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account" }
-            ],
-            2: [
-                { id: 9, name_ru: "НОВОРЕГ ВК", name_en: "NEWREG VK", price: 3.5, stock: 30, description_ru: "Новый аккаунт ВКонтакте", description_en: "New VK account" },
-                { id: 10, name_ru: "ПРЕМИУМ ВК", name_en: "PREMIUM VK", price: 8.0, stock: 12, description_ru: "Премиум аккаунт ВКонтакте", description_en: "Premium VK account" }
-            ],
-            3: [
-                { id: 11, name_ru: "VINTED FR", name_en: "VINTED FR", price: 12.0, stock: 8, description_ru: "Французский аккаунт Vinted", description_en: "French Vinted account" },
-                { id: 12, name_ru: "VINTED ES", name_en: "VINTED ES", price: 10.0, stock: 10, description_ru: "Испанский аккаунт Vinted", description_en: "Spanish Vinted account" }
-            ],
-            4: [
-                { id: 13, name_ru: "WALLAPOP ES", name_en: "WALLAPOP ES", price: 9.0, stock: 15, description_ru: "Испанский аккаунт Wallapop", description_en: "Spanish Wallapop account" }
-            ],
-            5: [
-                { id: 14, name_ru: "FACEBOOK US", name_en: "FACEBOOK US", price: 6.5, stock: 20, description_ru: "Американский аккаунт Facebook", description_en: "US Facebook account" }
-            ],
-            6: [
-                { id: 15, name_ru: "1000 STARS", name_en: "1000 STARS", price: 15.0, stock: 25, description_ru: "1000 звезд Telegram", description_en: "1000 Telegram Stars" }
-            ],
-            7: [
-                { id: 16, name_ru: "1 МЕСЯЦ", name_en: "1 MONTH", price: 5.0, stock: 50, description_ru: "Премиум на 1 месяц", description_en: "Premium for 1 month" }
-            ],
-            8: [
-                { id: 17, name_ru: "ЯНДЕКС ПОЧТА", name_en: "YANDEX MAIL", price: 2.5, stock: 40, description_ru: "Аккаунт Яндекс.Почта", description_en: "Yandex Mail account" }
-            ],
-            9: [
-                { id: 18, name_ru: "OZON SELLER", name_en: "OZON SELLER", price: 25.0, stock: 5, description_ru: "Аккаунт продавца Ozon", description_en: "Ozon seller account" }
-            ],
-            10: [
-                { id: 19, name_ru: "WB SELLER", name_en: "WB SELLER", price: 30.0, stock: 4, description_ru: "Аккаунт продавца Wildberries", description_en: "Wildberries seller account" }
-            ],
-            11: [
-                { id: 20, name_ru: "ГОСУСЛУГИ", name_en: "GOSUSLUGI", price: 45.0, stock: 3, description_ru: "Подтвержденный аккаунт Госуслуг", description_en: "Verified Gosuslugi account" }
             ]
         };
 
@@ -1392,6 +1524,8 @@
         let selectedAmount = 0;
         let selectedProduct = null;
         let giveawayTimerInterval = null;
+        let currentInvoiceId = null;
+        let invoiceCheckInterval = null;
         
         // Real user data
         let userData = {
@@ -1401,15 +1535,16 @@
             referralCount: 0,
             referralEarnings: 0,
             totalDeposited: 0,
-            giveawayParticipating: false
+            giveawayParticipating: false,
+            pendingInvoices: []
         };
 
-        // Giveaway data
+        // Giveaway data with fixed end date
         const giveawayData = {
             id: 1,
             prize: "3x iPhone 17 Pro Max",
             description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000 + 18 * 60 * 60 * 1000), // 5 days 18 hours from now
+            endDate: new Date('2024-12-31T23:59:59'), // Fixed end date
             participants: 4586,
             minDeposit: 30,
             image: "fas fa-mobile-alt"
@@ -1438,7 +1573,6 @@
             customAmount: document.getElementById('customAmount'),
             copyReferralBtn: document.getElementById('copyReferralBtn'),
             referralLink: document.getElementById('referralLink'),
-            joinChannelBtn: document.getElementById('joinChannelBtn'),
             loadingOverlay: document.getElementById('loadingOverlay'),
             searchInput: document.getElementById('searchInput'),
             userAvatar: document.getElementById('userAvatar'),
@@ -1447,8 +1581,6 @@
             userBalance: document.getElementById('userBalance'),
             ordersCount: document.getElementById('ordersCount'),
             viewOrdersBtn: document.getElementById('viewOrdersBtn'),
-            favoritesBtn: document.getElementById('favoritesBtn'),
-            giveawayBtn: document.getElementById('giveawayBtn'),
             purchaseModal: document.getElementById('purchaseModal'),
             closePurchaseModal: document.getElementById('closePurchaseModal'),
             purchaseTitle: document.getElementById('purchaseTitle'),
@@ -1472,7 +1604,6 @@
 
         // Initialize app
         function initApp() {
-            // Initialize Telegram WebApp first
             initTelegramWebApp();
             loadUserData();
             loadCategories();
@@ -1480,6 +1611,7 @@
             setupEventListeners();
             updateUI();
             startGiveawayTimer();
+            updateReferralLink();
         }
 
         // Initialize Telegram WebApp
@@ -1487,17 +1619,14 @@
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 
-                // Expand the app to full height
                 tg.expand();
                 
-                // Set theme based on Telegram theme
                 if (tg.colorScheme === 'dark') {
                     currentTheme = 'dark';
                     document.documentElement.setAttribute('data-theme', 'dark');
                     elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
                 }
                 
-                // Listen for theme changes
                 tg.onEvent('themeChanged', () => {
                     if (tg.colorScheme === 'dark') {
                         currentTheme = 'dark';
@@ -1510,7 +1639,6 @@
                     }
                 });
                 
-                // Enable closing confirmation
                 tg.enableClosingConfirmation();
                 
                 console.log('Telegram WebApp initialized successfully');
@@ -1528,10 +1656,14 @@
                 console.log('Telegram User Data:', user);
                 
                 if (user) {
-                    // Set user avatar
+                    // Set user avatar - fixed to show properly
                     if (user.photo_url) {
                         elements.userAvatar.src = user.photo_url;
                         elements.userAvatar.style.display = 'block';
+                        elements.userAvatar.onerror = function() {
+                            this.style.display = 'none';
+                            document.querySelector('#userAvatar + i').style.display = 'flex';
+                        };
                     } else {
                         elements.userAvatar.style.display = 'none';
                         document.querySelector('#userAvatar + i').style.display = 'flex';
@@ -1554,7 +1686,6 @@
                     // Initialize user data from Telegram
                     initializeUserData(user.id);
                 } else {
-                    // Fallback if no user data
                     elements.userName.textContent = 'Пользователь Telegram';
                     elements.userId.textContent = 'ID: Неизвестен';
                     initializeUserData('telegram_user');
@@ -1572,12 +1703,10 @@
 
         // Initialize user data
         function initializeUserData(userId) {
-            // Load from localStorage or initialize default data
             const savedData = localStorage.getItem(`userData_${userId}`);
             if (savedData) {
                 userData = JSON.parse(savedData);
             } else {
-                // Default data for new users
                 userData = {
                     balance: 0,
                     orders: [],
@@ -1585,7 +1714,8 @@
                     referralCount: 0,
                     referralEarnings: 0,
                     totalDeposited: 0,
-                    giveawayParticipating: false
+                    giveawayParticipating: false,
+                    pendingInvoices: []
                 };
                 saveUserData(userId);
             }
@@ -1609,7 +1739,9 @@
 
         // Update giveaway status
         function updateGiveawayStatus() {
-            elements.userDepositAmount.textContent = `$${userData.totalDeposited}`;
+            elements.userDepositAmount.textContent = `$${userData.totalDeposited.toFixed(2)}`;
+            
+            const amountNeeded = giveawayData.minDeposit - userData.totalDeposited;
             
             if (userData.totalDeposited >= giveawayData.minDeposit) {
                 elements.giveawayStatus.textContent = "✅ Вы уже участвуете в розыгрыше!";
@@ -1618,7 +1750,7 @@
                 elements.participateBtn.textContent = "Вы участвуете в розыгрыше";
                 userData.giveawayParticipating = true;
             } else {
-                elements.giveawayStatus.textContent = `❌ Вы не участвуете в розыгрыше. Пополните баланс на $${giveawayData.minDeposit - userData.totalDeposited} или больше.`;
+                elements.giveawayStatus.textContent = `❌ Вы не участвуете в розыгрыше. Пополните баланс на $${amountNeeded.toFixed(2)} или больше.`;
                 elements.giveawayStatus.className = "giveaway-status status-not-eligible";
                 elements.participateBtn.disabled = true;
                 elements.participateBtn.textContent = "Участвовать в розыгрыше";
@@ -1628,17 +1760,19 @@
             saveUserData(getUserId());
         }
 
+        // Update referral link
+        function updateReferralLink() {
+            const userId = getUserId();
+            elements.referralLink.value = `https://t.me/cryptosending_bot?start=ref_${userId}`;
+        }
+
         // Start giveaway timer
         function startGiveawayTimer() {
-            // Clear existing interval
             if (giveawayTimerInterval) {
                 clearInterval(giveawayTimerInterval);
             }
             
-            // Update timer immediately
             updateGiveawayTimer();
-            
-            // Update timer every second
             giveawayTimerInterval = setInterval(updateGiveawayTimer, 1000);
         }
 
@@ -1649,6 +1783,7 @@
             
             if (timeLeft <= 0) {
                 elements.timerDisplay.textContent = "Розыгрыш завершен";
+                elements.giveawayTimer.textContent = "Завершен";
                 clearInterval(giveawayTimerInterval);
                 return;
             }
@@ -1690,6 +1825,8 @@
             if (products[categoryId]) {
                 products[categoryId].forEach(product => {
                     const isFavorite = userData.favorites.includes(product.id);
+                    const canBuy = userData.balance >= product.price;
+                    
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.innerHTML = `
@@ -1706,7 +1843,9 @@
                             </div>
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
-                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                        <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
+                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                        </button>
                     `;
                     elements.productsGrid.appendChild(productCard);
                 });
@@ -1767,7 +1906,6 @@
                 let product = null;
                 let categoryId = null;
                 
-                // Find product in all categories
                 for (const catId in products) {
                     const found = products[catId].find(p => p.id === favId);
                     if (found) {
@@ -1778,6 +1916,7 @@
                 }
 
                 if (product) {
+                    const canBuy = userData.balance >= product.price;
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.innerHTML = `
@@ -1794,19 +1933,19 @@
                             </div>
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
-                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                        <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
+                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                        </button>
                     `;
                     elements.favoritesGrid.appendChild(productCard);
                 }
             });
 
-            // Add event listeners for favorites
             document.querySelectorAll('#favorites-tab .buy-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = parseInt(e.target.getAttribute('data-product-id'));
                     let categoryId = null;
                     
-                    // Find product category
                     for (const catId in products) {
                         const product = products[catId].find(p => p.id === productId);
                         if (product) {
@@ -1826,7 +1965,6 @@
                     e.stopPropagation();
                     const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
                     toggleFavorite(productId, e.currentTarget);
-                    // Remove from DOM after toggle
                     if (!userData.favorites.includes(productId)) {
                         e.currentTarget.closest('.product-card').remove();
                         if (userData.favorites.length === 0) {
@@ -1849,7 +1987,6 @@
                 return;
             }
 
-            // Show purchase confirmation modal
             elements.purchaseTitle.textContent = currentLanguage === 'ru' ? 'Подтверждение покупки' : 'Purchase Confirmation';
             elements.purchaseInfo.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
@@ -1869,14 +2006,11 @@
 
             showLoading(true);
             
-            // Simulate payment process
             setTimeout(() => {
                 showLoading(false);
                 
-                // Deduct product price from balance
                 userData.balance -= selectedProduct.price;
                 
-                // Add to orders
                 userData.orders.unshift({
                     id: Date.now(),
                     product: currentLanguage === 'ru' ? selectedProduct.name_ru : selectedProduct.name_en,
@@ -1885,14 +2019,11 @@
                     status: 'completed'
                 });
                 
-                // Save data
                 saveUserData(getUserId());
                 updateUserStats();
                 
-                // Close modal
                 elements.purchaseModal.classList.add('hidden');
                 
-                // Show success message
                 showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
                 
                 selectedProduct = null;
@@ -1942,7 +2073,6 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Navigation
             elements.navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const tab = item.getAttribute('data-tab');
@@ -1950,24 +2080,18 @@
                 });
             });
 
-            // Language switch
             elements.langSwitch.addEventListener('click', toggleLanguage);
-
-            // Theme switch
             elements.themeSwitch.addEventListener('click', toggleTheme);
 
-            // Open mini app button
             elements.openMiniApp.addEventListener('click', () => {
                 window.open('https://t.me/cryptosending_bot', '_blank');
             });
 
-            // Back to categories
             elements.backToCategories.addEventListener('click', () => {
                 elements.productsSection.classList.add('hidden');
                 document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
             });
 
-            // Deposit modal
             elements.depositBtn.addEventListener('click', () => {
                 elements.depositModal.classList.remove('hidden');
             });
@@ -1977,7 +2101,6 @@
                 resetPaymentModal();
             });
 
-            // Payment methods
             elements.methodBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedPaymentMethod = btn.getAttribute('data-method');
@@ -1987,7 +2110,6 @@
                 });
             });
 
-            // Amount buttons
             elements.amountBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedAmount = parseFloat(btn.getAttribute('data-amount'));
@@ -1997,55 +2119,37 @@
                 });
             });
 
-            // Custom amount input
             elements.customAmount.addEventListener('input', (e) => {
                 selectedAmount = parseFloat(e.target.value) || 0;
                 elements.amountBtns.forEach(b => b.classList.remove('active'));
             });
 
-            // Confirm deposit
-            elements.confirmDeposit.addEventListener('click', processDeposit);
-
-            // Confirm purchase
+            elements.confirmDeposit.addEventListener('click', createCryptoInvoice);
             elements.confirmPurchase.addEventListener('click', processPurchase);
-
-            // Close purchase modal
             elements.closePurchaseModal.addEventListener('click', () => {
                 elements.purchaseModal.classList.add('hidden');
                 selectedProduct = null;
             });
-
-            // View orders
             elements.viewOrdersBtn.addEventListener('click', showOrders);
-
-            // Close orders modal
             elements.closeOrdersModal.addEventListener('click', () => {
                 elements.ordersModal.classList.add('hidden');
             });
-
-            // Copy referral link
             elements.copyReferralBtn.addEventListener('click', () => {
                 elements.referralLink.select();
                 document.execCommand('copy');
                 showNotification('Ссылка скопирована!');
             });
-
-            // Support button
             elements.supportBtn.addEventListener('click', () => {
                 window.open('https://t.me/stokeshopsupport', '_blank');
             });
-
-            // Referral button
             elements.referralBtn.addEventListener('click', () => {
                 switchTab('referral');
             });
-
-            // Search functionality
             elements.searchInput.addEventListener('input', handleSearch);
         }
 
-        // Process deposit with working Crypto Bot integration
-        function processDeposit() {
+        // Create crypto invoice using Crypto Pay API
+        async function createCryptoInvoice() {
             if (!selectedPaymentMethod) {
                 showNotification('Выберите способ оплаты');
                 return;
@@ -2057,87 +2161,131 @@
             }
 
             showLoading(true);
-            
-            setTimeout(() => {
+
+            try {
+                const invoice = await CRYPTO_PAY_API.createInvoice(
+                    selectedAmount,
+                    'USD',
+                    `Пополнение баланса на $${selectedAmount}`
+                );
+
                 showLoading(false);
-                
-                if (selectedPaymentMethod === 'crypto_bot') {
-                    // Working Crypto Bot payment link
-                    const userId = getUserId();
-                    const paymentUrl = `https://t.me/CryptoBot?start=stokeshop_${userId}_${selectedAmount}`;
+
+                if (invoice) {
+                    currentInvoiceId = invoice.invoice_id;
+                    userData.pendingInvoices.push(invoice.invoice_id);
+                    saveUserData(getUserId());
                     
-                    elements.paymentInfo.innerHTML = `
-                        <h4>Оплата через Crypto Bot</h4>
-                        <p>Перейдите по ссылке для оплаты:</p>
-                        <a href="${paymentUrl}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
-                            Перейти к оплате в Crypto Bot
-                        </a>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary);">
-                            После оплаты баланс пополнится автоматически в течение 1-2 минут
-                        </p>
-                        <button class="confirm-btn" onclick="checkPaymentStatus()" style="margin-top: 16px;">
-                            Проверить статус оплаты
-                        </button>
-                    `;
+                    showInvoicePayment(invoice);
+                    startInvoiceChecking();
                 } else {
-                    // Working crypto wallet addresses
-                    const walletAddresses = {
-                        ton: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
-                        usdt: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
-                        btc: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq'
-                    };
-                    
-                    const currencySymbols = {
-                        ton: 'TON',
-                        usdt: 'USDT',
-                        btc: 'BTC'
-                    };
-                    
-                    elements.paymentInfo.innerHTML = `
-                        <h4>Отправьте платеж на адрес:</h4>
-                        <div class="payment-address">${walletAddresses[selectedPaymentMethod]}</div>
-                        <p>Сумма: $${selectedAmount} (${currencySymbols[selectedPaymentMethod]})</p>
-                        <button class="copy-btn" onclick="copyToClipboard('${walletAddresses[selectedPaymentMethod]}')">
-                            Копировать адрес
-                        </button>
-                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
-                            После отправки средств баланс пополнится автоматически после 1 подтверждения в сети
-                        </p>
-                        <div style="background: var(--surface-dark); padding: 12px; border-radius: 8px; margin-top: 16px;">
-                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">
-                                <strong>Важно:</strong> Отправляйте только ${currencySymbols[selectedPaymentMethod]} на этот адрес
-                            </p>
-                        </div>
-                        <button class="confirm-btn" onclick="checkPaymentStatus()" style="margin-top: 16px;">
-                            Проверить статус оплаты
-                        </button>
-                    `;
+                    showNotification('Ошибка при создании инвойса. Попробуйте позже.');
                 }
-                
-                elements.amountSelector.classList.add('hidden');
-                elements.paymentInfo.classList.remove('hidden');
-            }, 1500);
+            } catch (error) {
+                showLoading(false);
+                showNotification('Ошибка при создании инвойса. Попробуйте позже.');
+                console.error('Invoice creation error:', error);
+            }
         }
 
-        // Check payment status (simulated)
-        function checkPaymentStatus() {
-            showLoading(true);
+        // Show invoice payment details
+        function showInvoicePayment(invoice) {
+            elements.paymentInfo.innerHTML = `
+                <div class="payment-processing">
+                    <h4>Оплата через Crypto Pay</h4>
+                    <p>Для оплаты используйте ссылку ниже:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <a href="${invoice.pay_url}" target="_blank" style="display: block; padding: 14px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
+                            Перейти к оплате
+                        </a>
+                    </div>
+                    
+                    <div class="payment-status status-pending">
+                        <i class="fas fa-clock"></i> Ожидание оплаты...
+                    </div>
+                    
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
+                        После оплаты баланс пополнится автоматически в течение 1-2 минут
+                    </p>
+                    
+                    <button class="confirm-btn" onclick="checkInvoiceStatus()" style="margin-top: 16px;">
+                        Проверить статус оплаты
+                    </button>
+                </div>
+            `;
             
-            setTimeout(() => {
-                showLoading(false);
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.remove('hidden');
+        }
+
+        // Start checking invoice status
+        function startInvoiceChecking() {
+            if (invoiceCheckInterval) {
+                clearInterval(invoiceCheckInterval);
+            }
+            
+            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000); // Check every 10 seconds
+        }
+
+        // Check invoice status
+        async function checkInvoiceStatus() {
+            if (!currentInvoiceId) return;
+
+            try {
+                const invoices = await CRYPTO_PAY_API.getInvoices([currentInvoiceId]);
                 
-                // Simulate successful payment
-                userData.balance += selectedAmount;
-                userData.totalDeposited += selectedAmount;
-                
-                saveUserData(getUserId());
-                updateUserStats();
-                updateGiveawayStatus();
-                
-                showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
-                elements.depositModal.classList.add('hidden');
-                resetPaymentModal();
-            }, 2000);
+                if (invoices && invoices.items && invoices.items.length > 0) {
+                    const invoice = invoices.items[0];
+                    
+                    if (invoice.status === 'paid') {
+                        // Payment successful
+                        clearInterval(invoiceCheckInterval);
+                        
+                        userData.balance += selectedAmount;
+                        userData.totalDeposited += selectedAmount;
+                        
+                        // Remove from pending invoices
+                        userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== currentInvoiceId);
+                        
+                        saveUserData(getUserId());
+                        updateUserStats();
+                        updateGiveawayStatus();
+                        
+                        elements.paymentInfo.innerHTML = `
+                            <div class="payment-processing">
+                                <div class="payment-status status-success">
+                                    <i class="fas fa-check-circle"></i> Оплата подтверждена!
+                                </div>
+                                <p style="margin: 16px 0; font-size: 1.125rem;">
+                                    Ваш баланс пополнен на $${selectedAmount}
+                                </p>
+                                <button class="confirm-btn" onclick="closeDepositModal()">
+                                    Закрыть
+                                </button>
+                            </div>
+                        `;
+                        
+                        showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
+                    } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
+                        // Payment failed
+                        clearInterval(invoiceCheckInterval);
+                        
+                        elements.paymentInfo.innerHTML = `
+                            <div class="payment-processing">
+                                <div class="payment-status status-failed">
+                                    <i class="fas fa-times-circle"></i> Инвойс просрочен или отменен
+                                </div>
+                                <button class="confirm-btn" onclick="resetPaymentModal()">
+                                    Создать новый инвойс
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking invoice status:', error);
+            }
         }
 
         // Handle search
@@ -2179,6 +2327,8 @@
                 searchResults.forEach(product => {
                     const category = categories.find(c => c.id === product.categoryId);
                     const isFavorite = userData.favorites.includes(product.id);
+                    const canBuy = userData.balance >= product.price;
+                    
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
                     productCard.innerHTML = `
@@ -2196,12 +2346,13 @@
                             </div>
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
-                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                        <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
+                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                        </button>
                     `;
                     elements.categoriesGrid.appendChild(productCard);
                 });
 
-                // Re-add event listeners
                 document.querySelectorAll('.buy-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const productId = parseInt(e.target.getAttribute('data-product-id'));
@@ -2289,11 +2440,22 @@
         function resetPaymentModal() {
             selectedPaymentMethod = null;
             selectedAmount = 0;
+            currentInvoiceId = null;
             elements.methodBtns.forEach(b => b.classList.remove('active'));
             elements.amountBtns.forEach(b => b.classList.remove('active'));
             elements.customAmount.value = '';
             elements.amountSelector.classList.add('hidden');
             elements.paymentInfo.classList.add('hidden');
+            
+            if (invoiceCheckInterval) {
+                clearInterval(invoiceCheckInterval);
+            }
+        }
+
+        // Close deposit modal
+        function closeDepositModal() {
+            elements.depositModal.classList.add('hidden');
+            resetPaymentModal();
         }
 
         // Show loading overlay
@@ -2303,7 +2465,6 @@
 
         // Show notification
         function showNotification(message) {
-            // Use Telegram WebApp notification if available
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.showPopup({
                     title: 'Уведомление',
@@ -2313,7 +2474,6 @@
                 return;
             }
 
-            // Fallback notification
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -2340,12 +2500,11 @@
             }, 3000);
         }
 
-        // Copy to clipboard
-        function copyToClipboard(text) {
+        // Make functions globally available
+        window.copyToClipboard = function(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showNotification('Скопировано!');
             }).catch(() => {
-                // Fallback for older browsers
                 const textArea = document.createElement('textarea');
                 textArea.value = text;
                 document.body.appendChild(textArea);
@@ -2354,11 +2513,11 @@
                 document.body.removeChild(textArea);
                 showNotification('Скопировано!');
             });
-        }
+        };
 
-        // Make functions globally available for onclick handlers
-        window.copyToClipboard = copyToClipboard;
-        window.checkPaymentStatus = checkPaymentStatus;
+        window.checkInvoiceStatus = checkInvoiceStatus;
+        window.resetPaymentModal = resetPaymentModal;
+        window.closeDepositModal = closeDepositModal;
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
