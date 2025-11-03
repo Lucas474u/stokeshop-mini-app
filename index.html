@@ -96,6 +96,13 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .header-actions {
@@ -377,6 +384,13 @@
             justify-content: center;
             margin: 0 auto 16px;
             border: 3px solid var(--primary-color);
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .avatar i {
@@ -1032,7 +1046,10 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon">S</div>
+                    <div class="logo-icon">
+                        <img src="https://i.pinimg.com/736x/3f/4f/f3/3f4ff36e3545648808d9eb1f04e1c9c8.jpg" alt="Stoke Shop Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; font-weight: bold;">S</div>
+                    </div>
                     <span class="logo-text">Stoke Shop</span>
                 </div>
                 <div class="header-actions">
@@ -1107,11 +1124,12 @@
             <div class="tab-content" id="profile-tab">
                 <div class="profile-header">
                     <div class="avatar">
-                        <i class="fas fa-user"></i>
+                        <img src="" alt="User Avatar" id="userAvatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <i class="fas fa-user" style="display: none;"></i>
                     </div>
                     <div class="profile-info">
-                        <h3 id="userName">Пользователь</h3>
-                        <p class="user-id" id="userId">ID: 123456789</p>
+                        <h3 id="userName">Загрузка...</h3>
+                        <p class="user-id" id="userId">ID: Загрузка...</p>
                     </div>
                 </div>
 
@@ -1318,125 +1336,30 @@
 
         const products = {
            1: [
-                { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
-                { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
-                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
-                { id: 4, name_ru: "ВИРТ СИМ", name_en: "VIRTUAL SIM", price: 4.5, stock: 20, description_ru: "Аккаунт с виртуальной симкой", description_en: "Account with virtual SIM" },
-                { id: 5, name_ru: "БИЗНЕС", name_en: "BUSINESS", price: 6.0, stock: 10, description_ru: "Бизнес аккаунт Telegram", description_en: "Telegram Business account" },
-                { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account" },
-                { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
-                { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account" }
+                { id: 1, name: "НОВОРЕГ", price: 4.0, stock: 25, description: "Новый аккаунт Telegram" },
+                { id: 2, name: "ФИЗ СИМ US", price: 5.0, stock: 15, description: "Аккаунт с US сим-картой" },
+                { id: 3, name: "ФИЗ СИМ EU", price: 5.5, stock: 12, description: "Аккаунт с EU сим-картой" },
+                { id: 4, name: "ВИРТ СИМ", price: 4.5, stock: 20, description: "Аккаунт с виртуальной симкой" },
+                { id: 5, name: "БИЗНЕС", price: 6.0, stock: 10, description: "Бизнес аккаунт Telegram" },
+                { id: 6, name: "ПРЕМИУМ", price: 7.0, stock: 15, description: "Премиум аккаунт Telegram" },
+                { id: 7, name: "ВЕРИФИЦИРОВАН", price: 6.5, stock: 12, description: "Верифицированный аккаунт" },
+                { id: 8, name: "ПРО АККАУНТ", price: 5.8, stock: 7, description: "Профессиональный аккаунт" }
             ],
             2: [
-                { id: 9, name_ru: "ВК PREMIUM", name_en: "VK PREMIUM", price: 10.0, stock: 15, description_ru: "Премиум аккаунт ВК", description_en: "Premium VK account" },
-                { id: 10, name_ru: "ВК BUSINESS", name_en: "VK BUSINESS", price: 8.0, stock: 12, description_ru: "Бизнес страница ВК", description_en: "VK Business page" },
-                { id: 11, name_ru: "ВК STANDARD", name_en: "VK STANDARD", price: 3.0, stock: 25, description_ru: "Стандартный аккаунт ВК", description_en: "Standard VK account" },
-                { id: 12, name_ru: "ВК FRESH", name_en: "VK FRESH", price: 2.0, stock: 20, description_ru: "Свежий аккаунт ВК", description_en: "Fresh VK account" },
-                { id: 13, name_ru: "ВК VERIFIED", name_en: "VK VERIFIED", price: 9.0, stock: 13, description_ru: "Верифицированный аккаунт ВК", description_en: "Verified VK account" },
-                { id: 14, name_ru: "ВК CREATOR", name_en: "VK CREATOR", price: 7.0, stock: 12, description_ru: "Аккаунт создателя контента", description_en: "Content creator account" },
-                { id: 15, name_ru: "ВК GAMING", name_en: "VK GAMING", price: 5.0, stock: 18, description_ru: "Игровой аккаунт ВК", description_en: "VK Gaming account" }
+                { id: 9, name: "ВК PREMIUM", price: 10.0, stock: 15, description: "Премиум аккаунт ВК" },
+                { id: 10, name: "ВК BUSINESS", price: 8.0, stock: 12, description: "Бизнес страница ВК" },
+                { id: 11, name: "ВК STANDARD", price: 3.0, stock: 25, description: "Стандартный аккаунт ВК" },
+                { id: 12, name: "ВК FRESH", price: 2.0, stock: 20, description: "Свежий аккаунт ВК" },
+                { id: 13, name: "ВК VERIFIED", price: 9.0, stock: 13, description: "Верифицированный аккаунт ВК" },
+                { id: 14, name: "ВК CREATOR", price: 7.0, stock: 12, description: "Аккаунт создателя контента" },
+                { id: 15, name: "ВК GAMING", price: 5.0, stock: 18, description: "Игровой аккаунт ВК" }
             ],
             3: [
-                { id: 16, name_ru: "Vinted BRUT Франция", name_en: "Vinted BRUT France", price: 120.0, stock: 23, description_ru: "Премиум аккаунты Vinted Франция", description_en: "Premium Vinted France accounts" },
-                { id: 17, name_ru: "Vinted BRUT Испания", name_en: "Vinted BRUT Spain", price: 115.0, stock: 16, description_ru: "Качественные аккаунты Vinted", description_en: "Quality Vinted accounts" },
-                { id: 18, name_ru: "Vinted BRUT Италия", name_en: "Vinted BRUT Italy", price: 110.0, stock: 13, description_ru: "Итальянские аккаунты Vinted", description_en: "Italian Vinted accounts" },
-                { id: 19, name_ru: "Vinted BRUT Германия", name_en: "Vinted BRUT Germany", price: 125.0, stock: 12, description_ru: "Немецкие аккаунты Vinted", description_en: "German Vinted accounts" },
-                { id: 20, name_ru: "Vinted BRUT Польша", name_en: "Vinted BRUT Poland", price: 100.0, stock: 17, description_ru: "Польские аккаунты Vinted", description_en: "Polish Vinted accounts" },
-                { id: 21, name_ru: "Vinted BRUT США", name_en: "Vinted BRUT USA", price: 140.0, stock: 21, description_ru: "Американские аккаунты Vinted", description_en: "USA Vinted accounts" },
-                { id: 22, name_ru: "Vinted BRUT Великобритания", name_en: "Vinted BRUT UK", price: 130.0, stock: 14, description_ru: "Британские аккаунты Vinted", description_en: "British Vinted accounts" },
-                { id: 23, name_ru: "Vinted BRUT Канада", name_en: "Vinted BRUT Canada", price: 135.0, stock: 19, description_ru: "Канадские аккаунты Vinted", description_en: "Canadian Vinted accounts" },
-                { id: 24, name_ru: "Vinted BRUT Нидерланды", name_en: "Vinted BRUT Netherlands", price: 105.0, stock: 18, description_ru: "Голландские аккаунты Vinted", description_en: "Dutch Vinted accounts" },
-                { id: 25, name_ru: "Vinted BRUT Бельгия", name_en: "Vinted BRUT Belgium", price: 95.0, stock: 14, description_ru: "Бельгийские аккаунты Vinted", description_en: "Belgian Vinted accounts" },
-                { id: 26, name_ru: "Vinted BRUT Португалия", name_en: "Vinted BRUT Portugal", price: 90.0, stock: 16, description_ru: "Португальские аккаунты Vinted", description_en: "Portuguese Vinted accounts" },
-                { id: 27, name_ru: "Vinted BRUT Швеция", name_en: "Vinted BRUT Sweden", price: 145.0, stock: 11, description_ru: "Шведские аккаунты Vinted", description_en: "Swedish Vinted accounts" },
-                { id: 28, name_ru: "Vinted BRUT Норвегия", name_en: "Vinted BRUT Norway", price: 150.0, stock: 14, description_ru: "Норвежские аккаунты Vinted", description_en: "Norwegian Vinted accounts" },
-                { id: 29, name_ru: "Vinted BRUT Дания", name_en: "Vinted BRUT Denmark", price: 135.0, stock: 12, description_ru: "Датские аккаунты Vinted", description_en: "Danish Vinted accounts" },
-                { id: 30, name_ru: "Vinted BRUT Финляндия", name_en: "Vinted BRUT Finland", price: 140.0, stock: 15, description_ru: "Финские аккаунты Vinted", description_en: "Finnish Vinted accounts" }
-            ],
-            4: [
-                { id: 31, name_ru: "Wallapop Испания", name_en: "Wallapop Spain", price: 25.0, stock: 10, description_ru: "Качественный испанский аккаунт", description_en: "Quality Spanish account" },
-                { id: 32, name_ru: "Wallapop Италия", name_en: "Wallapop Italy", price: 22.0, stock: 17, description_ru: "Итальянский аккаунт Wallapop", description_en: "Italian Wallapop account" },
-                { id: 33, name_ru: "Wallapop Франция", name_en: "Wallapop France", price: 28.0, stock: 12, description_ru: "Французский аккаунт Wallapop", description_en: "French Wallapop account" },
-                { id: 34, name_ru: "Wallapop Португалия", name_en: "Wallapop Portugal", price: 20.0, stock: 15, description_ru: "Португальский аккаунт", description_en: "Portuguese account" },
-                { id: 35, name_ru: "Wallapop PREMIUM", name_en: "Wallapop PREMIUM", price: 35.0, stock: 19, description_ru: "Премиум аккаунт Wallapop", description_en: "Premium Wallapop account" },
-                { id: 36, name_ru: "Wallapop BUSINESS", name_en: "Wallapop BUSINESS", price: 45.0, stock: 16, description_ru: "Бизнес аккаунт Wallapop", description_en: "Business Wallapop account" },
-                { id: 37, name_ru: "Wallapop FRESH", name_en: "Wallapop FRESH", price: 15.0, stock: 20, description_ru: "Свежий аккаунт Wallapop", description_en: "Fresh Wallapop account" },
-                { id: 38, name_ru: "Wallapop VERIFIED", name_en: "Wallapop VERIFIED", price: 30.0, stock: 9, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
-                { id: 39, name_ru: "Wallapop TOP SELLER", name_en: "Wallapop TOP SELLER", price: 50.0, stock: 15, description_ru: "Аккаунт топ продавца", description_en: "Top seller account" },
-                { id: 40, name_ru: "Wallapop PRO", name_en: "Wallapop PRO", price: 40.0, stock: 15, description_ru: "Профессиональный аккаунт", description_en: "Professional account" },
-                { id: 41, name_ru: "Wallapop STANDARD", name_en: "Wallapop STANDARD", price: 18.0, stock: 18, description_ru: "Стандартный аккаунт", description_en: "Standard account" },
-                { id: 42, name_ru: "Wallapop ULTIMATE", name_en: "Wallapop ULTIMATE", price: 55.0, stock: 18, description_ru: "Ультимативный аккаунт", description_en: "Ultimate account" },
-                { id: 43, name_ru: "Wallapop ECONOMY", name_en: "Wallapop ECONOMY", price: 12.0, stock: 25, description_ru: "Экономный аккаунт", description_en: "Economy account" }
-            ],
-            5: [
-                { id: 44, name_ru: "Facebook USA", name_en: "Facebook USA", price: 3.0, stock: 20, description_ru: "Американский аккаунт Facebook", description_en: "USA Facebook account" },
-                { id: 45, name_ru: "Facebook UK", name_en: "Facebook UK", price: 2.8, stock: 18, description_ru: "Британский аккаунт Facebook", description_en: "UK Facebook account" },
-                { id: 46, name_ru: "Facebook Германия", name_en: "Facebook Germany", price: 2.5, stock: 15, description_ru: "Немецкий аккаунт Facebook", description_en: "German Facebook account" },
-                { id: 47, name_ru: "Facebook Франция", name_en: "Facebook France", price: 2.3, stock: 22, description_ru: "Французский аккаунт Facebook", description_en: "French Facebook account" },
-                { id: 48, name_ru: "Facebook Канада", name_en: "Facebook Canada", price: 2.7, stock: 16, description_ru: "Канадский аккаунт Facebook", description_en: "Canadian Facebook account" },
-                { id: 49, name_ru: "Facebook Испания", name_en: "Facebook Spain", price: 1.8, stock: 25, description_ru: "Испанский аккаунт Facebook", description_en: "Spanish Facebook account" },
-                { id: 50, name_ru: "Facebook Италия", name_en: "Facebook Italy", price: 1.9, stock: 23, description_ru: "Итальянский аккаунт Facebook", description_en: "Italian Facebook account" },
-                { id: 51, name_ru: "Facebook Бразилия", name_en: "Facebook Brazil", price: 1.5, stock: 30, description_ru: "Бразильский аккаунт Facebook", description_en: "Brazilian Facebook account" },
-                { id: 52, name_ru: "Facebook Мексика", name_en: "Facebook Mexico", price: 1.6, stock: 28, description_ru: "Мексиканский аккаунт Facebook", description_en: "Mexican Facebook account" },
-                { id: 53, name_ru: "Facebook Австралия", name_en: "Facebook Australia", price: 2.9, stock: 12, description_ru: "Австралийский аккаунт Facebook", description_en: "Australian Facebook account" },
-                { id: 54, name_ru: "Facebook Япония", name_en: "Facebook Japan", price: 2.2, stock: 14, description_ru: "Японский аккаунт Facebook", description_en: "Japanese Facebook account" },
-                { id: 55, name_ru: "Facebook Южная Корея", name_en: "Facebook South Korea", price: 2.1, stock: 13, description_ru: "Корейский аккаунт Facebook", description_en: "Korean Facebook account" },
-                { id: 56, name_ru: "Facebook Индия", name_en: "Facebook India", price: 0.7, stock: 50, description_ru: "Индийский аккаунт Facebook", description_en: "Indian Facebook account" },
-                { id: 57, name_ru: "Facebook Турция", name_en: "Facebook Turkey", price: 1.2, stock: 35, description_ru: "Турецкий аккаунт Facebook", description_en: "Turkish Facebook account" },
-                { id: 58, name_ru: "Facebook Польша", name_en: "Facebook Poland", price: 1.8, stock: 26, description_ru: "Польский аккаунт Facebook", description_en: "Polish Facebook account" },
-                { id: 59, name_ru: "Facebook BUSINESS", name_en: "Facebook BUSINESS", price: 5.0, stock: 14, description_ru: "Бизнес аккаунт Facebook", description_en: "Facebook Business account" }
-            ],
-            6: [
-                { id: 60, name_ru: "Telegram Stars 100", name_en: "Telegram Stars 100", price: 0.8, stock: 100, description_ru: "100 звезд для Telegram", description_en: "100 Telegram Stars" },
-                { id: 61, name_ru: "Telegram Stars 500", name_en: "Telegram Stars 500", price: 4.5, stock: 50, description_ru: "500 звезд для Telegram", description_en: "500 Telegram Stars" },
-                { id: 62, name_ru: "Telegram Stars 1000", name_en: "Telegram Stars 1000", price: 11.0, stock: 30, description_ru: "1000 звезд для Telegram", description_en: "1000 Telegram Stars" },
-                { id: 63, name_ru: "Telegram Stars 5000", name_en: "Telegram Stars 5000", price: 50.0, stock: 15, description_ru: "5000 звезд для Telegram", description_en: "5000 Telegram Stars" }
-            ],
-            7: [
-                { id: 64, name_ru: "Telegram Premium 3 месяца", name_en: "Telegram Premium 3 months", price: 9.0, stock: 30, description_ru: "Премиум подписка на 3 месяца", description_en: "3 months Premium subscription" },
-                { id: 65, name_ru: "Telegram Premium 6 месяцев", name_en: "Telegram Premium 6 months", price: 15.0, stock: 25, description_ru: "Премиум подписка на 6 месяцев", description_en: "6 months Premium subscription" },
-                { id: 66, name_ru: "Telegram Premium 1 год", name_en: "Telegram Premium 1 year", price: 25.0, stock: 20, description_ru: "Годовая премиум подписка", description_en: "Annual premium subscription" }
-            ],
-            8: [
-                { id: 67, name_ru: "Яндекс Сплит НОВОРЕГ", name_en: "Yandex Split NEWREG", price: 15.0, stock: 25, description_ru: "Свежий аккаунт Яндекс Сплит", description_en: "Fresh Yandex Split account" },
-                { id: 68, name_ru: "Яндекс Сплит ВЕРИФИЦИРОВАН", name_en: "Yandex Split VERIFIED", price: 25.0, stock: 18, description_ru: "Верифицированный Яндекс Сплит", description_en: "Verified Yandex Split account" },
-                { id: 69, name_ru: "Яндекс Сплит PRO", name_en: "Yandex Split PRO", price: 40.0, stock: 12, description_ru: "Профессиональный Яндекс Сплит", description_en: "Professional Yandex Split account" },
-                { id: 70, name_ru: "Яндекс Сплит БИЗНЕС", name_en: "Yandex Split BUSINESS", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Яндекс Сплит", description_en: "Business Yandex Split account" },
-                { id: 71, name_ru: "Яндекс Сплит МАКСИМУМ", name_en: "Yandex Split MAXIMUM", price: 80.0, stock: 18, description_ru: "Яндекс Сплит с максимальными лимитами", description_en: "Yandex Split with maximum limits" },
-                { id: 72, name_ru: "Яндекс Сплит СТАНДАРТ", name_en: "Yandex Split STANDARD", price: 20.0, stock: 20, description_ru: "Стандартный аккаунт Яндекс Сплит", description_en: "Standard Yandex Split account" },
-                { id: 73, name_ru: "Яндекс Сплит ПРЕМИУМ", name_en: "Yandex Split PREMIUM", price: 50.0, stock: 10, description_ru: "Премиум Яндекс Сплит аккаунт", description_en: "Premium Yandex Split account" },
-                { id: 74, name_ru: "Яндекс Сплит ВИП", name_en: "Yandex Split VIP", price: 70.0, stock: 17, description_ru: "VIP аккаунт Яндекс Сплит", description_en: "VIP Yandex Split account" },
-                { id: 75, name_ru: "Яндекс Сплит АВТО", name_en: "Yandex Split AUTO", price: 35.0, stock: 15, description_ru: "Яндекс Сплит для автоматизации", description_en: "Yandex Split for automation" },
-                { id: 76, name_ru: "Яндекс Сплит УЛЬТИМАТ", name_en: "Yandex Split ULTIMATE", price: 90.0, stock: 16, description_ru: "Ультимативный Яндекс Сплит", description_en: "Ultimate Yandex Split account" }
-            ],
-            9: [
-                { id: 77, name_ru: "Ozon НОВОРЕГ", name_en: "Ozon NEWREG", price: 20.0, stock: 20, description_ru: "Свежий аккаунт Ozon", description_en: "Fresh Ozon account" },
-                { id: 78, name_ru: "Ozon ВЕРИФИЦИРОВАН", name_en: "Ozon VERIFIED", price: 35.0, stock: 15, description_ru: "Верифицированный Ozon", description_en: "Verified Ozon account" },
-                { id: 79, name_ru: "Ozon PRO", name_en: "Ozon PRO", price: 50.0, stock: 10, description_ru: "Профессиональный Ozon", description_en: "Professional Ozon account" },
-                { id: 80, name_ru: "Ozon БИЗНЕС", name_en: "Ozon BUSINESS", price: 70.0, stock: 13, description_ru: "Бизнес аккаунт Ozon", description_en: "Business Ozon account" },
-                { id: 81, name_ru: "Ozon МАКСИМУМ", name_en: "Ozon MAXIMUM", price: 80.0, stock: 17, description_ru: "Ozon с максимальными лимитами", description_en: "Ozon with maximum limits" },
-                { id: 82, name_ru: "Ozon СТАНДАРТ", name_en: "Ozon STANDARD", price: 25.0, stock: 18, description_ru: "Стандартный аккаунт Ozon", description_en: "Standard Ozon account" },
-                { id: 83, name_ru: "Ozon ПРЕМИУМ", name_en: "Ozon PREMIUM", price: 60.0, stock: 13, description_ru: "Премиум Ozon аккаунт", description_en: "Premium Ozon account" },
-                { id: 84, name_ru: "Ozon СЕЛЛЕР", name_en: "Ozon SELLER", price: 90.0, stock: 12, description_ru: "Аккаунт продавца Ozon", description_en: "Ozon sellers account" }
-            ],
-            10: [
-                { id: 85, name_ru: "WB SELLER", name_en: "WB SELLER", price: 30.0, stock: 12, description_ru: "Аккаунт продавца Wildberries", description_en: "Wildberries Seller account" },
-                { id: 86, name_ru: "WB BUSINESS", name_en: "WB BUSINESS", price: 45.0, stock: 17, description_ru: "Бизнес аккаунт Wildberries", description_en: "Wildberries Business account" },
-                { id: 87, name_ru: "WB FRESH", name_en: "WB FRESH", price: 12.0, stock: 18, description_ru: "Свежий аккаунт Wildberries", description_en: "Fresh Wildberries account" },
-                { id: 88, name_ru: "WB VERIFIED", name_en: "WB VERIFIED", price: 35.0, stock: 18, description_ru: "Верифицированный аккаунт WB", description_en: "Verified WB account" },
-                { id: 89, name_ru: "WB PREMIUM", name_en: "WB PREMIUM", price: 40.0, stock: 12, description_ru: "Премиум аккаунт Wildberries", description_en: "Premium Wildberries account" },
-                { id: 90, name_ru: "WB STANDARD", name_en: "WB STANDARD", price: 18.0, stock: 14, description_ru: "Стандартный аккаунт Wildberries", description_en: "Standard Wildberries account" },
-                { id: 91, name_ru: "WB EXPRESS", name_en: "WB EXPRESS", price: 25.0, stock: 11, description_ru: "Аккаунт WB Express", description_en: "WB Express account" },
-                { id: 92, name_ru: "WB PARTNER", name_en: "WB PARTNER", price: 32.0, stock: 17, description_ru: "Партнерский аккаунт WB", description_en: "WB Partner account" },
-                { id: 93, name_ru: "WB GOLD", name_en: "WB GOLD", price: 38.0, stock: 18, description_ru: "Золотой аккаунт Wildberries", description_en: "Gold Wildberries account" }
-            ],
-            11: [
-                { id: 94, name_ru: "Госуслуги STANDARD", name_en: "Gosuslugi STANDARD", price: 20.0, stock: 10, description_ru: "Стандартный аккаунт Госуслуг", description_en: "Standard Gosuslugi account" },
-                { id: 95, name_ru: "Госуслуги VERIFIED", name_en: "Gosuslugi VERIFIED", price: 35.0, stock: 17, description_ru: "Верифицированный аккаунт Госуслуг", description_en: "Verified Gosuslugi account" },
-                { id: 96, name_ru: "Госуслуги PREMIUM", name_en: "Gosuslugi PREMIUM", price: 50.0, stock: 19, description_ru: "Премиум аккаунт Госуслуг", description_en: "Premium Gosuslugi account" },
-                { id: 97, name_ru: "Госуслуги BUSINESS", name_en: "Gosuslugi BUSINESS", price: 60.0, stock: 16, description_ru: "Бизнес аккаунт Госуслуг", description_en: "Business Gosuslugi account" },
-                { id: 98, name_ru: "Госуслуги FRESH", name_en: "Gosuslugi FRESH", price: 25.0, stock: 12, description_ru: "Свежий аккаунт Госуслуг", description_en: "Fresh Gosuslugi account" },
-                { id: 99, name_ru: "Госуслуги PRO", name_en: "Gosuslugi PRO", price: 45.0, stock: 6, description_ru: "Профессиональный аккаунт Госуслуг", description_en: "Pro Gosuslugi account" }
+                { id: 16, name: "Vinted BRUT Франция", price: 120.0, stock: 23, description: "Премиум аккаунты Vinted Франция" },
+                { id: 17, name: "Vinted BRUT Испания", price: 115.0, stock: 16, description: "Качественные аккаунты Vinted" },
+                { id: 18, name: "Vinted BRUT Италия", price: 110.0, stock: 13, description: "Итальянские аккаунты Vinted" },
+                { id: 19, name: "Vinted BRUT Германия", price: 125.0, stock: 12, description: "Немецкие аккаунты Vinted" },
+                { id: 20, name: "Vinted BRUT Польша", price: 100.0, stock: 17, description: "Польские аккаунты Vinted" }
             ]
         };
 
@@ -1459,12 +1382,12 @@
             totalDeposited: 0
         };
 
-        // Giveaway data
+        // Giveaway data - фиксированная дата окончания
         const giveaway = {
             id: 1,
             prize: "3x iPhone 17 Pro Max",
             description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            endDate: new Date('2024-12-31T23:59:59'), // Фиксированная дата окончания
             participants: 4586,
             image: "fas fa-mobile-alt",
             requiredDeposit: 30
@@ -1486,6 +1409,9 @@
                     document.documentElement.setAttribute('data-theme', 'dark');
                 }
                 
+                // Load Telegram user data
+                loadTelegramUserData(tg);
+                
                 console.log('✅ Telegram WebApp initialized');
             }
             
@@ -1500,9 +1426,64 @@
             console.log('✅ App initialized successfully');
         }
 
-        // Load user data
+        // Load Telegram user data
+        function loadTelegramUserData(tg) {
+            const user = tg.initDataUnsafe.user;
+            
+            if (user) {
+                // Set user name
+                const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Пользователь';
+                document.getElementById('userName').textContent = userName;
+                
+                // Set user ID
+                document.getElementById('userId').textContent = `ID: ${user.id}`;
+                
+                // Set user avatar
+                const avatar = document.getElementById('userAvatar');
+                if (user.photo_url) {
+                    avatar.src = user.photo_url;
+                    avatar.style.display = 'block';
+                    avatar.nextElementSibling.style.display = 'none';
+                } else {
+                    avatar.style.display = 'none';
+                    avatar.nextElementSibling.style.display = 'flex';
+                }
+                
+                // Save Telegram user ID to localStorage for persistence
+                localStorage.setItem('telegram_user_id', user.id);
+                localStorage.setItem('telegram_user_name', userName);
+                if (user.photo_url) {
+                    localStorage.setItem('telegram_user_avatar', user.photo_url);
+                }
+            } else {
+                // Fallback to saved data
+                loadSavedTelegramData();
+            }
+        }
+
+        // Load saved Telegram data
+        function loadSavedTelegramData() {
+            const savedId = localStorage.getItem('telegram_user_id');
+            const savedName = localStorage.getItem('telegram_user_name');
+            const savedAvatar = localStorage.getItem('telegram_user_avatar');
+            
+            if (savedId) {
+                document.getElementById('userId').textContent = `ID: ${savedId}`;
+            }
+            if (savedName) {
+                document.getElementById('userName').textContent = savedName;
+            }
+            if (savedAvatar) {
+                const avatar = document.getElementById('userAvatar');
+                avatar.src = savedAvatar;
+                avatar.style.display = 'block';
+                avatar.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        // Load user data with persistence
         function loadUserData() {
-            const userId = 'telegram_user';
+            const userId = localStorage.getItem('telegram_user_id') || 'default_user';
             const savedData = localStorage.getItem(`userData_${userId}`);
             
             if (savedData) {
@@ -1522,7 +1503,7 @@
             updateUserStats();
         }
 
-        // Save user data
+        // Save user data with persistence
         function saveUserData(userId) {
             localStorage.setItem(`userData_${userId}`, JSON.stringify(userData));
         }
@@ -1623,7 +1604,8 @@
                 button.classList.add('active');
                 showNotification('Добавлено в избранное');
             }
-            saveUserData('telegram_user');
+            const userId = localStorage.getItem('telegram_user_id') || 'default_user';
+            saveUserData(userId);
             loadFavorites();
         }
 
@@ -1695,7 +1677,7 @@
             }, 100);
         }
 
-        // Load giveaway
+        // Load giveaway with persistent countdown
         function loadGiveaway() {
             const grid = document.getElementById('giveawayGrid');
             const isEligible = userData.totalDeposited >= giveaway.requiredDeposit;
@@ -1762,7 +1744,7 @@
             }, 100);
         }
 
-        // Countdown timer
+        // Countdown timer with persistence
         function startCountdown() {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(updateCountdown, 1000);
@@ -1837,7 +1819,8 @@
                     status: 'completed'
                 });
                 
-                saveUserData('telegram_user');
+                const userId = localStorage.getItem('telegram_user_id') || 'default_user';
+                saveUserData(userId);
                 updateUserStats();
                 document.getElementById('purchaseModal').classList.add('hidden');
                 showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
@@ -2002,7 +1985,7 @@
                 showLoading(false);
                 
                 if (selectedPaymentMethod === 'crypto_bot') {
-                    const userId = 'telegram_user';
+                    const userId = localStorage.getItem('telegram_user_id') || 'default_user';
                     const paymentUrl = `https://t.me/CryptoBot?start=stokeshop_${userId}_${selectedAmount}`;
                     
                     document.getElementById('paymentInfo').innerHTML = `
@@ -2034,7 +2017,8 @@
                 userData.balance += selectedAmount;
                 userData.totalDeposited += selectedAmount;
                 
-                saveUserData('telegram_user');
+                const userId = localStorage.getItem('telegram_user_id') || 'default_user';
+                saveUserData(userId);
                 updateUserStats();
                 loadGiveaway();
                 
