@@ -1399,118 +1399,74 @@
             token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
             
             // Создание инвойса через Crypto Pay API с улучшенной обработкой ошибок
-            createInvoice: async function(amount, currency = 'USD', description = 'Пополнение баланса') {
-                try {
-                    console.log('Creating invoice for amount:', amount);
-                    
-                    // Конвертируем сумму в USDT (минимальная сумма 1 USDT)
-                    const amountInCrypto = Math.max(1, amount);
-                    
-                    // Используем собственный прокси сервер или CORS Anywhere
-                    const PROXY_CONFIG = {
-                          // Проблема: Браузер блокирует запросы к другому домену
-// Решение: Используем более надежные прокси
-const PROXY_CONFIG = {
-    urls: [
-        'https://corsproxy.io/?',
-        'https://api.codetabs.com/v1/proxy?quest=',
-        'https://thingproxy.freeboard.io/fetch/',
-        'https://cors-anywhere.herokuapp.com/',
-        ''
-    ]
-};
-
-                    
-                    let lastError = null;
-                    
-                    for (const proxyUrl of proxyUrls) {
-                        try {
-                            const targetUrl = `https://pay.crypt.bot/api/createInvoice`;
-                            const fullUrl = proxyUrl + encodeURIComponent(targetUrl);
-                            
-                            console.log('Trying proxy:', proxyUrl);
-                            
-                            const response = await fetch(fullUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Crypto-Pay-API-Token': this.token,
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                },
-                                body: JSON.stringify({
-                                    amount: amountInCrypto,
-                                    asset: 'USDT',
-                                    description: description,
-                                    hidden_message: `Пополнение баланса на $${amount}`,
-                                    paid_btn_name: 'open',
-                                    paid_btn_url: 'https://t.me/cryptosending_bot',
-                                    payload: JSON.stringify({
-                                        userId: getUserId(),
-                                        type: 'deposit',
-                                        amount: amount,
-                                        currency: currency
-                                    }),
-                                    allow_comments: false,
-                                    allow_anonymous: false,
-                                    expires_in: 3600
-                                })
-                            });
-                            
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            
-                            const data = await response.json();
-                            console.log('Crypto Pay API response:', data);
-                            
-                            if (data.ok && data.result) {
-                                return data.result;
-                            } else {
-                                throw new Error(data.error?.description || 'Ошибка создания инвойса');
-                            }
-                            
-                        } catch (error) {
-                            console.log(`Proxy ${proxyUrl} failed:`, error.message);
-                            lastError = error;
-                            continue;
-                        }
-                    }
-                    
-                    throw lastError || new Error('Все прокси серверы недоступны');
-                    
-                } catch (error) {
-                    console.error('Error creating invoice:', error);
-                    throw error;
-                }
-            },
-            
-            // Получение информации об инвойсе
-            getInvoices: async function(invoice_ids = []) {
-                try {
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                    const targetUrl = `https://pay.crypt.bot/api/getInvoices`;
-                    const fullUrl = proxyUrl + encodeURIComponent(targetUrl);
-                    
-                    const response = await fetch(fullUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Crypto-Pay-API-Token': this.token
-                        },
-                        body: JSON.stringify({
-                            invoice_ids: invoice_ids
+async function createCryptoInvoice() {
+    showLoading(true);
+    
+    try {
+        // Пробуем создать инвойс через разные прокси
+        const proxyUrls = [
+            'https://corsproxy.io/?',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+        
+        let result = null;
+        for (const proxyUrl of proxyUrls) {
+            try {
+                const targetUrl = `https://pay.crypt.bot/api/createInvoice`;
+                const fullUrl = proxyUrl + encodeURIComponent(targetUrl);
+                
+                const response = await fetch(fullUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Crypto-Pay-API-Token': CRYPTO_PAY_API.token
+                    },
+                    body: JSON.stringify({
+                        amount: Math.max(1, selectedAmount),
+                        asset: 'USDT',
+                        description: `Пополнение баланса на $${selectedAmount}`,
+                        paid_btn_url: 'https://t.me/cryptosending_bot',
+                        payload: JSON.stringify({
+                            userId: getUserId(),
+                            amount: selectedAmount
                         })
-                    });
-                    
-                    const data = await response.json();
-                    return data.ok ? data.result : null;
-                } catch (error) {
-                    console.error('Error getting invoices:', error);
-                    return null;
+                    })
+                });
+                
+                if (response.ok) {
+                    result = await response.json();
+                    break;
                 }
+            } catch (error) {
+                console.log(`Proxy ${proxyUrl} failed:`, error.message);
+                continue;
             }
-        };
+        }
+        
+        showLoading(false);
+        
+        if (result && result.ok) {
+            showInvoicePayment(result.result);
+        } else {
+            // Если Crypto Pay не работает, предлагаем прямой перевод
+            showDirectPaymentFallback();
+        }
+        
+    } catch (error) {
+        showLoading(false);
+        showDirectPaymentFallback();
+    }
+}
 
+function showDirectPaymentFallback() {
+    const fallbackMethods = ['USDT_TRC20', 'USDT_ERC20', 'BTC', 'TON'];
+    const randomMethod = fallbackMethods[Math.floor(Math.random() * fallbackMethods.length)];
+    
+    showNotification('Crypto Pay временно недоступен. Используйте прямой перевод.');
+    selectedPaymentMethod = randomMethod;
+    showCryptoAddress();
+}
         // Адреса крипто-кошельков для разных сетей
         const CRYPTO_ADDRESSES = {
             'USDT_TRC20': {
@@ -2901,4 +2857,5 @@ const PROXY_CONFIG = {
     </script>
 </body>
 </html>
+
 
