@@ -1407,11 +1407,19 @@
                     const amountInCrypto = Math.max(1, amount);
                     
                     // Используем собственный прокси сервер или CORS Anywhere
-                    const proxyUrls = [
-                        'https://api.allorigins.win/raw?url=',
-                        'https://cors-anywhere.herokuapp.com/',
-                        'https://proxy.cors.sh/'
-                    ];
+                    const PROXY_CONFIG = {
+                          // Проблема: Браузер блокирует запросы к другому домену
+// Решение: Используем более надежные прокси
+const PROXY_CONFIG = {
+    urls: [
+        'https://corsproxy.io/?',
+        'https://api.codetabs.com/v1/proxy?quest=',
+        'https://thingproxy.freeboard.io/fetch/',
+        'https://cors-anywhere.herokuapp.com/',
+        ''
+    ]
+};
+
                     
                     let lastError = null;
                     
@@ -2893,3 +2901,4 @@
     </script>
 </body>
 </html>
+
