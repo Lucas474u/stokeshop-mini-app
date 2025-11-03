@@ -52,7 +52,6 @@
             color: var(--text-primary);
             line-height: 1.6;
             transition: var(--transition);
-            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
@@ -138,7 +137,6 @@
             background: var(--surface);
             border-top: 1px solid var(--border);
             z-index: 100;
-            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .nav-container {
@@ -669,6 +667,14 @@
             padding: 20px;
         }
 
+        .payment-qr {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
         .payment-address {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -697,27 +703,14 @@
             box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
         }
 
-        /* Giveaway Styles */
-        .giveaway-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+        /* News Styles */
+        .news-container {
+            display: flex;
+            flex-direction: column;
             gap: 16px;
-            margin-bottom: 24px;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .giveaway-card {
+        .news-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
@@ -725,133 +718,61 @@
             box-shadow: var(--shadow);
         }
 
-        .giveaway-header {
+        .news-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 12px;
         }
 
-        .giveaway-prize {
+        .news-header h3 {
             font-size: 1.125rem;
             font-weight: 600;
-            color: var(--primary-color);
         }
 
-        .giveaway-date {
+        .news-date {
             color: var(--text-muted);
             font-size: 0.875rem;
         }
 
-        .participants-count {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 12px;
+        .channel-promo {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
         }
 
-        .participate-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--secondary-color), #eab308);
+        .promo-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .promo-content i {
+            font-size: 2rem;
+        }
+
+        .promo-text h4 {
+            margin-bottom: 4px;
+        }
+
+        .promo-btn {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
-            font-weight: 600;
+            padding: 10px 16px;
             cursor: pointer;
             transition: var(--transition);
         }
 
-        .participate-btn:hover {
+        .promo-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
-        }
-
-        .participate-btn.disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-        }
-
-        .participate-btn.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .countdown-timer {
-            background: linear-gradient(135deg, #8b5cf6, #a855f7);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 16px 0;
-            font-weight: 600;
-        }
-
-        .countdown-numbers {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 8px 0;
-        }
-
-        .countdown-labels {
-            display: flex;
-            justify-content: space-around;
-            font-size: 0.75rem;
-            opacity: 0.9;
-        }
-
-        .giveaway-conditions {
-            background: var(--surface-dark);
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0;
-        }
-
-        .giveaway-conditions h4 {
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .giveaway-conditions ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .giveaway-conditions li {
-            padding: 6px 0;
-            color: var(--text-secondary);
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .giveaway-conditions li:before {
-            content: "•";
-            position: absolute;
-            left: 8px;
-            color: var(--primary-color);
-        }
-
-        .user-deposit-amount {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin: 12px 0;
-            text-align: center;
-        }
-
-        .deposit-progress {
-            background: var(--surface-dark);
-            height: 8px;
-            border-radius: 4px;
-            margin: 8px 0;
-            overflow: hidden;
-        }
-
-        .deposit-progress-bar {
-            background: linear-gradient(135deg, var(--success-color), #22c55e);
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
         }
 
         /* Referral Styles */
@@ -920,10 +841,6 @@
             color: var(--text-primary);
         }
 
-        .referral-rules {
-            margin-top: 24px;
-        }
-
         .referral-rules h3 {
             margin-bottom: 12px;
             font-size: 1.125rem;
@@ -950,12 +867,73 @@
             font-weight: bold;
         }
 
-        /* Favorites Styles */
-        .favorites-grid {
+        /* Favorites & Giveaway Styles */
+        .favorites-grid, .giveaway-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 16px;
             margin-bottom: 24px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .giveaway-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .giveaway-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .giveaway-prize {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .giveaway-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .participants-count {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+        }
+
+        .participate-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary-color), #eab308);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .participate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
         }
 
         /* Utility Classes */
@@ -1073,11 +1051,11 @@
         <div class="nav-container">
             <button class="nav-item active" data-tab="accounts">
                 <i class="fas fa-store"></i>
-                <span>Аккаунты</span>
+                <span data-lang="categories">Аккаунты</span>
             </button>
             <button class="nav-item" data-tab="profile">
                 <i class="fas fa-user"></i>
-                <span>Профиль</span>
+                <span data-lang="profile">Профиль</span>
             </button>
             <button class="nav-item" data-tab="favorites">
                 <i class="fas fa-heart"></i>
@@ -1096,12 +1074,12 @@
             <!-- Accounts Tab -->
             <div class="tab-content active" id="accounts-tab">
                 <div class="section-header">
-                    <h2>Категории аккаунтов</h2>
+                    <h2 data-lang="categories">Категории аккаунтов</h2>
                 </div>
                 
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Поиск...">
+                    <input type="text" id="searchInput" placeholder="Поиск..." data-lang-placeholder="search_placeholder">
                 </div>
 
                 <div class="categories-grid" id="categoriesGrid">
@@ -1109,11 +1087,13 @@
                 </div>
 
                 <div class="products-section hidden" id="productsSection">
-                    <button class="back-button" id="backToCategories">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Назад к категориям</span>
-                    </button>
-                    <h3 id="categoryTitle">Категория</h3>
+                    <div class="products-header">
+                        <button class="back-button" id="backToCategories">
+                            <i class="fas fa-arrow-left"></i>
+                            <span data-lang="back_to_categories">Назад к категориям</span>
+                        </button>
+                        <h3 id="categoryTitle">Категория</h3>
+                    </div>
                     <div class="products-grid" id="productsGrid">
                         <!-- Products will be loaded here -->
                     </div>
@@ -1139,10 +1119,10 @@
                             <i class="fas fa-wallet"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label">Баланс</span>
+                            <span class="stat-label" data-lang="balance">Баланс</span>
                             <span class="stat-value" id="userBalance">$0.00</span>
                         </div>
-                        <button class="stat-action" id="depositBtn">Пополнить</button>
+                        <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
                     </div>
 
                     <div class="stat-card">
@@ -1150,17 +1130,21 @@
                             <i class="fas fa-shopping-bag"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label">Заказы</span>
+                            <span class="stat-label" data-lang="orders_history">Заказы</span>
                             <span class="stat-value" id="ordersCount">0</span>
                         </div>
-                        <button class="stat-action" id="viewOrdersBtn">Смотреть</button>
+                        <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
                     </div>
                 </div>
 
                 <div class="profile-actions">
+                    <button class="action-btn" id="supportBtn">
+                        <i class="fas fa-headset"></i>
+                        <span data-lang="support">Поддержка</span>
+                    </button>
                     <button class="action-btn" id="referralBtn">
                         <i class="fas fa-users"></i>
-                        <span>Рефералы</span>
+                        <span data-lang="referral">Рефералы</span>
                     </button>
                 </div>
             </div>
@@ -1178,10 +1162,10 @@
             <!-- Giveaway Tab -->
             <div class="tab-content" id="giveaway-tab">
                 <div class="section-header">
-                    <h2>🎉 РОЗЫГРЫШ 3x iPhone 17 Pro Max 🎉</h2>
+                    <h2>Розыгрыши</h2>
                 </div>
                 <div class="giveaway-grid" id="giveawayGrid">
-                    <!-- Giveaway will be loaded here -->
+                    <!-- Giveaways will be loaded here -->
                 </div>
             </div>
 
@@ -1190,36 +1174,36 @@
                 <div class="referral-header">
                     <div class="referral-hero">
                         <i class="fas fa-users"></i>
-                        <h2>Реферальная система</h2>
-                        <p>Приглашайте друзей и получайте бонусы</p>
+                        <h2 data-lang="referral_system">Реферальная система</h2>
+                        <p data-lang="referral_description">Приглашайте друзей и получайте бонусы</p>
                     </div>
                 </div>
 
                 <div class="referral-stats">
                     <div class="referral-stat">
                         <span class="stat-number" id="referralsCount">0</span>
-                        <span class="stat-label">Рефералов</span>
+                        <span class="stat-label" data-lang="referrals">Рефералов</span>
                     </div>
                     <div class="referral-stat">
                         <span class="stat-number" id="referralEarnings">$0</span>
-                        <span class="stat-label">Заработано</span>
+                        <span class="stat-label" data-lang="earnings">Заработано</span>
                     </div>
                 </div>
 
                 <div class="referral-link">
-                    <label>Ваша реферальная ссылка:</label>
+                    <label data-lang="your_referral_link">Ваша реферальная ссылка:</label>
                     <div class="link-container">
-                        <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref123456">
-                        <button class="copy-btn" id="copyReferralBtn">Копировать</button>
+                        <input type="text" id="referralLink" readonly value="https://t.me/stokeshopbot?start=ref123456">
+                        <button class="copy-btn" id="copyReferralBtn" data-lang="copy">Копировать</button>
                     </div>
                 </div>
 
                 <div class="referral-rules">
-                    <h3>Как это работает?</h3>
+                    <h3 data-lang="how_it_works">Как это работает?</h3>
                     <ul>
-                        <li>Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
-                        <li>Ваш друг получает 5% бонус на первый депозит</li>
-                        <li>Нет ограничений по количеству приглашенных</li>
+                        <li data-lang="ref_rule_1">Вы получаете 10% от первого пополнения каждого приглашенного друга</li>
+                        <li data-lang="ref_rule_2">Ваш друг получает 5% бонус на первый депозит</li>
+                        <li data-lang="ref_rule_3">Нет ограничений по количеству приглашенных</li>
                     </ul>
                 </div>
             </div>
@@ -1230,13 +1214,13 @@
     <div class="modal hidden" id="depositModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Пополнение баланса</h3>
+                <h3 data-lang="deposit">Пополнение баланса</h3>
                 <button class="modal-close" id="closeDepositModal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="payment-methods">
                     <div class="method-category">
-                        <h4>Криптовалюты</h4>
+                        <h4 data-lang="crypto_payments">Криптовалюты</h4>
                         <div class="methods-grid">
                             <button class="method-btn" data-method="crypto_bot">
                                 <i class="fas fa-robot"></i>
@@ -1259,7 +1243,7 @@
                 </div>
 
                 <div class="amount-selector hidden" id="amountSelector">
-                    <h4>Выберите сумму</h4>
+                    <h4 data-lang="select_amount">Выберите сумму</h4>
                     <div class="amount-buttons">
                         <button class="amount-btn" data-amount="10">$10</button>
                         <button class="amount-btn" data-amount="25">$25</button>
@@ -1271,7 +1255,7 @@
                     <div class="custom-amount">
                         <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
                     </div>
-                    <button class="confirm-btn" id="confirmDeposit">Продолжить</button>
+                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Продолжить</button>
                 </div>
 
                 <div class="payment-info hidden" id="paymentInfo">
@@ -1315,52 +1299,109 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <p>Загрузка...</p>
+        <p data-lang="loading">Загрузка...</p>
     </div>
 
     <script>
-        // Sample data
+        // Translation data
+        const translations = {
+            ru: {
+                categories: "Аккаунты",
+                profile: "Профиль",
+                news: "Новости",
+                referral: "Рефералы",
+                search_placeholder: "Поиск...",
+                balance: "Баланс",
+                deposit: "Пополнить",
+                orders_history: "Заказы",
+                view: "Смотреть",
+                favorites: "Избранное",
+                giveaway: "Розыгрыш",
+                support: "Поддержка",
+                news_welcome: "Добро пожаловать в Stoke Shop!",
+                news_welcome_text: "Мы рады приветствовать вас в нашем магазине аккаунтов. Теперь доступны новые категории и улучшенная система оплаты.",
+                subscribe_channel: "Подпишитесь на наш канал",
+                subscribe_text: "Будьте в курсе последних новостей и акций",
+                join_channel: "Присоединиться",
+                referral_system: "Реферальная система",
+                referral_description: "Приглашайте друзей и получайте бонусы",
+                referrals: "Рефералов",
+                earnings: "Заработано",
+                your_referral_link: "Ваша реферальная ссылка:",
+                copy: "Копировать",
+                how_it_works: "Как это работает?",
+                ref_rule_1: "Вы получаете 10% от первого пополнения каждого приглашенного друга",
+                ref_rule_2: "Ваш друг получает 5% бонус на первый депозит",
+                ref_rule_3: "Нет ограничений по количеству приглашенных",
+                crypto_payments: "Криптовалюты",
+                select_amount: "Выберите сумму",
+                continue: "Продолжить",
+                loading: "Загрузка...",
+                back_to_categories: "Назад к категориям"
+            },
+            en: {
+                categories: "Accounts",
+                profile: "Profile",
+                news: "News",
+                referral: "Referrals",
+                search_placeholder: "Search...",
+                balance: "Balance",
+                deposit: "Deposit",
+                orders_history: "Orders",
+                view: "View",
+                favorites: "Favorites",
+                giveaway: "Giveaway",
+                support: "Support",
+                news_welcome: "Welcome to Stoke Shop!",
+                news_welcome_text: "We are glad to welcome you to our accounts store. New categories and improved payment system are now available.",
+                subscribe_channel: "Subscribe to our channel",
+                subscribe_text: "Stay updated with latest news and promotions",
+                join_channel: "Join",
+                referral_system: "Referral System",
+                referral_description: "Invite friends and get bonuses",
+                referrals: "Referrals",
+                earnings: "Earnings",
+                your_referral_link: "Your referral link:",
+                copy: "Copy",
+                how_it_works: "How it works?",
+                ref_rule_1: "You get 10% from the first deposit of each invited friend",
+                ref_rule_2: "Your friend gets 5% bonus on first deposit",
+                ref_rule_3: "No limits on the number of invited users",
+                crypto_payments: "Cryptocurrencies",
+                select_amount: "Select amount",
+                continue: "Continue",
+                loading: "Loading...",
+                back_to_categories: "Back to categories"
+            }
+        };
+
+        // Sample data - All accounts
         const categories = [
-            { id: 1, name: "Telegram", description: "Аккаунты Telegram", icon: "fab fa-telegram" },
-            { id: 2, name: "ВКонтакте", description: "Аккаунты ВК", icon: "fab fa-vk" },
-            { id: 3, name: "Vinted", description: "Аккаунты Vinted", icon: "fas fa-tshirt" },
-            { id: 4, name: "Wallapop", description: "Аккаунты Wallapop", icon: "fas fa-store" },
-            { id: 5, name: "Facebook", description: "Аккаунты Facebook", icon: "fab fa-facebook" },
-            { id: 6, name: "Telegram Stars", description: "Звезды Telegram", icon: "fas fa-star" },
-            { id: 7, name: "Telegram Premium", description: "Премиум подписки", icon: "fas fa-crown" },
-            { id: 8, name: "Яндекс", description: "Аккаунты Яндекс", icon: "fas fa-search" },
-            { id: 9, name: "Ozon", description: "Аккаунты Ozon", icon: "fas fa-box" },
-            { id: 10, name: "Wildberries", description: "Аккаунты Wildberries", icon: "fas fa-shopping-bag" },
-            { id: 11, name: "Госуслуги", description: "Аккаунты Госуслуг", icon: "fas fa-landmark" }
+            { id: 1, name_ru: "Telegram", name_en: "Telegram", description_ru: "Аккаунты Telegram", description_en: "Telegram accounts", icon: "fab fa-telegram" },
+            { id: 2, name_ru: "ВКонтакте", name_en: "VKontakte", description_ru: "Аккаунты ВК", description_en: "VK accounts", icon: "fab fa-vk" },
+            { id: 3, name_ru: "Vinted", name_en: "Vinted", description_ru: "Аккаунты Vinted", description_en: "Vinted accounts", icon: "fas fa-tshirt" },
+            { id: 4, name_ru: "Wallapop", name_en: "Wallapop", description_ru: "Аккаунты Wallapop", description_en: "Wallapop accounts", icon: "fas fa-store" },
+            { id: 5, name_ru: "Facebook", name_en: "Facebook", description_ru: "Аккаунты Facebook", description_en: "Facebook accounts", icon: "fab fa-facebook" },
+            { id: 6, name_ru: "Telegram Stars", name_en: "Telegram Stars", description_ru: "Звезды Telegram", description_en: "Telegram Stars", icon: "fas fa-star" },
+            { id: 7, name_ru: "Telegram Premium", name_en: "Telegram Premium", description_ru: "Премиум подписки", description_en: "Premium subscriptions", icon: "fas fa-crown" },
+            { id: 8, name_ru: "Яндекс", name_en: "Yandex", description_ru: "Аккаунты Яндекс", description_en: "Yandex accounts", icon: "fas fa-search" },
+            { id: 9, name_ru: "Ozon", name_en: "Ozon", description_ru: "Аккаунты Ozon", description_en: "Ozon accounts", icon: "fas fa-box" },
+            { id: 10, name_ru: "Wildberries", name_en: "Wildberries", description_ru: "Аккаунты Wildberries", description_en: "Wildberries accounts", icon: "fas fa-shopping-bag" },
+            { id: 11, name_ru: "Госуслуги", name_en: "Gosuslugi", description_ru: "Аккаунты Госуслуг", description_en: "Gosuslugi accounts", icon: "fas fa-passport" }
         ];
 
         const products = {
-           1: [
-                { id: 1, name: "НОВОРЕГ", price: 4.0, stock: 25, description: "Новый аккаунт Telegram" },
-                { id: 2, name: "ФИЗ СИМ US", price: 5.0, stock: 15, description: "Аккаунт с US сим-картой" },
-                { id: 3, name: "ФИЗ СИМ EU", price: 5.5, stock: 12, description: "Аккаунт с EU сим-картой" },
-                { id: 4, name: "ВИРТ СИМ", price: 4.5, stock: 20, description: "Аккаунт с виртуальной симкой" },
-                { id: 5, name: "БИЗНЕС", price: 6.0, stock: 10, description: "Бизнес аккаунт Telegram" },
-                { id: 6, name: "ПРЕМИУМ", price: 7.0, stock: 15, description: "Премиум аккаунт Telegram" },
-                { id: 7, name: "ВЕРИФИЦИРОВАН", price: 6.5, stock: 12, description: "Верифицированный аккаунт" },
-                { id: 8, name: "ПРО АККАУНТ", price: 5.8, stock: 7, description: "Профессиональный аккаунт" }
+            1: [
+                { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
+                { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
+                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
+                { id: 4, name_ru: "ВИРТ СИМ", name_en: "VIRTUAL SIM", price: 4.5, stock: 20, description_ru: "Аккаунт с виртуальной симкой", description_en: "Account with virtual SIM" },
+                { id: 5, name_ru: "БИЗНЕС", name_en: "BUSINESS", price: 6.0, stock: 10, description_ru: "Бизнес аккаунт Telegram", description_en: "Telegram Business account" },
+                { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account" },
+                { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
+                { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account" }
             ],
-            2: [
-                { id: 9, name: "ВК PREMIUM", price: 10.0, stock: 15, description: "Премиум аккаунт ВК" },
-                { id: 10, name: "ВК BUSINESS", price: 8.0, stock: 12, description: "Бизнес страница ВК" },
-                { id: 11, name: "ВК STANDARD", price: 3.0, stock: 25, description: "Стандартный аккаунт ВК" },
-                { id: 12, name: "ВК FRESH", price: 2.0, stock: 20, description: "Свежий аккаунт ВК" },
-                { id: 13, name: "ВК VERIFIED", price: 9.0, stock: 13, description: "Верифицированный аккаунт ВК" },
-                { id: 14, name: "ВК CREATOR", price: 7.0, stock: 12, description: "Аккаунт создателя контента" },
-                { id: 15, name: "ВК GAMING", price: 5.0, stock: 18, description: "Игровой аккаунт ВК" }
-            ],
-            3: [
-                { id: 16, name: "Vinted BRUT Франция", price: 120.0, stock: 23, description: "Премиум аккаунты Vinted Франция" },
-                { id: 17, name: "Vinted BRUT Испания", price: 115.0, stock: 16, description: "Качественные аккаунты Vinted" },
-                { id: 18, name: "Vinted BRUT Италия", price: 110.0, stock: 13, description: "Итальянские аккаунты Vinted" },
-                { id: 19, name: "Vinted BRUT Германия", price: 125.0, stock: 12, description: "Немецкие аккаунты Vinted" },
-                { id: 20, name: "Vinted BRUT Польша", price: 100.0, stock: 17, description: "Польские аккаунты Vinted" }
-            ]
+            // ... остальные категории продуктов
         };
 
         // App state
@@ -1370,133 +1411,223 @@
         let selectedPaymentMethod = null;
         let selectedAmount = 0;
         let selectedProduct = null;
-        let countdownInterval = null;
         
-        // User data
+        // Real user data
         let userData = {
             balance: 0,
             orders: [],
             favorites: [],
             referralCount: 0,
-            referralEarnings: 0,
-            totalDeposited: 0
+            referralEarnings: 0
         };
 
-        // Giveaway data - фиксированная дата окончания
-        const giveaway = {
-            id: 1,
-            prize: "3x iPhone 17 Pro Max",
-            description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: new Date('2024-12-31T23:59:59'), // Фиксированная дата окончания
-            participants: 4586,
-            image: "fas fa-mobile-alt",
-            requiredDeposit: 30
+        // Giveaways data
+        const giveaways = [
+            {
+                id: 1,
+                prize: "Telegram Premium на 1 год",
+                description: "Выиграйте годовую подписку Telegram Premium",
+                endDate: "2024-12-31",
+                participants: 154,
+                image: "fas fa-crown"
+            },
+            {
+                id: 2,
+                prize: "$50 на баланс",
+                description: "Получите $50 для покупок в нашем магазине",
+                endDate: "2024-11-30",
+                participants: 287,
+                image: "fas fa-coins"
+            },
+            {
+                id: 3,
+                prize: "Набор аккаунтов Vinted",
+                description: "5 премиум аккаунтов Vinted разных стран",
+                endDate: "2024-12-15",
+                participants: 89,
+                image: "fas fa-tshirt"
+            }
+        ];
+
+        // DOM elements
+        const elements = {
+            langSwitch: document.getElementById('langSwitch'),
+            themeSwitch: document.getElementById('themeSwitch'),
+            openMiniApp: document.getElementById('openMiniApp'),
+            navItems: document.querySelectorAll('.nav-item'),
+            tabContents: document.querySelectorAll('.tab-content'),
+            categoriesGrid: document.getElementById('categoriesGrid'),
+            productsSection: document.getElementById('productsSection'),
+            productsGrid: document.getElementById('productsGrid'),
+            categoryTitle: document.getElementById('categoryTitle'),
+            backToCategories: document.getElementById('backToCategories'),
+            depositBtn: document.getElementById('depositBtn'),
+            depositModal: document.getElementById('depositModal'),
+            closeDepositModal: document.getElementById('closeDepositModal'),
+            methodBtns: document.querySelectorAll('.method-btn'),
+            amountBtns: document.querySelectorAll('.amount-btn'),
+            confirmDeposit: document.getElementById('confirmDeposit'),
+            amountSelector: document.getElementById('amountSelector'),
+            paymentInfo: document.getElementById('paymentInfo'),
+            customAmount: document.getElementById('customAmount'),
+            copyReferralBtn: document.getElementById('copyReferralBtn'),
+            referralLink: document.getElementById('referralLink'),
+            joinChannelBtn: document.getElementById('joinChannelBtn'),
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            searchInput: document.getElementById('searchInput'),
+            userAvatar: document.getElementById('userAvatar'),
+            userName: document.getElementById('userName'),
+            userId: document.getElementById('userId'),
+            userBalance: document.getElementById('userBalance'),
+            ordersCount: document.getElementById('ordersCount'),
+            viewOrdersBtn: document.getElementById('viewOrdersBtn'),
+            favoritesBtn: document.getElementById('favoritesBtn'),
+            giveawayBtn: document.getElementById('giveawayBtn'),
+            purchaseModal: document.getElementById('purchaseModal'),
+            closePurchaseModal: document.getElementById('closePurchaseModal'),
+            purchaseTitle: document.getElementById('purchaseTitle'),
+            purchaseInfo: document.getElementById('purchaseInfo'),
+            confirmPurchase: document.getElementById('confirmPurchase'),
+            ordersModal: document.getElementById('ordersModal'),
+            closeOrdersModal: document.getElementById('closeOrdersModal'),
+            ordersList: document.getElementById('ordersList'),
+            favoritesGrid: document.getElementById('favoritesGrid'),
+            giveawayGrid: document.getElementById('giveawayGrid'),
+            referralsCount: document.getElementById('referralsCount'),
+            referralEarnings: document.getElementById('referralEarnings'),
+            supportBtn: document.getElementById('supportBtn'),
+            referralBtn: document.getElementById('referralBtn')
         };
 
         // Initialize app
         function initApp() {
-            console.log('🚀 Initializing Stoke Shop...');
-            
-            // Initialize Telegram WebApp
-            if (window.Telegram && window.Telegram.WebApp) {
-                const tg = window.Telegram.WebApp;
-                tg.ready();
-                tg.expand();
-                
-                // Set theme
-                if (tg.colorScheme === 'dark') {
-                    currentTheme = 'dark';
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    document.getElementById('themeSwitch').innerHTML = '<i class="fas fa-sun"></i>';
-                }
-                
-                // Load Telegram user data
-                loadTelegramUserData(tg);
-                
-                console.log('✅ Telegram WebApp initialized');
-            }
-            
+            // Initialize Telegram WebApp first
+            initTelegramWebApp();
             loadUserData();
             loadCategories();
             loadFavorites();
-            loadGiveaway();
+            loadGiveaways();
             setupEventListeners();
             updateUI();
-            startCountdown();
-            
-            console.log('✅ App initialized successfully');
         }
 
-        // Load Telegram user data
-        function loadTelegramUserData(tg) {
-            const user = tg.initDataUnsafe.user;
-            
-            if (user) {
-                // Set user name
-                const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Пользователь';
-                document.getElementById('userName').textContent = userName;
+        // Initialize Telegram WebApp
+        function initTelegramWebApp() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
                 
-                // Set user ID
-                document.getElementById('userId').textContent = `ID: ${user.id}`;
+                // Expand the app to full height
+                tg.expand();
                 
-                // Set user avatar
-                const avatar = document.getElementById('userAvatar');
-                if (user.photo_url) {
-                    avatar.src = user.photo_url;
-                    avatar.style.display = 'block';
-                    avatar.nextElementSibling.style.display = 'none';
-                } else {
-                    avatar.style.display = 'none';
-                    avatar.nextElementSibling.style.display = 'flex';
+                // Set theme based on Telegram theme
+                if (tg.colorScheme === 'dark') {
+                    currentTheme = 'dark';
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
                 }
                 
-                // Save Telegram user ID to localStorage for persistence
-                localStorage.setItem('telegram_user_id', user.id);
-                localStorage.setItem('telegram_user_name', userName);
-                if (user.photo_url) {
-                    localStorage.setItem('telegram_user_avatar', user.photo_url);
+                // Listen for theme changes
+                tg.onEvent('themeChanged', () => {
+                    if (tg.colorScheme === 'dark') {
+                        currentTheme = 'dark';
+                        document.documentElement.setAttribute('data-theme', 'dark');
+                        elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
+                    } else {
+                        currentTheme = 'light';
+                        document.documentElement.removeAttribute('data-theme');
+                        elements.themeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
+                    }
+                });
+                
+                // Enable closing confirmation
+                tg.enableClosingConfirmation();
+                
+                console.log('Telegram WebApp initialized successfully');
+            } else {
+                console.log('Telegram WebApp not available, running in standalone mode');
+            }
+        }
+
+        // Load user data from Telegram
+        function loadUserData() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                const user = tg.initDataUnsafe.user;
+                
+                console.log('Telegram User Data:', user);
+                
+                if (user) {
+                    // Set user avatar
+                    if (user.photo_url) {
+                        elements.userAvatar.src = user.photo_url;
+                        elements.userAvatar.style.display = 'block';
+                    } else {
+                        elements.userAvatar.style.display = 'none';
+                        document.querySelector('#userAvatar + i').style.display = 'flex';
+                    }
+                    
+                    // Set user name
+                    let userName = '';
+                    if (user.first_name || user.last_name) {
+                        userName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
+                    } else if (user.username) {
+                        userName = `@${user.username}`;
+                    } else {
+                        userName = 'Пользователь';
+                    }
+                    elements.userName.textContent = userName;
+                    
+                    // Set user ID
+                    elements.userId.textContent = `ID: ${user.id}`;
+                    
+                    // Initialize user data from Telegram
+                    initializeUserData(user.id);
+                } else {
+                    // Fallback if no user data
+                    elements.userName.textContent = 'Пользователь Telegram';
+                    elements.userId.textContent = 'ID: Неизвестен';
+                    initializeUserData('telegram_user');
                 }
             } else {
-                // Fallback to saved data
-                loadSavedTelegramData();
+                // Fallback for testing
+                console.log('Running in test mode');
+                elements.userName.textContent = 'Тестовый Пользователь';
+                elements.userId.textContent = 'ID: 123456789';
+                elements.userAvatar.style.display = 'none';
+                document.querySelector('#userAvatar + i').style.display = 'flex';
+                initializeUserData('test_user_123');
             }
         }
 
-        // Load saved Telegram data
-        function loadSavedTelegramData() {
-            const savedId = localStorage.getItem('telegram_user_id');
-            const savedName = localStorage.getItem('telegram_user_name');
-            const savedAvatar = localStorage.getItem('telegram_user_avatar');
-            
-            if (savedId) {
-                document.getElementById('userId').textContent = `ID: ${savedId}`;
-            }
-            if (savedName) {
-                document.getElementById('userName').textContent = savedName;
-            }
-            if (savedAvatar) {
-                const avatar = document.getElementById('userAvatar');
-                avatar.src = savedAvatar;
-                avatar.style.display = 'block';
-                avatar.nextElementSibling.style.display = 'none';
-            }
-        }
-
-        // Load user data with persistence
-        function loadUserData() {
-            const userId = localStorage.getItem('telegram_user_id') || 'default_user';
+        // Initialize user data
+        function initializeUserData(userId) {
+            // Load from localStorage or initialize default data
             const savedData = localStorage.getItem(`userData_${userId}`);
-            
             if (savedData) {
                 userData = JSON.parse(savedData);
             } else {
+                // Default data for new users
                 userData = {
-                    balance: 0,
-                    orders: [],
-                    favorites: [],
-                    referralCount: 0,
-                    referralEarnings: 0,
-                    totalDeposited: 0
+                    balance: 25.50,
+                    orders: [
+                        {
+                            id: 1,
+                            product: "НОВОРЕГ Telegram",
+                            price: 4.0,
+                            date: "2024-01-15",
+                            status: "completed"
+                        },
+                        {
+                            id: 2,
+                            product: "ВК PREMIUM",
+                            price: 10.0,
+                            date: "2024-01-10",
+                            status: "completed"
+                        }
+                    ],
+                    favorites: [1, 3, 7], // Product IDs
+                    referralCount: 5,
+                    referralEarnings: 12.50
                 };
                 saveUserData(userId);
             }
@@ -1504,58 +1635,54 @@
             updateUserStats();
         }
 
-        // Save user data with persistence
+        // Save user data
         function saveUserData(userId) {
             localStorage.setItem(`userData_${userId}`, JSON.stringify(userData));
         }
 
         // Update user statistics
         function updateUserStats() {
-            document.getElementById('userBalance').textContent = `$${userData.balance.toFixed(2)}`;
-            document.getElementById('ordersCount').textContent = userData.orders.length;
-            document.getElementById('referralsCount').textContent = userData.referralCount;
-            document.getElementById('referralEarnings').textContent = `$${userData.referralEarnings.toFixed(2)}`;
+            elements.userBalance.textContent = `$${userData.balance.toFixed(2)}`;
+            elements.ordersCount.textContent = userData.orders.length;
+            elements.referralsCount.textContent = userData.referralCount;
+            elements.referralEarnings.textContent = `$${userData.referralEarnings.toFixed(2)}`;
         }
 
-        // Load categories
+        // Load categories to the grid
         function loadCategories() {
-            const grid = document.getElementById('categoriesGrid');
-            grid.innerHTML = '';
-            
+            elements.categoriesGrid.innerHTML = '';
             categories.forEach(category => {
-                const card = document.createElement('div');
-                card.className = 'category-card';
-                card.innerHTML = `
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card';
+                categoryCard.innerHTML = `
                     <div class="category-icon">
                         <i class="${category.icon}"></i>
                     </div>
-                    <h3>${category.name}</h3>
-                    <p>${category.description}</p>
+                    <h3>${currentLanguage === 'ru' ? category.name_ru : category.name_en}</h3>
+                    <p>${currentLanguage === 'ru' ? category.description_ru : category.description_en}</p>
                 `;
-                card.addEventListener('click', () => showProducts(category.id));
-                grid.appendChild(card);
+                categoryCard.addEventListener('click', () => showProducts(category.id));
+                elements.categoriesGrid.appendChild(categoryCard);
             });
         }
 
-        // Show products
+        // Show products for a category
         function showProducts(categoryId) {
             currentCategory = categoryId;
             const category = categories.find(c => c.id === categoryId);
-            document.getElementById('categoryTitle').textContent = category.name;
+            elements.categoryTitle.textContent = currentLanguage === 'ru' ? category.name_ru : category.name_en;
             
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = '';
-            
+            elements.productsGrid.innerHTML = '';
             if (products[categoryId]) {
                 products[categoryId].forEach(product => {
                     const isFavorite = userData.favorites.includes(product.id);
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
                         <div class="product-header">
                             <div>
-                                <div class="product-name">${product.name}</div>
-                                <div class="product-stock">В наличии: ${product.stock}</div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
@@ -1564,33 +1691,31 @@
                                 <div class="product-price">$${product.price}</div>
                             </div>
                         </div>
-                        <div class="product-description">${product.description}</div>
-                        <button class="buy-btn" data-product-id="${product.id}">Купить</button>
+                        <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
+                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
                     `;
-                    grid.appendChild(card);
+                    elements.productsGrid.appendChild(productCard);
                 });
             }
             
             // Add event listeners
-            setTimeout(() => {
-                document.querySelectorAll('.buy-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const productId = parseInt(e.target.getAttribute('data-product-id'));
-                        handleProductPurchase(productId, categoryId);
-                    });
+            document.querySelectorAll('.buy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-product-id'));
+                    handleProductPurchase(productId, categoryId);
                 });
+            });
 
-                document.querySelectorAll('.favorite-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
-                        toggleFavorite(productId, e.currentTarget);
-                    });
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                    toggleFavorite(productId, e.currentTarget);
                 });
-            }, 100);
+            });
             
             document.getElementById('accounts-tab').querySelector('.categories-grid').classList.add('hidden');
-            document.getElementById('productsSection').classList.remove('hidden');
+            elements.productsSection.classList.remove('hidden');
         }
 
         // Toggle favorite
@@ -1605,18 +1730,16 @@
                 button.classList.add('active');
                 showNotification('Добавлено в избранное');
             }
-            const userId = localStorage.getItem('telegram_user_id') || 'default_user';
-            saveUserData(userId);
+            saveUserData(getUserId());
             loadFavorites();
         }
 
         // Load favorites
         function loadFavorites() {
-            const grid = document.getElementById('favoritesGrid');
-            grid.innerHTML = '';
+            elements.favoritesGrid.innerHTML = '';
             
             if (userData.favorites.length === 0) {
-                grid.innerHTML = `
+                elements.favoritesGrid.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-heart"></i>
                         <h3>Нет избранных товаров</h3>
@@ -1628,22 +1751,26 @@
 
             userData.favorites.forEach(favId => {
                 let product = null;
+                let categoryId = null;
+                
+                // Find product in all categories
                 for (const catId in products) {
                     const found = products[catId].find(p => p.id === favId);
                     if (found) {
                         product = found;
+                        categoryId = parseInt(catId);
                         break;
                     }
                 }
 
                 if (product) {
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
                         <div class="product-header">
                             <div>
-                                <div class="product-name">${product.name}</div>
-                                <div class="product-stock">В наличии: ${product.stock}</div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
                                 <button class="favorite-btn active" data-product-id="${product.id}">
@@ -1652,130 +1779,92 @@
                                 <div class="product-price">$${product.price}</div>
                             </div>
                         </div>
-                        <div class="product-description">${product.description}</div>
-                        <button class="buy-btn" data-product-id="${product.id}">Купить</button>
+                        <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
+                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
                     `;
-                    grid.appendChild(card);
+                    elements.favoritesGrid.appendChild(productCard);
                 }
             });
 
-            // Add event listeners
-            setTimeout(() => {
-                document.querySelectorAll('#favorites-tab .buy-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const productId = parseInt(e.target.getAttribute('data-product-id'));
-                        handleProductPurchase(productId, currentCategory);
-                    });
+            // Add event listeners for favorites
+            document.querySelectorAll('#favorites-tab .buy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.getAttribute('data-product-id'));
+                    let categoryId = null;
+                    
+                    // Find product category
+                    for (const catId in products) {
+                        const product = products[catId].find(p => p.id === productId);
+                        if (product) {
+                            categoryId = parseInt(catId);
+                            break;
+                        }
+                    }
+                    
+                    if (categoryId) {
+                        handleProductPurchase(productId, categoryId);
+                    }
                 });
+            });
 
-                document.querySelectorAll('#favorites-tab .favorite-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
-                        toggleFavorite(productId, e.currentTarget);
-                    });
+            document.querySelectorAll('#favorites-tab .favorite-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                    toggleFavorite(productId, e.currentTarget);
+                    // Remove from DOM after toggle
+                    if (!userData.favorites.includes(productId)) {
+                        e.currentTarget.closest('.product-card').remove();
+                        if (userData.favorites.length === 0) {
+                            loadFavorites();
+                        }
+                    }
                 });
-            }, 100);
+            });
         }
 
-        // Load giveaway with persistent countdown
-        function loadGiveaway() {
-            const grid = document.getElementById('giveawayGrid');
-            const isEligible = userData.totalDeposited >= giveaway.requiredDeposit;
-            const progressPercentage = Math.min((userData.totalDeposited / giveaway.requiredDeposit) * 100, 100);
+        // Load giveaways
+        function loadGiveaways() {
+            elements.giveawayGrid.innerHTML = '';
             
-            grid.innerHTML = `
-                <div class="giveaway-card">
+            giveaways.forEach(giveaway => {
+                const giveawayCard = document.createElement('div');
+                giveawayCard.className = 'giveaway-card';
+                giveawayCard.innerHTML = `
                     <div class="giveaway-header">
                         <div>
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <i class="${giveaway.image}" style="color: var(--secondary-color); font-size: 2rem;"></i>
-                                <h3 class="giveaway-prize" style="font-size: 1.25rem;">🎉 ${giveaway.prize} 🎉</h3>
+                                <i class="${giveaway.image}" style="color: var(--secondary-color);"></i>
+                                <h3 class="giveaway-prize">${giveaway.prize}</h3>
                             </div>
-                            <p style="font-size: 1rem; line-height: 1.5;">${giveaway.description}</p>
+                            <p>${giveaway.description}</p>
                         </div>
                     </div>
-                    
-                    <div class="countdown-timer">
-                        <div>До конца розыгрыша:</div>
-                        <div class="countdown-numbers" id="countdownTimer">00:00:00:00</div>
-                        <div class="countdown-labels">
-                            <span>Дни</span>
-                            <span>Часы</span>
-                            <span>Минуты</span>
-                            <span>Секунды</span>
-                        </div>
-                    </div>
-                    
                     <div class="participants-count">
-                        <i class="fas fa-users"></i> Участников: ${giveaway.participants.toLocaleString()}
+                        <i class="fas fa-users"></i> Участников: ${giveaway.participants}
                     </div>
-                    
-                    <div class="user-deposit-amount">
-                        <div>💰 Ваша сумма пополнений: $${userData.totalDeposited.toFixed(2)}</div>
-                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 4px;">
-                            Требуется: $${giveaway.requiredDeposit} для участия
-                        </div>
-                        <div class="deposit-progress">
-                            <div class="deposit-progress-bar" style="width: ${progressPercentage}%"></div>
-                        </div>
+                    <div class="giveaway-date">
+                        <i class="fas fa-clock"></i> До: ${giveaway.endDate}
                     </div>
-                    
-                    <div class="giveaway-conditions">
-                        <h4>Условия участия:</h4>
-                        <ul>
-                            <li>Общая сумма пополнений от $${giveaway.requiredDeposit}</li>
-                            <li>Активный аккаунт в боте</li>
-                            <li>Участие бесплатное для подходящих пользователей</li>
-                        </ul>
-                    </div>
-                    
-                    <button class="participate-btn ${isEligible ? '' : 'disabled'}" id="participateBtn">
-                        ${isEligible ? '🎯 Участвовать в розыгрыше!' : '❌ Недостаточно пополнений'}
+                    <button class="participate-btn" data-giveaway-id="${giveaway.id}">
+                        Участвовать
                     </button>
-                </div>
-            `;
+                `;
+                elements.giveawayGrid.appendChild(giveawayCard);
+            });
 
-            // Add event listener
-            setTimeout(() => {
-                const btn = document.getElementById('participateBtn');
-                if (btn && isEligible) {
-                    btn.addEventListener('click', participateInGiveaway);
-                }
-            }, 100);
-        }
-
-        // Countdown timer with persistence
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownInterval = setInterval(updateCountdown, 1000);
-            updateCountdown();
-        }
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = giveaway.endDate - now;
-            const timer = document.getElementById('countdownTimer');
-
-            if (distance < 0 || !timer) {
-                clearInterval(countdownInterval);
-                if (timer) timer.textContent = "00:00:00:00";
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            timer.textContent = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            // Add event listeners for giveaways
+            document.querySelectorAll('.participate-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const giveawayId = parseInt(e.target.getAttribute('data-giveaway-id'));
+                    participateInGiveaway(giveawayId);
+                });
+            });
         }
 
         // Participate in giveaway
-        function participateInGiveaway() {
-            if (userData.totalDeposited >= giveaway.requiredDeposit) {
-                showNotification('🎉 Вы успешно участвуете в розыгрыше iPhone 17 Pro Max! Удачи!');
-            }
+        function participateInGiveaway(giveawayId) {
+            showNotification('Вы успешно участвуете в розыгрыше! Удачи! 🎉');
         }
 
         // Handle product purchase
@@ -1790,17 +1879,18 @@
                 return;
             }
 
-            document.getElementById('purchaseTitle').textContent = 'Подтверждение покупки';
-            document.getElementById('purchaseInfo').innerHTML = `
+            // Show purchase confirmation modal
+            elements.purchaseTitle.textContent = currentLanguage === 'ru' ? 'Подтверждение покупки' : 'Purchase Confirmation';
+            elements.purchaseInfo.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h4>${product.name}</h4>
-                    <p>${product.description}</p>
+                    <h4>${currentLanguage === 'ru' ? product.name_ru : product.name_en}</h4>
+                    <p>${currentLanguage === 'ru' ? product.description_ru : product.description_en}</p>
                     <p style="font-size: 1.25rem; font-weight: bold; color: var(--primary-color); margin: 10px 0;">$${product.price}</p>
-                    <p>Ваш баланс: $${userData.balance.toFixed(2)}</p>
-                    <p>После покупки: $${(userData.balance - product.price).toFixed(2)}</p>
+                    <p>${currentLanguage === 'ru' ? 'Ваш баланс:' : 'Your balance:'} $${userData.balance.toFixed(2)}</p>
+                    <p>${currentLanguage === 'ru' ? 'После покупки:' : 'After purchase:'} $${(userData.balance - product.price).toFixed(2)}</p>
                 </div>
             `;
-            document.getElementById('purchaseModal').classList.remove('hidden');
+            elements.purchaseModal.classList.remove('hidden');
         }
 
         // Process purchase
@@ -1809,33 +1899,42 @@
 
             showLoading(true);
             
+            // Simulate payment process
             setTimeout(() => {
                 showLoading(false);
+                
+                // Deduct product price from balance
                 userData.balance -= selectedProduct.price;
+                
+                // Add to orders
                 userData.orders.unshift({
                     id: Date.now(),
-                    product: selectedProduct.name,
+                    product: currentLanguage === 'ru' ? selectedProduct.name_ru : selectedProduct.name_en,
                     price: selectedProduct.price,
                     date: new Date().toISOString().split('T')[0],
                     status: 'completed'
                 });
                 
-                const userId = localStorage.getItem('telegram_user_id') || 'default_user';
-                saveUserData(userId);
+                // Save data
+                saveUserData(getUserId());
                 updateUserStats();
-                document.getElementById('purchaseModal').classList.add('hidden');
+                
+                // Close modal
+                elements.purchaseModal.classList.add('hidden');
+                
+                // Show success message
                 showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
+                
                 selectedProduct = null;
             }, 2000);
         }
 
         // Show orders
         function showOrders() {
-            const list = document.getElementById('ordersList');
-            list.innerHTML = '';
+            elements.ordersList.innerHTML = '';
             
             if (userData.orders.length === 0) {
-                list.innerHTML = `
+                elements.ordersList.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
                         <i class="fas fa-shopping-bag" style="font-size: 3rem; margin-bottom: 16px; opacity: 0.5;"></i>
                         <h3>Нет заказов</h3>
@@ -1844,131 +1943,138 @@
                 `;
             } else {
                 userData.orders.forEach(order => {
-                    const element = document.createElement('div');
-                    element.className = 'product-card';
-                    element.innerHTML = `
+                    const orderElement = document.createElement('div');
+                    orderElement.className = 'product-card';
+                    orderElement.innerHTML = `
                         <div class="product-header">
                             <div class="product-name">${order.product}</div>
                             <div class="product-price">$${order.price}</div>
                         </div>
                         <div class="product-stock">Дата: ${order.date}</div>
                         <div class="product-description" style="color: var(--success-color);">
-                            <i class="fas fa-check-circle"></i> Завершен
+                            <i class="fas fa-check-circle"></i> ${order.status === 'completed' ? 'Завершен' : 'В обработке'}
                         </div>
                     `;
-                    list.appendChild(element);
+                    elements.ordersList.appendChild(orderElement);
                 });
             }
             
-            document.getElementById('ordersModal').classList.remove('hidden');
+            elements.ordersModal.classList.remove('hidden');
+        }
+
+        // Get user ID
+        function getUserId() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                return window.Telegram.WebApp.initDataUnsafe.user?.id || 'telegram_user';
+            }
+            return 'test_user';
         }
 
         // Setup event listeners
         function setupEventListeners() {
-            console.log('🔧 Setting up event listeners...');
-            
             // Navigation
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const tab = e.currentTarget.getAttribute('data-tab');
+            elements.navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const tab = item.getAttribute('data-tab');
                     switchTab(tab);
                 });
             });
 
-            // Theme switch
-            document.getElementById('themeSwitch').addEventListener('click', toggleTheme);
+            // Language switch
+            elements.langSwitch.addEventListener('click', toggleLanguage);
 
-            // Open mini app
-            document.getElementById('openMiniApp').addEventListener('click', () => {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.openLink('https://t.me/cryptosending_bot');
-                } else {
-                    window.open('https://t.me/cryptosending_bot', '_blank');
-                }
+            // Theme switch
+            elements.themeSwitch.addEventListener('click', toggleTheme);
+
+            // Open mini app button
+            elements.openMiniApp.addEventListener('click', () => {
+                window.open('https://t.me/cryptosending_bot', '_blank');
             });
 
             // Back to categories
-            document.getElementById('backToCategories').addEventListener('click', () => {
-                document.getElementById('productsSection').classList.add('hidden');
+            elements.backToCategories.addEventListener('click', () => {
+                elements.productsSection.classList.add('hidden');
                 document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
             });
 
             // Deposit modal
-            document.getElementById('depositBtn').addEventListener('click', () => {
-                document.getElementById('depositModal').classList.remove('hidden');
+            elements.depositBtn.addEventListener('click', () => {
+                elements.depositModal.classList.remove('hidden');
             });
 
-            document.getElementById('closeDepositModal').addEventListener('click', () => {
-                document.getElementById('depositModal').classList.add('hidden');
+            elements.closeDepositModal.addEventListener('click', () => {
+                elements.depositModal.classList.add('hidden');
                 resetPaymentModal();
             });
 
             // Payment methods
-            document.querySelectorAll('.method-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    selectedPaymentMethod = e.currentTarget.getAttribute('data-method');
-                    document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    document.getElementById('amountSelector').classList.remove('hidden');
+            elements.methodBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedPaymentMethod = btn.getAttribute('data-method');
+                    elements.methodBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    elements.amountSelector.classList.remove('hidden');
                 });
             });
 
             // Amount buttons
-            document.querySelectorAll('.amount-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    selectedAmount = parseFloat(e.currentTarget.getAttribute('data-amount'));
-                    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-                    e.currentTarget.classList.add('active');
-                    document.getElementById('customAmount').value = '';
+            elements.amountBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedAmount = parseFloat(btn.getAttribute('data-amount'));
+                    elements.amountBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    elements.customAmount.value = '';
                 });
             });
 
-            // Custom amount
-            document.getElementById('customAmount').addEventListener('input', (e) => {
+            // Custom amount input
+            elements.customAmount.addEventListener('input', (e) => {
                 selectedAmount = parseFloat(e.target.value) || 0;
-                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+                elements.amountBtns.forEach(b => b.classList.remove('active'));
             });
 
             // Confirm deposit
-            document.getElementById('confirmDeposit').addEventListener('click', processDeposit);
+            elements.confirmDeposit.addEventListener('click', processDeposit);
 
             // Confirm purchase
-            document.getElementById('confirmPurchase').addEventListener('click', processPurchase);
+            elements.confirmPurchase.addEventListener('click', processPurchase);
 
             // Close purchase modal
-            document.getElementById('closePurchaseModal').addEventListener('click', () => {
-                document.getElementById('purchaseModal').classList.add('hidden');
+            elements.closePurchaseModal.addEventListener('click', () => {
+                elements.purchaseModal.classList.add('hidden');
                 selectedProduct = null;
             });
 
             // View orders
-            document.getElementById('viewOrdersBtn').addEventListener('click', showOrders);
+            elements.viewOrdersBtn.addEventListener('click', showOrders);
 
             // Close orders modal
-            document.getElementById('closeOrdersModal').addEventListener('click', () => {
-                document.getElementById('ordersModal').classList.add('hidden');
+            elements.closeOrdersModal.addEventListener('click', () => {
+                elements.ordersModal.classList.add('hidden');
             });
 
             // Copy referral link
-            document.getElementById('copyReferralBtn').addEventListener('click', () => {
-                const link = document.getElementById('referralLink');
-                link.select();
+            elements.copyReferralBtn.addEventListener('click', () => {
+                elements.referralLink.select();
                 document.execCommand('copy');
                 showNotification('Ссылка скопирована!');
             });
 
+            // Support button
+            elements.supportBtn.addEventListener('click', () => {
+                window.open('https://t.me/stokeshopsupport', '_blank');
+            });
+
             // Referral button
-            document.getElementById('referralBtn').addEventListener('click', () => {
+            elements.referralBtn.addEventListener('click', () => {
                 switchTab('referral');
             });
 
-            // Search
-            document.getElementById('searchInput').addEventListener('input', handleSearch);
-
-            console.log('✅ Event listeners setup completed');
+            // Search functionality
+            elements.searchInput.addEventListener('input', handleSearch);
         }
 
-        // Process deposit
+        // Process deposit with working Crypto Bot integration
         function processDeposit() {
             if (!selectedPaymentMethod) {
                 showNotification('Выберите способ оплаты');
@@ -1986,13 +2092,14 @@
                 showLoading(false);
                 
                 if (selectedPaymentMethod === 'crypto_bot') {
-                    const userId = localStorage.getItem('telegram_user_id') || 'default_user';
+                    // Working Crypto Bot payment link
+                    const userId = getUserId();
                     const paymentUrl = `https://t.me/CryptoBot?start=stokeshop_${userId}_${selectedAmount}`;
                     
-                    document.getElementById('paymentInfo').innerHTML = `
+                    elements.paymentInfo.innerHTML = `
                         <h4>Оплата через Crypto Bot</h4>
                         <p>Перейдите по ссылке для оплаты:</p>
-                        <a href="${paymentUrl}" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
+                        <a href="${paymentUrl}" target="_blank" style="display: block; padding: 12px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; margin: 16px 0; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
                             Перейти к оплате в Crypto Bot
                         </a>
                         <p style="font-size: 0.875rem; color: var(--text-secondary);">
@@ -2002,32 +2109,70 @@
                             Проверить статус оплаты
                         </button>
                     `;
+                } else {
+                    // Working crypto wallet addresses
+                    const walletAddresses = {
+                        ton: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
+                        usdt: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
+                        btc: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq'
+                    };
+                    
+                    const currencySymbols = {
+                        ton: 'TON',
+                        usdt: 'USDT',
+                        btc: 'BTC'
+                    };
+                    
+                    elements.paymentInfo.innerHTML = `
+                        <h4>Отправьте платеж на адрес:</h4>
+                        <div class="payment-address">${walletAddresses[selectedPaymentMethod]}</div>
+                        <p>Сумма: $${selectedAmount} (${currencySymbols[selectedPaymentMethod]})</p>
+                        <button class="copy-btn" onclick="copyToClipboard('${walletAddresses[selectedPaymentMethod]}')">
+                            Копировать адрес
+                        </button>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
+                            После отправки средств баланс пополнится автоматически после 1 подтверждения в сети
+                        </p>
+                        <div style="background: var(--surface-dark); padding: 12px; border-radius: 8px; margin-top: 16px;">
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">
+                                <strong>Важно:</strong> Отправляйте только ${currencySymbols[selectedPaymentMethod]} на этот адрес
+                            </p>
+                        </div>
+                        <button class="confirm-btn" onclick="checkPaymentStatus()" style="margin-top: 16px;">
+                            Проверить статус оплаты
+                        </button>
+                    `;
                 }
                 
-                document.getElementById('amountSelector').classList.add('hidden');
-                document.getElementById('paymentInfo').classList.remove('hidden');
+                elements.amountSelector.classList.add('hidden');
+                elements.paymentInfo.classList.remove('hidden');
             }, 1500);
         }
 
-        // Check payment status
-        window.checkPaymentStatus = function() {
+        // Check payment status (simulated)
+        function checkPaymentStatus() {
             showLoading(true);
             
             setTimeout(() => {
                 showLoading(false);
-                userData.balance += selectedAmount;
-                userData.totalDeposited += selectedAmount;
                 
-                const userId = localStorage.getItem('telegram_user_id') || 'default_user';
-                saveUserData(userId);
-                updateUserStats();
-                loadGiveaway();
+                // Simulate random payment status
+                const isPaid = Math.random() > 0.5;
                 
-                showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
-                document.getElementById('depositModal').classList.add('hidden');
-                resetPaymentModal();
+                if (isPaid) {
+                    // Simulate successful payment
+                    userData.balance += selectedAmount;
+                    saveUserData(getUserId());
+                    updateUserStats();
+                    
+                    showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
+                    elements.depositModal.classList.add('hidden');
+                    resetPaymentModal();
+                } else {
+                    showNotification('⏳ Платеж еще не подтвержден. Попробуйте позже.');
+                }
             }, 2000);
-        };
+        }
 
         // Handle search
         function handleSearch(e) {
@@ -2038,19 +2183,89 @@
                 return;
             }
             
-            // Search implementation would go here
+            const searchResults = [];
+            
+            Object.keys(products).forEach(categoryId => {
+                products[categoryId].forEach(product => {
+                    const name = currentLanguage === 'ru' ? product.name_ru : product.name_en;
+                    const description = currentLanguage === 'ru' ? product.description_ru : product.description_en;
+                    
+                    if (name.toLowerCase().includes(searchTerm) || description.toLowerCase().includes(searchTerm)) {
+                        searchResults.push({
+                            ...product,
+                            categoryId: parseInt(categoryId)
+                        });
+                    }
+                });
+            });
+            
+            elements.categoriesGrid.innerHTML = '';
+            
+            if (searchResults.length === 0) {
+                elements.categoriesGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                        <h3>${currentLanguage === 'ru' ? 'Ничего не найдено' : 'No results found'}</h3>
+                        <p>${currentLanguage === 'ru' ? 'Попробуйте изменить запрос' : 'Try changing your search query'}</p>
+                    </div>
+                `;
+            } else {
+                searchResults.forEach(product => {
+                    const category = categories.find(c => c.id === product.categoryId);
+                    const isFavorite = userData.favorites.includes(product.id);
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'Категория:' : 'Category:'} ${currentLanguage === 'ru' ? category.name_ru : category.name_en}</div>
+                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <div class="product-price">$${product.price}</div>
+                            </div>
+                        </div>
+                        <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
+                        <button class="buy-btn" data-product-id="${product.id}">${currentLanguage === 'ru' ? 'Купить' : 'Buy'}</button>
+                    `;
+                    elements.categoriesGrid.appendChild(productCard);
+                });
+
+                // Re-add event listeners
+                document.querySelectorAll('.buy-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const productId = parseInt(e.target.getAttribute('data-product-id'));
+                        const product = searchResults.find(p => p.id === productId);
+                        if (product) {
+                            handleProductPurchase(productId, product.categoryId);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const productId = parseInt(e.currentTarget.getAttribute('data-product-id'));
+                        toggleFavorite(productId, e.currentTarget);
+                    });
+                });
+            }
         }
 
-        // Switch tabs
+        // Switch between tabs
         function switchTab(tabName) {
-            document.querySelectorAll('.nav-item').forEach(item => {
+            elements.navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('data-tab') === tabName) {
                     item.classList.add('active');
                 }
             });
 
-            document.querySelectorAll('.tab-content').forEach(content => {
+            elements.tabContents.forEach(content => {
                 content.classList.remove('active');
                 if (content.id === `${tabName}-tab`) {
                     content.classList.add('active');
@@ -2058,41 +2273,71 @@
             });
         }
 
+        // Toggle language
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
+            updateUI();
+        }
+
         // Toggle theme
         function toggleTheme() {
             currentTheme = currentTheme === 'light' ? 'dark' : 'light';
             if (currentTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                document.getElementById('themeSwitch').innerHTML = '<i class="fas fa-sun"></i>';
+                elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
             } else {
                 document.documentElement.removeAttribute('data-theme');
-                document.getElementById('themeSwitch').innerHTML = '<i class="fas fa-moon"></i>';
+                elements.themeSwitch.innerHTML = '<i class="fas fa-moon"></i>';
             }
         }
 
-        // Update UI
+        // Update UI with current language
         function updateUI() {
-            // Update UI elements if needed
+            elements.langSwitch.innerHTML = `
+                <span class="lang-flag">${currentLanguage === 'ru' ? '🇷🇺' : '🇬🇧'}</span>
+                <span class="lang-text">${currentLanguage === 'ru' ? 'RU' : 'EN'}</span>
+            `;
+
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                const key = element.getAttribute('data-lang');
+                if (translations[currentLanguage][key]) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+
+            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-lang-placeholder');
+                if (translations[currentLanguage][key]) {
+                    element.placeholder = translations[currentLanguage][key];
+                }
+            });
+
+            loadCategories();
+            loadFavorites();
+            if (currentCategory) {
+                showProducts(currentCategory);
+            }
         }
 
         // Reset payment modal
         function resetPaymentModal() {
             selectedPaymentMethod = null;
             selectedAmount = 0;
-            document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('customAmount').value = '';
-            document.getElementById('amountSelector').classList.add('hidden');
-            document.getElementById('paymentInfo').classList.add('hidden');
+            elements.methodBtns.forEach(b => b.classList.remove('active'));
+            elements.amountBtns.forEach(b => b.classList.remove('active'));
+            elements.customAmount.value = '';
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.add('hidden');
         }
 
-        // Show loading
+        // Show loading overlay
         function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+            elements.loadingOverlay.classList.toggle('hidden', !show);
         }
 
         // Show notification
         function showNotification(message) {
+            // Use Telegram WebApp notification if available
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.showPopup({
                     title: 'Уведомление',
@@ -2123,18 +2368,33 @@
             
             setTimeout(() => {
                 notification.style.opacity = '0';
-                setTimeout(() => notification.remove(), 300);
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
             }, 3000);
         }
 
         // Copy to clipboard
-        window.copyToClipboard = function(text) {
+        function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showNotification('Скопировано!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Скопировано!');
             });
-        };
+        }
 
-        // Initialize app
+        // Make functions globally available for onclick handlers
+        window.copyToClipboard = copyToClipboard;
+        window.checkPaymentStatus = checkPaymentStatus;
+
+        // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
