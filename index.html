@@ -52,6 +52,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             transition: var(--transition);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .container {
@@ -68,6 +69,7 @@
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
+            padding-top: env(safe-area-inset-top);
         }
 
         .header-content {
@@ -137,6 +139,7 @@
             background: var(--surface);
             border-top: 1px solid var(--border);
             z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .nav-container {
@@ -1086,13 +1089,6 @@
                     <span class="logo-text">Stoke Shop</span>
                 </div>
                 <div class="header-actions">
-                    <button class="open-mini-app" id="openMiniApp">
-                        <i class="fas fa-external-link-alt"></i>
-                    </button>
-                    <button class="lang-switcher" id="langSwitch">
-                        <span class="lang-flag">🇷🇺</span>
-                        <span class="lang-text">RU</span>
-                    </button>
                     <button class="theme-switcher" id="themeSwitch">
                         <i class="fas fa-moon"></i>
                     </button>
@@ -1106,11 +1102,11 @@
         <div class="nav-container">
             <button class="nav-item active" data-tab="accounts">
                 <i class="fas fa-store"></i>
-                <span data-lang="categories">Аккаунты</span>
+                <span>Аккаунты</span>
             </button>
             <button class="nav-item" data-tab="profile">
                 <i class="fas fa-user"></i>
-                <span data-lang="profile">Профиль</span>
+                <span>Профиль</span>
             </button>
             <button class="nav-item" data-tab="favorites">
                 <i class="fas fa-heart"></i>
@@ -1129,12 +1125,12 @@
             <!-- Accounts Tab -->
             <div class="tab-content active" id="accounts-tab">
                 <div class="section-header">
-                    <h2 data-lang="categories">Категории аккаунтов</h2>
+                    <h2>Категории аккаунтов</h2>
                 </div>
                 
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Поиск..." data-lang-placeholder="search_placeholder">
+                    <input type="text" id="searchInput" placeholder="Поиск...">
                 </div>
 
                 <div class="categories-grid" id="categoriesGrid">
@@ -1145,7 +1141,7 @@
                     <div class="products-header">
                         <button class="back-button" id="backToCategories">
                             <i class="fas fa-arrow-left"></i>
-                            <span data-lang="back_to_categories">Назад к категориям</span>
+                            <span>Назад к категориям</span>
                         </button>
                         <h3 id="categoryTitle">Категория</h3>
                     </div>
@@ -1174,10 +1170,10 @@
                             <i class="fas fa-wallet"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label" data-lang="balance">Баланс</span>
+                            <span class="stat-label">Баланс</span>
                             <span class="stat-value" id="userBalance">$0.00</span>
                         </div>
-                        <button class="stat-action" id="depositBtn" data-lang="deposit">Пополнить</button>
+                        <button class="stat-action" id="depositBtn">Пополнить</button>
                     </div>
 
                     <div class="stat-card">
@@ -1185,21 +1181,21 @@
                             <i class="fas fa-shopping-bag"></i>
                         </div>
                         <div class="stat-info">
-                            <span class="stat-label" data-lang="orders_history">Заказы</span>
+                            <span class="stat-label">Заказы</span>
                             <span class="stat-value" id="ordersCount">0</span>
                         </div>
-                        <button class="stat-action" id="viewOrdersBtn" data-lang="view">Смотреть</button>
+                        <button class="stat-action" id="viewOrdersBtn">Смотреть</button>
                     </div>
                 </div>
 
                 <div class="profile-actions">
                     <button class="action-btn" id="supportBtn">
                         <i class="fas fa-headset"></i>
-                        <span data-lang="support">Поддержка</span>
+                        <span>Поддержка</span>
                     </button>
                     <button class="action-btn" id="referralBtn">
                         <i class="fas fa-users"></i>
-                        <span data-lang="referral">Рефералы</span>
+                        <span>Рефералы</span>
                     </button>
                 </div>
             </div>
@@ -1294,7 +1290,7 @@
                     <div class="referral-link">
                         <label>Ваша реферальная ссылка:</label>
                         <div class="link-container">
-                            <input type="text" id="referralLink" readonly value="https://t.me/cryptosending_bot?start=ref_">
+                            <input type="text" id="referralLink" readonly>
                             <button class="copy-btn" id="copyReferralBtn">
                                 <i class="fas fa-copy"></i> Копировать
                             </button>
@@ -1319,13 +1315,13 @@
     <div class="modal hidden" id="depositModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 data-lang="deposit">Пополнение баланса</h3>
+                <h3>Пополнение баланса</h3>
                 <button class="modal-close" id="closeDepositModal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="payment-methods">
                     <div class="method-category">
-                        <h4 data-lang="crypto_payments">Криптовалюты</h4>
+                        <h4>Криптовалюты</h4>
                         <div class="methods-grid">
                             <button class="method-btn" data-method="ton">
                                 <i class="fas fa-gem"></i>
@@ -1348,7 +1344,7 @@
                 </div>
 
                 <div class="amount-selector hidden" id="amountSelector">
-                    <h4 data-lang="select_amount">Выберите сумму</h4>
+                    <h4>Выберите сумму</h4>
                     <div class="amount-buttons">
                         <button class="amount-btn" data-amount="10">$10</button>
                         <button class="amount-btn" data-amount="25">$25</button>
@@ -1360,7 +1356,7 @@
                     <div class="custom-amount">
                         <input type="number" id="customAmount" placeholder="Другая сумма" min="10" max="1000">
                     </div>
-                    <button class="confirm-btn" id="confirmDeposit" data-lang="continue">Создать инвойс</button>
+                    <button class="confirm-btn" id="confirmDeposit">Создать инвойс</button>
                 </div>
 
                 <div class="payment-info hidden" id="paymentInfo">
@@ -1404,7 +1400,7 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <p data-lang="loading">Загрузка...</p>
+        <p>Загрузка...</p>
     </div>
 
     <script>
@@ -1425,7 +1421,7 @@
                             asset: 'USDT',
                             description: description,
                             hidden_message: `Пополнение баланса на $${amount}`,
-                            paid_btn_name: 'callback',
+                            paid_btn_name: 'open',
                             paid_btn_url: 'https://t.me/cryptosending_bot',
                             payload: JSON.stringify({
                                 userId: getUserId(),
@@ -1436,6 +1432,7 @@
                     });
                     
                     const data = await response.json();
+                    console.log('Invoice created:', data);
                     return data.ok ? data.result : null;
                 } catch (error) {
                     console.error('Error creating invoice:', error);
@@ -1465,54 +1462,20 @@
             }
         };
 
-        // Translation data
-        const translations = {
-            ru: {
-                categories: "Аккаунты",
-                profile: "Профиль",
-                news: "Новости",
-                referral: "Рефералы",
-                search_placeholder: "Поиск...",
-                balance: "Баланс",
-                deposit: "Пополнить",
-                orders_history: "Заказы",
-                view: "Смотреть",
-                favorites: "Избранное",
-                giveaway: "Розыгрыш",
-                support: "Поддержка",
-                crypto_payments: "Криптовалюты",
-                select_amount: "Выберите сумму",
-                continue: "Продолжить",
-                loading: "Загрузка...",
-                back_to_categories: "Назад к категориям"
-            }
-        };
-
-        // Sample data - All accounts
+        // Sample data
         const categories = [
             { id: 1, name_ru: "Telegram", name_en: "Telegram", description_ru: "Аккаунты Telegram", description_en: "Telegram accounts", icon: "fab fa-telegram" },
             { id: 2, name_ru: "ВКонтакте", name_en: "VKontakte", description_ru: "Аккаунты ВК", description_en: "VK accounts", icon: "fab fa-vk" },
             { id: 3, name_ru: "Vinted", name_en: "Vinted", description_ru: "Аккаунты Vinted", description_en: "Vinted accounts", icon: "fas fa-tshirt" },
             { id: 4, name_ru: "Wallapop", name_en: "Wallapop", description_ru: "Аккаунты Wallapop", description_en: "Wallapop accounts", icon: "fas fa-store" },
-            { id: 5, name_ru: "Facebook", name_en: "Facebook", description_ru: "Аккаунты Facebook", description_en: "Facebook accounts", icon: "fab fa-facebook" },
-            { id: 6, name_ru: "Telegram Stars", name_en: "Telegram Stars", description_ru: "Звезды Telegram", description_en: "Telegram Stars", icon: "fas fa-star" },
-            { id: 7, name_ru: "Telegram Premium", name_en: "Telegram Premium", description_ru: "Премиум подписки", description_en: "Premium subscriptions", icon: "fas fa-crown" },
-            { id: 8, name_ru: "Яндекс", name_en: "Yandex", description_ru: "Аккаунты Яндекс", description_en: "Yandex accounts", icon: "fas fa-search" },
-            { id: 9, name_ru: "Ozon", name_en: "Ozon", description_ru: "Аккаунты Ozon", description_en: "Ozon accounts", icon: "fas fa-box" },
-            { id: 10, name_ru: "Wildberries", name_en: "Wildberries", description_ru: "Аккаунты Wildberries", description_en: "Wildberries accounts", icon: "fas fa-shopping-bag" },
-            { id: 11, name_ru: "Госуслуги", name_en: "Gosuslugi", description_ru: "Аккаунты Госуслуг", description_en: "Gosuslugi accounts", icon: "fas fa-passport" }
+            { id: 5, name_ru: "Facebook", name_en: "Facebook", description_ru: "Аккаунты Facebook", description_en: "Facebook accounts", icon: "fab fa-facebook" }
         ];
 
         const products = {
             1: [
                 { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
                 { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
-                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
-                { id: 4, name_ru: "ВИРТ СИМ", name_en: "VIRTUAL SIM", price: 4.5, stock: 20, description_ru: "Аккаунт с виртуальной симкой", description_en: "Account with virtual SIM" },
-                { id: 5, name_ru: "БИЗНЕС", name_en: "BUSINESS", price: 6.0, stock: 10, description_ru: "Бизнес аккаунт Telegram", description_en: "Telegram Business account" },
-                { id: 6, name_ru: "ПРЕМИУМ", name_en: "PREMIUM", price: 7.0, stock: 15, description_ru: "Премиум аккаунт Telegram", description_en: "Telegram Premium account" },
-                { id: 7, name_ru: "ВЕРИФИЦИРОВАН", name_en: "VERIFIED", price: 6.5, stock: 12, description_ru: "Верифицированный аккаунт", description_en: "Verified account" },
-                { id: 8, name_ru: "ПРО АККАУНТ", name_en: "PRO ACCOUNT", price: 5.8, stock: 7, description_ru: "Профессиональный аккаунт", description_en: "Professional account" }
+                { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" }
             ]
         };
 
@@ -1544,7 +1507,7 @@
             id: 1,
             prize: "3x iPhone 17 Pro Max",
             description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: new Date('2024-12-31T23:59:59'), // Fixed end date
+            endDate: new Date('2024-12-31T23:59:59'),
             participants: 4586,
             minDeposit: 30,
             image: "fas fa-mobile-alt"
@@ -1552,9 +1515,7 @@
 
         // DOM elements
         const elements = {
-            langSwitch: document.getElementById('langSwitch'),
             themeSwitch: document.getElementById('themeSwitch'),
-            openMiniApp: document.getElementById('openMiniApp'),
             navItems: document.querySelectorAll('.nav-item'),
             tabContents: document.querySelectorAll('.tab-content'),
             categoriesGrid: document.getElementById('categoriesGrid'),
@@ -1604,6 +1565,7 @@
 
         // Initialize app
         function initApp() {
+            console.log('Initializing Stoke Shop...');
             initTelegramWebApp();
             loadUserData();
             loadCategories();
@@ -1612,21 +1574,29 @@
             updateUI();
             startGiveawayTimer();
             updateReferralLink();
+            
+            // Check for pending invoices on startup
+            checkPendingInvoices();
         }
 
         // Initialize Telegram WebApp
         function initTelegramWebApp() {
+            console.log('Initializing Telegram WebApp...');
+            
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 
+                // Expand the app to full height
                 tg.expand();
                 
+                // Set theme based on Telegram theme
                 if (tg.colorScheme === 'dark') {
                     currentTheme = 'dark';
                     document.documentElement.setAttribute('data-theme', 'dark');
                     elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
                 }
                 
+                // Listen for theme changes
                 tg.onEvent('themeChanged', () => {
                     if (tg.colorScheme === 'dark') {
                         currentTheme = 'dark';
@@ -1639,9 +1609,22 @@
                     }
                 });
                 
+                // Enable closing confirmation
                 tg.enableClosingConfirmation();
                 
+                // Set up back button
+                tg.BackButton.onClick(() => {
+                    if (elements.productsSection.classList.contains('hidden')) {
+                        tg.BackButton.hide();
+                    } else {
+                        elements.productsSection.classList.add('hidden');
+                        document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
+                    }
+                });
+                
                 console.log('Telegram WebApp initialized successfully');
+                console.log('User data:', tg.initDataUnsafe.user);
+                console.log('Init data:', tg.initData);
             } else {
                 console.log('Telegram WebApp not available, running in standalone mode');
             }
@@ -1649,21 +1632,17 @@
 
         // Load user data from Telegram
         function loadUserData() {
+            console.log('Loading user data...');
+            
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 const user = tg.initDataUnsafe.user;
                 
-                console.log('Telegram User Data:', user);
-                
                 if (user) {
-                    // Set user avatar - fixed to show properly
+                    // Set user avatar
                     if (user.photo_url) {
                         elements.userAvatar.src = user.photo_url;
                         elements.userAvatar.style.display = 'block';
-                        elements.userAvatar.onerror = function() {
-                            this.style.display = 'none';
-                            document.querySelector('#userAvatar + i').style.display = 'flex';
-                        };
                     } else {
                         elements.userAvatar.style.display = 'none';
                         document.querySelector('#userAvatar + i').style.display = 'flex';
@@ -1686,9 +1665,19 @@
                     // Initialize user data from Telegram
                     initializeUserData(user.id);
                 } else {
-                    elements.userName.textContent = 'Пользователь Telegram';
-                    elements.userId.textContent = 'ID: Неизвестен';
-                    initializeUserData('telegram_user');
+                    // Try to get user from initData
+                    const initData = new URLSearchParams(tg.initData);
+                    const userJson = initData.get('user');
+                    if (userJson) {
+                        const user = JSON.parse(userJson);
+                        elements.userName.textContent = user.first_name || 'Пользователь';
+                        elements.userId.textContent = `ID: ${user.id}`;
+                        initializeUserData(user.id);
+                    } else {
+                        elements.userName.textContent = 'Пользователь Telegram';
+                        elements.userId.textContent = 'ID: Неизвестен';
+                        initializeUserData('telegram_user');
+                    }
                 }
             } else {
                 // Fallback for testing
@@ -1703,30 +1692,42 @@
 
         // Initialize user data
         function initializeUserData(userId) {
-            const savedData = localStorage.getItem(`userData_${userId}`);
+            console.log('Initializing user data for:', userId);
+            
+            const savedData = localStorage.getItem(`stokeshop_user_${userId}`);
             if (savedData) {
-                userData = JSON.parse(savedData);
+                try {
+                    userData = JSON.parse(savedData);
+                    console.log('Loaded user data:', userData);
+                } catch (e) {
+                    console.error('Error parsing user data:', e);
+                    userData = createDefaultUserData();
+                }
             } else {
-                userData = {
-                    balance: 0,
-                    orders: [],
-                    favorites: [],
-                    referralCount: 0,
-                    referralEarnings: 0,
-                    totalDeposited: 0,
-                    giveawayParticipating: false,
-                    pendingInvoices: []
-                };
-                saveUserData(userId);
+                userData = createDefaultUserData();
             }
             
             updateUserStats();
             updateGiveawayStatus();
         }
 
+        // Create default user data
+        function createDefaultUserData() {
+            return {
+                balance: 0,
+                orders: [],
+                favorites: [],
+                referralCount: 0,
+                referralEarnings: 0,
+                totalDeposited: 0,
+                giveawayParticipating: false,
+                pendingInvoices: []
+            };
+        }
+
         // Save user data
         function saveUserData(userId) {
-            localStorage.setItem(`userData_${userId}`, JSON.stringify(userData));
+            localStorage.setItem(`stokeshop_user_${userId}`, JSON.stringify(userData));
         }
 
         // Update user statistics
@@ -1764,6 +1765,44 @@
         function updateReferralLink() {
             const userId = getUserId();
             elements.referralLink.value = `https://t.me/cryptosending_bot?start=ref_${userId}`;
+        }
+
+        // Check pending invoices on startup
+        async function checkPendingInvoices() {
+            if (userData.pendingInvoices.length > 0) {
+                console.log('Checking pending invoices:', userData.pendingInvoices);
+                showLoading(true);
+                
+                try {
+                    const invoices = await CRYPTO_PAY_API.getInvoices(userData.pendingInvoices);
+                    if (invoices && invoices.items) {
+                        for (const invoice of invoices.items) {
+                            if (invoice.status === 'paid') {
+                                // Process paid invoice
+                                const payload = JSON.parse(invoice.payload || '{}');
+                                const amount = payload.amount || invoice.amount;
+                                
+                                userData.balance += amount;
+                                userData.totalDeposited += amount;
+                                userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== invoice.invoice_id);
+                                
+                                showNotification(`✅ Баланс пополнен на $${amount}!`);
+                            } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
+                                // Remove expired/cancelled invoices
+                                userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== invoice.invoice_id);
+                            }
+                        }
+                        
+                        saveUserData(getUserId());
+                        updateUserStats();
+                        updateGiveawayStatus();
+                    }
+                } catch (error) {
+                    console.error('Error checking pending invoices:', error);
+                }
+                
+                showLoading(false);
+            }
         }
 
         // Start giveaway timer
@@ -1821,6 +1860,11 @@
             const category = categories.find(c => c.id === categoryId);
             elements.categoryTitle.textContent = currentLanguage === 'ru' ? category.name_ru : category.name_en;
             
+            // Show back button in Telegram
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.BackButton.show();
+            }
+            
             elements.productsGrid.innerHTML = '';
             if (products[categoryId]) {
                 products[categoryId].forEach(product => {
@@ -1833,7 +1877,7 @@
                         <div class="product-header">
                             <div>
                                 <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
-                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                                <div class="product-stock">В наличии: ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
@@ -1844,7 +1888,7 @@
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
                         <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
-                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                            ${canBuy ? 'Купить' : 'Недостаточно средств'}
                         </button>
                     `;
                     elements.productsGrid.appendChild(productCard);
@@ -1923,7 +1967,7 @@
                         <div class="product-header">
                             <div>
                                 <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
-                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                                <div class="product-stock">В наличии: ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
                                 <button class="favorite-btn active" data-product-id="${product.id}">
@@ -1934,7 +1978,7 @@
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
                         <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
-                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                            ${canBuy ? 'Купить' : 'Недостаточно средств'}
                         </button>
                     `;
                     elements.favoritesGrid.appendChild(productCard);
@@ -1987,14 +2031,14 @@
                 return;
             }
 
-            elements.purchaseTitle.textContent = currentLanguage === 'ru' ? 'Подтверждение покупки' : 'Purchase Confirmation';
+            elements.purchaseTitle.textContent = 'Подтверждение покупки';
             elements.purchaseInfo.innerHTML = `
                 <div style="text-align: center; margin-bottom: 20px;">
                     <h4>${currentLanguage === 'ru' ? product.name_ru : product.name_en}</h4>
                     <p>${currentLanguage === 'ru' ? product.description_ru : product.description_en}</p>
                     <p style="font-size: 1.25rem; font-weight: bold; color: var(--primary-color); margin: 10px 0;">$${product.price}</p>
-                    <p>${currentLanguage === 'ru' ? 'Ваш баланс:' : 'Your balance:'} $${userData.balance.toFixed(2)}</p>
-                    <p>${currentLanguage === 'ru' ? 'После покупки:' : 'After purchase:'} $${(userData.balance - product.price).toFixed(2)}</p>
+                    <p>Ваш баланс: $${userData.balance.toFixed(2)}</p>
+                    <p>После покупки: $${(userData.balance - product.price).toFixed(2)}</p>
                 </div>
             `;
             elements.purchaseModal.classList.remove('hidden');
@@ -2016,7 +2060,12 @@
                     product: currentLanguage === 'ru' ? selectedProduct.name_ru : selectedProduct.name_en,
                     price: selectedProduct.price,
                     date: new Date().toISOString().split('T')[0],
-                    status: 'completed'
+                    status: 'completed',
+                    accountData: {
+                        login: `user${Date.now()}`,
+                        password: 'pass123',
+                        additionalInfo: 'Данные для входа отправлены в чат'
+                    }
                 });
                 
                 saveUserData(getUserId());
@@ -2025,6 +2074,16 @@
                 elements.purchaseModal.classList.add('hidden');
                 
                 showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
+                
+                // In real app, you would send the account data to user via bot
+                if (window.Telegram && window.Telegram.WebApp) {
+                    const tg = window.Telegram.WebApp;
+                    tg.sendData(JSON.stringify({
+                        type: 'purchase_success',
+                        product: selectedProduct.name_ru,
+                        accountData: userData.orders[0].accountData
+                    }));
+                }
                 
                 selectedProduct = null;
             }, 2000);
@@ -2052,8 +2111,17 @@
                             <div class="product-price">$${order.price}</div>
                         </div>
                         <div class="product-stock">Дата: ${order.date}</div>
-                        <div class="product-description" style="color: var(--success-color);">
-                            <i class="fas fa-check-circle"></i> ${order.status === 'completed' ? 'Завершен' : 'В обработке'}
+                        <div class="product-description">
+                            ${order.accountData ? `
+                                <div style="margin-top: 8px; padding: 8px; background: var(--surface-dark); border-radius: 6px; font-size: 0.875rem;">
+                                    <strong>Данные аккаунта:</strong><br>
+                                    Логин: ${order.accountData.login}<br>
+                                    Пароль: ${order.accountData.password}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div style="color: var(--success-color); margin-top: 8px;">
+                            <i class="fas fa-check-circle"></i> Завершен
                         </div>
                     `;
                     elements.ordersList.appendChild(orderElement);
@@ -2066,32 +2134,54 @@
         // Get user ID
         function getUserId() {
             if (window.Telegram && window.Telegram.WebApp) {
-                return window.Telegram.WebApp.initDataUnsafe.user?.id || 'telegram_user';
+                const tg = window.Telegram.WebApp;
+                if (tg.initDataUnsafe.user) {
+                    return tg.initDataUnsafe.user.id.toString();
+                }
+                
+                // Try to get from initData
+                const initData = new URLSearchParams(tg.initData);
+                const userJson = initData.get('user');
+                if (userJson) {
+                    const user = JSON.parse(userJson);
+                    return user.id.toString();
+                }
+                
+                return 'telegram_user';
             }
-            return 'test_user';
+            return 'test_user_123';
         }
 
         // Setup event listeners
         function setupEventListeners() {
+            // Navigation
             elements.navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const tab = item.getAttribute('data-tab');
                     switchTab(tab);
+                    
+                    // Hide back button when switching tabs
+                    if (window.Telegram && window.Telegram.WebApp) {
+                        window.Telegram.WebApp.BackButton.hide();
+                    }
                 });
             });
 
-            elements.langSwitch.addEventListener('click', toggleLanguage);
+            // Theme switch
             elements.themeSwitch.addEventListener('click', toggleTheme);
 
-            elements.openMiniApp.addEventListener('click', () => {
-                window.open('https://t.me/cryptosending_bot', '_blank');
-            });
-
+            // Back to categories
             elements.backToCategories.addEventListener('click', () => {
                 elements.productsSection.classList.add('hidden');
                 document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
+                
+                // Hide back button
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.BackButton.hide();
+                }
             });
 
+            // Deposit modal
             elements.depositBtn.addEventListener('click', () => {
                 elements.depositModal.classList.remove('hidden');
             });
@@ -2101,6 +2191,7 @@
                 resetPaymentModal();
             });
 
+            // Payment methods
             elements.methodBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedPaymentMethod = btn.getAttribute('data-method');
@@ -2110,6 +2201,7 @@
                 });
             });
 
+            // Amount buttons
             elements.amountBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedAmount = parseFloat(btn.getAttribute('data-amount'));
@@ -2119,32 +2211,54 @@
                 });
             });
 
+            // Custom amount input
             elements.customAmount.addEventListener('input', (e) => {
                 selectedAmount = parseFloat(e.target.value) || 0;
                 elements.amountBtns.forEach(b => b.classList.remove('active'));
             });
 
+            // Confirm deposit
             elements.confirmDeposit.addEventListener('click', createCryptoInvoice);
+
+            // Confirm purchase
             elements.confirmPurchase.addEventListener('click', processPurchase);
+
+            // Close purchase modal
             elements.closePurchaseModal.addEventListener('click', () => {
                 elements.purchaseModal.classList.add('hidden');
                 selectedProduct = null;
             });
+
+            // View orders
             elements.viewOrdersBtn.addEventListener('click', showOrders);
+
+            // Close orders modal
             elements.closeOrdersModal.addEventListener('click', () => {
                 elements.ordersModal.classList.add('hidden');
             });
+
+            // Copy referral link
             elements.copyReferralBtn.addEventListener('click', () => {
                 elements.referralLink.select();
                 document.execCommand('copy');
                 showNotification('Ссылка скопирована!');
             });
+
+            // Support button
             elements.supportBtn.addEventListener('click', () => {
-                window.open('https://t.me/stokeshopsupport', '_blank');
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink('https://t.me/stokeshopsupport');
+                } else {
+                    window.open('https://t.me/stokeshopsupport', '_blank');
+                }
             });
+
+            // Referral button
             elements.referralBtn.addEventListener('click', () => {
                 switchTab('referral');
             });
+
+            // Search functionality
             elements.searchInput.addEventListener('input', handleSearch);
         }
 
@@ -2225,7 +2339,7 @@
                 clearInterval(invoiceCheckInterval);
             }
             
-            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000); // Check every 10 seconds
+            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000);
         }
 
         // Check invoice status
@@ -2319,8 +2433,8 @@
                 elements.categoriesGrid.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
                         <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 16px;"></i>
-                        <h3>${currentLanguage === 'ru' ? 'Ничего не найдено' : 'No results found'}</h3>
-                        <p>${currentLanguage === 'ru' ? 'Попробуйте изменить запрос' : 'Try changing your search query'}</p>
+                        <h3>Ничего не найдено</h3>
+                        <p>Попробуйте изменить запрос</p>
                     </div>
                 `;
             } else {
@@ -2335,8 +2449,8 @@
                         <div class="product-header">
                             <div>
                                 <div class="product-name">${currentLanguage === 'ru' ? product.name_ru : product.name_en}</div>
-                                <div class="product-stock">${currentLanguage === 'ru' ? 'Категория:' : 'Category:'} ${currentLanguage === 'ru' ? category.name_ru : category.name_en}</div>
-                                <div class="product-stock">${currentLanguage === 'ru' ? 'В наличии:' : 'In stock:'} ${product.stock}</div>
+                                <div class="product-stock">Категория: ${currentLanguage === 'ru' ? category.name_ru : category.name_en}</div>
+                                <div class="product-stock">В наличии: ${product.stock}</div>
                             </div>
                             <div style="display: flex; align-items: flex-start; gap: 8px;">
                                 <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-product-id="${product.id}">
@@ -2347,7 +2461,7 @@
                         </div>
                         <div class="product-description">${currentLanguage === 'ru' ? product.description_ru : product.description_en}</div>
                         <button class="buy-btn" data-product-id="${product.id}" ${!canBuy ? 'disabled' : ''}>
-                            ${canBuy ? (currentLanguage === 'ru' ? 'Купить' : 'Buy') : (currentLanguage === 'ru' ? 'Недостаточно средств' : 'Insufficient funds')}
+                            ${canBuy ? 'Купить' : 'Недостаточно средств'}
                         </button>
                     `;
                     elements.categoriesGrid.appendChild(productCard);
@@ -2390,12 +2504,6 @@
             });
         }
 
-        // Toggle language
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'ru' ? 'en' : 'ru';
-            updateUI();
-        }
-
         // Toggle theme
         function toggleTheme() {
             currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -2410,25 +2518,6 @@
 
         // Update UI with current language
         function updateUI() {
-            elements.langSwitch.innerHTML = `
-                <span class="lang-flag">${currentLanguage === 'ru' ? '🇷🇺' : '🇬🇧'}</span>
-                <span class="lang-text">${currentLanguage === 'ru' ? 'RU' : 'EN'}</span>
-            `;
-
-            document.querySelectorAll('[data-lang]').forEach(element => {
-                const key = element.getAttribute('data-lang');
-                if (translations[currentLanguage][key]) {
-                    element.textContent = translations[currentLanguage][key];
-                }
-            });
-
-            document.querySelectorAll('[data-lang-placeholder]').forEach(element => {
-                const key = element.getAttribute('data-lang-placeholder');
-                if (translations[currentLanguage][key]) {
-                    element.placeholder = translations[currentLanguage][key];
-                }
-            });
-
             loadCategories();
             loadFavorites();
             if (currentCategory) {
@@ -2501,20 +2590,6 @@
         }
 
         // Make functions globally available
-        window.copyToClipboard = function(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showNotification('Скопировано!');
-            }).catch(() => {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                showNotification('Скопировано!');
-            });
-        };
-
         window.checkInvoiceStatus = checkInvoiceStatus;
         window.resetPaymentModal = resetPaymentModal;
         window.closeDepositModal = closeDepositModal;
