@@ -1394,12 +1394,17 @@
     </div>
 
     <script>
-        // Crypto Pay API Configuration
+        // Crypto Pay API Configuration - ИСПРАВЛЕННАЯ ВЕРСИЯ
         const CRYPTO_PAY_API = {
             token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
             baseUrl: 'https://pay.crypt.bot/api',
+            
+            // Правильный метод создания инвойса
             createInvoice: async function(amount, currency = 'USD', description = 'Пополнение баланса') {
                 try {
+                    // Конвертируем сумму в USDT (1 USD ≈ 1 USDT)
+                    const usdtAmount = parseFloat(amount).toFixed(2);
+                    
                     const response = await fetch(`${this.baseUrl}/createInvoice`, {
                         method: 'POST',
                         headers: {
@@ -1407,23 +1412,33 @@
                             'Crypto-Pay-API-Token': this.token
                         },
                         body: JSON.stringify({
-                            amount: amount,
                             asset: 'USDT',
+                            amount: usdtAmount,
                             description: description,
-                            hidden_message: `Пополнение баланса на $${amount}`,
+                            hidden_message: `Пополнение баланса Stoke Shop на $${amount}`,
                             paid_btn_name: 'open',
                             paid_btn_url: 'https://t.me/cryptosending_bot',
                             payload: JSON.stringify({
                                 userId: getUserId(),
                                 type: 'deposit',
-                                amount: amount
-                            })
+                                amount: parseFloat(amount),
+                                currency: currency
+                            }),
+                            allow_comments: false,
+                            allow_anonymous: false,
+                            expires_in: 3600 // 1 час
                         })
                     });
                     
                     const data = await response.json();
-                    console.log('Invoice created:', data);
-                    return data.ok ? data.result : null;
+                    console.log('Invoice creation response:', data);
+                    
+                    if (data.ok && data.result) {
+                        return data.result;
+                    } else {
+                        console.error('Invoice creation failed:', data);
+                        return null;
+                    }
                 } catch (error) {
                     console.error('Error creating invoice:', error);
                     return null;
@@ -2472,15 +2487,20 @@
             }
         }
 
-        // Create crypto invoice using Crypto Pay API
+        // Create crypto invoice using Crypto Pay API - ИСПРАВЛЕННАЯ ВЕРСИЯ
         async function createCryptoInvoice() {
+            if (selectedAmount < 10) {
+                showNotification('Минимальная сумма $10');
+                return;
+            }
+
             showLoading(true);
 
             try {
                 const invoice = await CRYPTO_PAY_API.createInvoice(
                     selectedAmount,
                     'USD',
-                    `Пополнение баланса на $${selectedAmount}`
+                    `Пополнение баланса Stoke Shop на $${selectedAmount}`
                 );
 
                 showLoading(false);
@@ -2493,11 +2513,11 @@
                     showInvoicePayment(invoice);
                     startInvoiceChecking();
                 } else {
-                    showNotification('Ошибка при создании инвойса. Попробуйте позже.');
+                    showNotification('❌ Ошибка при создании инвойса. Попробуйте позже или выберите другой способ оплаты.');
                 }
             } catch (error) {
                 showLoading(false);
-                showNotification('Ошибка при создании инвойса. Попробуйте позже.');
+                showNotification('❌ Ошибка при создании инвойса. Попробуйте позже.');
                 console.error('Invoice creation error:', error);
             }
         }
@@ -2560,6 +2580,70 @@
             elements.paymentInfo.classList.remove('hidden');
         }
 
+        // Show invoice payment details - ИСПРАВЛЕННАЯ ВЕРСИЯ
+        function showInvoicePayment(invoice) {
+            if (!invoice) {
+                showNotification('❌ Ошибка: инвойс не создан');
+                return;
+            }
+
+            elements.paymentInfo.innerHTML = `
+                <div class="payment-processing">
+                    <h4>📥 Подтвердите оплату счёта #${invoice.invoice_id}</h4>
+                    
+                    <div style="background: var(--surface); padding: 16px; border-radius: 12px; margin: 16px 0; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: var(--text-secondary);">Отправляете:</span>
+                            <span style="font-weight: 600;">${invoice.amount} USDT ($${selectedAmount})</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="color: var(--text-secondary);">Получатель:</span>
+                            <span style="font-weight: 600;">Stoke Shop</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="color: var(--text-secondary);">Описание:</span>
+                            <span style="font-weight: 600; text-align: right;">Пополнение баланса</span>
+                        </div>
+                        <div style="background: var(--surface-dark); padding: 12px; border-radius: 8px; margin-top: 12px;">
+                            <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                                <i class="fas fa-lock" style="margin-right: 8px;"></i>
+                                Скрытое сообщение будет показано после оплаты
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <a href="${invoice.pay_url}" target="_blank" style="display: block; padding: 14px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2); font-weight: 600;">
+                            <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>
+                            Перейти к оплате счёта
+                        </a>
+                    </div>
+                    
+                    <div class="payment-status status-pending">
+                        <i class="fas fa-clock"></i> Ожидание оплаты...
+                    </div>
+                    
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
+                        После оплаты нажмите "Проверить оплату" для подтверждения
+                    </p>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 16px;">
+                        <button class="confirm-btn" onclick="checkInvoiceStatus()" style="flex: 1;">
+                            <i class="fas fa-sync-alt" style="margin-right: 8px;"></i>
+                            Проверить оплату
+                        </button>
+                        <button class="confirm-btn" onclick="resetPaymentModal()" style="flex: 1; background: var(--text-muted);">
+                            <i class="fas fa-times" style="margin-right: 8px;"></i>
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.remove('hidden');
+        }
+
         // Check direct payment status
         async function checkDirectPayment() {
             showLoading(true);
@@ -2615,37 +2699,6 @@
                 showNotification('Ошибка при проверке платежа');
                 console.error('Payment check error:', error);
             }
-        }
-
-        // Show invoice payment details
-        function showInvoicePayment(invoice) {
-            elements.paymentInfo.innerHTML = `
-                <div class="payment-processing">
-                    <h4>Оплата через Crypto Pay</h4>
-                    <p>Для оплаты используйте ссылку ниже:</p>
-                    
-                    <div style="margin: 20px 0;">
-                        <a href="${invoice.pay_url}" target="_blank" style="display: block; padding: 14px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
-                            Перейти к оплате
-                        </a>
-                    </div>
-                    
-                    <div class="payment-status status-pending">
-                        <i class="fas fa-clock"></i> Ожидание оплаты...
-                    </div>
-                    
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
-                        После оплаты нажмите "Проверить оплату"
-                    </p>
-                    
-                    <button class="confirm-btn" onclick="checkInvoiceStatus()" style="margin-top: 16px;">
-                        Проверить оплату
-                    </button>
-                </div>
-            `;
-            
-            elements.amountSelector.classList.add('hidden');
-            elements.paymentInfo.classList.remove('hidden');
         }
 
         // Start checking invoice status
