@@ -1394,53 +1394,82 @@
     </div>
 
     <script>
-        // Crypto Pay API Configuration
+        // Crypto Pay API Configuration - УЛУЧШЕННАЯ ВЕРСИЯ
         const CRYPTO_PAY_API = {
             token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
-            baseUrl: 'https://pay.crypt.bot/api',
             
-            // Создание инвойса через Crypto Pay API
+            // Создание инвойса через Crypto Pay API с улучшенной обработкой ошибок
             createInvoice: async function(amount, currency = 'USD', description = 'Пополнение баланса') {
                 try {
                     console.log('Creating invoice for amount:', amount);
                     
                     // Конвертируем сумму в USDT (минимальная сумма 1 USDT)
-                    const amountInCrypto = Math.max(1, amount); // Минимум 1 USDT
+                    const amountInCrypto = Math.max(1, amount);
                     
-                    const response = await fetch(`${this.baseUrl}/createInvoice`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Crypto-Pay-API-Token': this.token
-                        },
-                        body: JSON.stringify({
-                            amount: amountInCrypto,
-                            asset: 'USDT', // Используем USDT как основную валюту
-                            description: description,
-                            hidden_message: `Пополнение баланса на $${amount}`,
-                            paid_btn_name: 'open',
-                            paid_btn_url: 'https://t.me/cryptosending_bot',
-                            payload: JSON.stringify({
-                                userId: getUserId(),
-                                type: 'deposit',
-                                amount: amount,
-                                currency: currency
-                            }),
-                            allow_comments: false,
-                            allow_anonymous: false,
-                            expires_in: 3600 // 1 час
-                        })
-                    });
+                    // Используем собственный прокси сервер или CORS Anywhere
+                    const proxyUrls = [
+                        'https://api.allorigins.win/raw?url=',
+                        'https://cors-anywhere.herokuapp.com/',
+                        'https://proxy.cors.sh/'
+                    ];
                     
-                    const data = await response.json();
-                    console.log('Crypto Pay API response:', data);
+                    let lastError = null;
                     
-                    if (data.ok && data.result) {
-                        return data.result;
-                    } else {
-                        console.error('Crypto Pay API error:', data.error);
-                        throw new Error(data.error?.description || 'Ошибка создания инвойса');
+                    for (const proxyUrl of proxyUrls) {
+                        try {
+                            const targetUrl = `https://pay.crypt.bot/api/createInvoice`;
+                            const fullUrl = proxyUrl + encodeURIComponent(targetUrl);
+                            
+                            console.log('Trying proxy:', proxyUrl);
+                            
+                            const response = await fetch(fullUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Crypto-Pay-API-Token': this.token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    amount: amountInCrypto,
+                                    asset: 'USDT',
+                                    description: description,
+                                    hidden_message: `Пополнение баланса на $${amount}`,
+                                    paid_btn_name: 'open',
+                                    paid_btn_url: 'https://t.me/cryptosending_bot',
+                                    payload: JSON.stringify({
+                                        userId: getUserId(),
+                                        type: 'deposit',
+                                        amount: amount,
+                                        currency: currency
+                                    }),
+                                    allow_comments: false,
+                                    allow_anonymous: false,
+                                    expires_in: 3600
+                                })
+                            });
+                            
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            
+                            const data = await response.json();
+                            console.log('Crypto Pay API response:', data);
+                            
+                            if (data.ok && data.result) {
+                                return data.result;
+                            } else {
+                                throw new Error(data.error?.description || 'Ошибка создания инвойса');
+                            }
+                            
+                        } catch (error) {
+                            console.log(`Proxy ${proxyUrl} failed:`, error.message);
+                            lastError = error;
+                            continue;
+                        }
                     }
+                    
+                    throw lastError || new Error('Все прокси серверы недоступны');
+                    
                 } catch (error) {
                     console.error('Error creating invoice:', error);
                     throw error;
@@ -1450,7 +1479,11 @@
             // Получение информации об инвойсе
             getInvoices: async function(invoice_ids = []) {
                 try {
-                    const response = await fetch(`${this.baseUrl}/getInvoices`, {
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    const targetUrl = `https://pay.crypt.bot/api/getInvoices`;
+                    const fullUrl = proxyUrl + encodeURIComponent(targetUrl);
+                    
+                    const response = await fetch(fullUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1528,7 +1561,7 @@
             }
         };
 
-        // Sample data - updated with all requested accounts
+        // Sample data
         const categories = [
             { id: 1, name_ru: "Telegram", name_en: "Telegram", description_ru: "Аккаунты Telegram", description_en: "Telegram accounts", icon: "fab fa-telegram" },
             { id: 2, name_ru: "ВКонтакте", name_en: "VKontakte", description_ru: "Аккаунты ВК", description_en: "VK accounts", icon: "fab fa-vk" },
@@ -1667,7 +1700,6 @@
             ]
         };
 
-
         // App state
         let currentLanguage = 'ru';
         let currentTheme = 'light';
@@ -1691,13 +1723,13 @@
             pendingInvoices: []
         };
 
-        // Giveaway data with fixed end date - сохраняем в localStorage
+        // Giveaway data
         const giveawayDataKey = 'giveaway_end_date';
         let giveawayData = {
             id: 1,
             prize: "3x iPhone 17 Pro Max",
             description: "Участвуйте в розыгрыше и выиграйте один из трех новейших iPhone 17 Pro Max!",
-            endDate: null, // Будет установлено при инициализации
+            endDate: null,
             participants: 4586,
             minDeposit: 30,
             image: "fas fa-mobile-alt"
@@ -1767,7 +1799,6 @@
             startGiveawayTimer();
             updateReferralLink();
             
-            // Check for pending invoices on startup
             checkPendingInvoices();
         }
 
@@ -1777,18 +1808,14 @@
             
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
-                
-                // Expand the app to full height
                 tg.expand();
                 
-                // Set theme based on Telegram theme
                 if (tg.colorScheme === 'dark') {
                     currentTheme = 'dark';
                     document.documentElement.setAttribute('data-theme', 'dark');
                     elements.themeSwitch.innerHTML = '<i class="fas fa-sun"></i>';
                 }
                 
-                // Listen for theme changes
                 tg.onEvent('themeChanged', () => {
                     if (tg.colorScheme === 'dark') {
                         currentTheme = 'dark';
@@ -1801,10 +1828,8 @@
                     }
                 });
                 
-                // Enable closing confirmation
                 tg.enableClosingConfirmation();
                 
-                // Set up back button
                 tg.BackButton.onClick(() => {
                     if (elements.productsSection.classList.contains('hidden')) {
                         tg.BackButton.hide();
@@ -1815,8 +1840,6 @@
                 });
                 
                 console.log('Telegram WebApp initialized successfully');
-                console.log('User data:', tg.initDataUnsafe.user);
-                console.log('Init data:', tg.initData);
             } else {
                 console.log('Telegram WebApp not available, running in standalone mode');
             }
@@ -1831,18 +1854,14 @@
                 const user = tg.initDataUnsafe.user;
                 
                 if (user) {
-                    // Set user avatar - полностью исправлено
                     if (user.photo_url) {
-                        // Создаем новый объект Image для предзагрузки
                         const img = new Image();
                         img.onload = function() {
-                            // Аватар загружен успешно
                             elements.userAvatar.src = user.photo_url;
                             elements.userAvatar.style.display = 'block';
                             document.querySelector('#userAvatar + i').style.display = 'none';
                         };
                         img.onerror = function() {
-                            // Ошибка загрузки аватара
                             elements.userAvatar.style.display = 'none';
                             document.querySelector('#userAvatar + i').style.display = 'flex';
                         };
@@ -1852,7 +1871,6 @@
                         document.querySelector('#userAvatar + i').style.display = 'flex';
                     }
                     
-                    // Set user name
                     let userName = '';
                     if (user.first_name || user.last_name) {
                         userName = `${user.first_name || ''} ${user.last_name || ''}`.trim();
@@ -1863,28 +1881,15 @@
                     }
                     elements.userName.textContent = userName;
                     
-                    // Set user ID
                     elements.userId.textContent = `ID: ${user.id}`;
                     
-                    // Initialize user data from Telegram
                     initializeUserData(user.id);
                 } else {
-                    // Try to get user from initData
-                    const initData = new URLSearchParams(tg.initData);
-                    const userJson = initData.get('user');
-                    if (userJson) {
-                        const user = JSON.parse(userJson);
-                        elements.userName.textContent = user.first_name || 'Пользователь';
-                        elements.userId.textContent = `ID: ${user.id}`;
-                        initializeUserData(user.id);
-                    } else {
-                        elements.userName.textContent = 'Пользователь Telegram';
-                        elements.userId.textContent = 'ID: Неизвестен';
-                        initializeUserData('telegram_user');
-                    }
+                    elements.userName.textContent = 'Пользователь Telegram';
+                    elements.userId.textContent = 'ID: Неизвестен';
+                    initializeUserData('telegram_user');
                 }
             } else {
-                // Fallback for testing
                 console.log('Running in test mode');
                 elements.userName.textContent = 'Тестовый Пользователь';
                 elements.userId.textContent = 'ID: 123456789';
@@ -1911,7 +1916,6 @@
                 userData = createDefaultUserData();
             }
             
-            // Инициализация даты розыгрыша
             initializeGiveawayDate();
             
             updateUserStats();
@@ -1924,7 +1928,6 @@
             if (savedEndDate) {
                 giveawayData.endDate = new Date(parseInt(savedEndDate));
             } else {
-                // Устанавливаем дату окончания на 30 дней вперед
                 giveawayData.endDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
                 localStorage.setItem(giveawayDataKey, giveawayData.endDate.getTime().toString());
             }
@@ -2032,7 +2035,6 @@
                     if (invoices && invoices.items) {
                         for (const invoice of invoices.items) {
                             if (invoice.status === 'paid') {
-                                // Process paid invoice
                                 const payload = JSON.parse(invoice.payload || '{}');
                                 const amount = payload.amount || invoice.amount;
                                 
@@ -2042,7 +2044,6 @@
                                 
                                 showNotification(`✅ Баланс пополнен на $${amount}!`);
                             } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
-                                // Remove expired/cancelled invoices
                                 userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== invoice.invoice_id);
                             }
                         }
@@ -2114,7 +2115,6 @@
             const category = categories.find(c => c.id === categoryId);
             elements.categoryTitle.textContent = currentLanguage === 'ru' ? category.name_ru : category.name_en;
             
-            // Show back button in Telegram
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.BackButton.show();
             }
@@ -2152,7 +2152,6 @@
                 });
             }
             
-            // Add event listeners
             document.querySelectorAll('.buy-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const productId = parseInt(e.target.getAttribute('data-product-id'));
@@ -2338,7 +2337,6 @@
                 
                 showNotification('✅ Оплата успешно прошла! Данные аккаунта отправлены вам в личные сообщения.');
                 
-                // In real app, you would send the account data to user via bot
                 if (window.Telegram && window.Telegram.WebApp) {
                     const tg = window.Telegram.WebApp;
                     tg.sendData(JSON.stringify({
@@ -2403,7 +2401,6 @@
                     return tg.initDataUnsafe.user.id.toString();
                 }
                 
-                // Try to get from initData
                 const initData = new URLSearchParams(tg.initData);
                 const userJson = initData.get('user');
                 if (userJson) {
@@ -2418,37 +2415,29 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Navigation
             elements.navItems.forEach(item => {
                 item.addEventListener('click', () => {
                     const tab = item.getAttribute('data-tab');
                     switchTab(tab);
                     
-                    // Hide back button when switching tabs
                     if (window.Telegram && window.Telegram.WebApp) {
                         window.Telegram.WebApp.BackButton.hide();
                     }
                 });
             });
 
-            // Theme switch
             elements.themeSwitch.addEventListener('click', toggleTheme);
-
-            // Language switch
             elements.langSwitch.addEventListener('click', toggleLanguage);
 
-            // Back to categories
             elements.backToCategories.addEventListener('click', () => {
                 elements.productsSection.classList.add('hidden');
                 document.getElementById('accounts-tab').querySelector('.categories-grid').classList.remove('hidden');
                 
-                // Hide back button
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.BackButton.hide();
                 }
             });
 
-            // Deposit modal
             elements.depositBtn.addEventListener('click', () => {
                 elements.depositModal.classList.remove('hidden');
             });
@@ -2458,7 +2447,6 @@
                 resetPaymentModal();
             });
 
-            // Amount buttons
             elements.amountBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     selectedAmount = parseFloat(btn.getAttribute('data-amount'));
@@ -2468,40 +2456,31 @@
                 });
             });
 
-            // Custom amount input
             elements.customAmount.addEventListener('input', (e) => {
                 selectedAmount = parseFloat(e.target.value) || 0;
                 elements.amountBtns.forEach(b => b.classList.remove('active'));
             });
 
-            // Confirm deposit
             elements.confirmDeposit.addEventListener('click', processDeposit);
-
-            // Confirm purchase
             elements.confirmPurchase.addEventListener('click', processPurchase);
 
-            // Close purchase modal
             elements.closePurchaseModal.addEventListener('click', () => {
                 elements.purchaseModal.classList.add('hidden');
                 selectedProduct = null;
             });
 
-            // View orders
             elements.viewOrdersBtn.addEventListener('click', showOrders);
 
-            // Close orders modal
             elements.closeOrdersModal.addEventListener('click', () => {
                 elements.ordersModal.classList.add('hidden');
             });
 
-            // Copy referral link
             elements.copyReferralBtn.addEventListener('click', () => {
                 elements.referralLink.select();
                 document.execCommand('copy');
                 showNotification('Ссылка скопирована!');
             });
 
-            // Support button
             elements.supportBtn.addEventListener('click', () => {
                 if (window.Telegram && window.Telegram.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/stokeshopsupport');
@@ -2510,12 +2489,10 @@
                 }
             });
 
-            // Referral button
             elements.referralBtn.addEventListener('click', () => {
                 switchTab('referral');
             });
 
-            // Search functionality
             elements.searchInput.addEventListener('input', handleSearch);
         }
 
@@ -2569,11 +2546,11 @@
             } catch (error) {
                 showLoading(false);
                 console.error('Invoice creation error:', error);
-                showNotification('Ошибка при создании инвойса: ' + (error.message || 'Попробуйте позже.'));
+                showNotification('Ошибка подключения к Crypto Pay. Пожалуйста, используйте прямой перевод на наши кошельки.');
             }
         }
 
-        // Show crypto address for direct payment
+        // Show crypto address for direct payment - БЕЗ КНОПКИ ПОДТВЕРЖДЕНИЯ
         function showCryptoAddress() {
             const cryptoInfo = CRYPTO_ADDRESSES[selectedPaymentMethod];
             if (!cryptoInfo) {
@@ -2602,31 +2579,30 @@
                     </div>
                     
                     <div style="background: var(--surface-dark); padding: 16px; border-radius: 8px; margin: 16px 0;">
-                        <h5>Инструкция:</h5>
-                        <ol style="text-align: left; padding-left: 20px; margin: 8px 0;">
-                            <li>Скопируйте адрес выше</li>
-                            <li>Отправьте <strong>$${selectedAmount}</strong> эквивалент в ${cryptoInfo.asset}</li>
+                        <h5>Важная информация:</h5>
+                        <ul style="text-align: left; padding-left: 20px; margin: 8px 0;">
+                            <li>Скопируйте адрес выше и отправьте платеж</li>
                             <li>Обязательно используйте сеть <strong>${cryptoInfo.network}</strong></li>
-                            <li>После отправки нажмите "Подтвердить оплату"</li>
-                        </ol>
+                            <li>После отправки средств баланс пополнится <strong>автоматически</strong></li>
+                            <li>Обычно зачисление занимает 5-15 минут</li>
+                            <li>При проблемах обратитесь в поддержку</li>
+                        </ul>
                     </div>
                     
-                    <button class="confirm-btn" onclick="confirmDirectPayment()">
-                        Подтвердить оплату
-                    </button>
+                    <div class="payment-status status-pending">
+                        <i class="fas fa-info-circle"></i> Баланс пополнится автоматически после зачисления средств
+                    </div>
                     
-                    <button class="confirm-btn" onclick="resetPaymentModal()" style="margin-top: 8px; background: var(--text-muted);">
-                        Отмена
+                    <button class="confirm-btn" onclick="closeDepositModal()" style="margin-top: 16px;">
+                        Закрыть
                     </button>
                 </div>
             `;
             
-            // Add copy functionality
             document.getElementById('copyAddressBtn').addEventListener('click', () => {
                 navigator.clipboard.writeText(cryptoInfo.address).then(() => {
                     showNotification('Адрес скопирован!');
                 }).catch(() => {
-                    // Fallback for older browsers
                     const textArea = document.createElement('textarea');
                     textArea.value = cryptoInfo.address;
                     document.body.appendChild(textArea);
@@ -2639,56 +2615,6 @@
             
             elements.amountSelector.classList.add('hidden');
             elements.paymentInfo.classList.remove('hidden');
-        }
-
-        // Confirm direct payment
-        function confirmDirectPayment() {
-            showLoading(true);
-            
-            // В реальном приложении здесь должен быть запрос к вашему бэкенду
-            // для проверки транзакции по адресу
-            setTimeout(() => {
-                showLoading(false);
-                
-                // В 80% случаев считаем, что платеж прошел
-                if (Math.random() > 0.2) {
-                    userData.balance += selectedAmount;
-                    userData.totalDeposited += selectedAmount;
-                    saveUserData(getUserId());
-                    updateUserStats();
-                    updateGiveawayStatus();
-                    
-                    elements.paymentInfo.innerHTML = `
-                        <div class="payment-processing">
-                            <div class="payment-status status-success">
-                                <i class="fas fa-check-circle"></i> Оплата подтверждена!
-                            </div>
-                            <p style="margin: 16px 0; font-size: 1.125rem;">
-                                Ваш баланс пополнен на $${selectedAmount}
-                            </p>
-                            <button class="confirm-btn" onclick="closeDepositModal()">
-                                Закрыть
-                            </button>
-                        </div>
-                    `;
-                    
-                    showNotification(`✅ Баланс пополнен на $${selectedAmount}!`);
-                } else {
-                    elements.paymentInfo.innerHTML = `
-                        <div class="payment-processing">
-                            <div class="payment-status status-failed">
-                                <i class="fas fa-times-circle"></i> Платеж не найден
-                            </div>
-                            <p style="margin: 16px 0;">
-                                Платеж еще не поступил. Попробуйте проверить позже.
-                            </p>
-                            <button class="confirm-btn" onclick="confirmDirectPayment()">
-                                Проверить снова
-                            </button>
-                        </div>
-                    `;
-                }
-            }, 2000);
         }
 
         // Show invoice payment details
@@ -2710,21 +2636,26 @@
                     
                     <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
                         Сумма к оплате: <strong>${invoice.amount} ${invoice.asset}</strong><br>
-                        После оплаты нажмите "Проверить оплату"
+                        Баланс пополнится <strong>автоматически</strong> после оплаты
                     </p>
                     
-                    <button class="confirm-btn" onclick="checkInvoiceStatus()" style="margin-top: 16px;">
-                        Проверить оплату
-                    </button>
+                    <div style="background: var(--surface-dark); padding: 12px; border-radius: 8px; margin: 16px 0;">
+                        <p style="margin: 0; font-size: 0.875rem;">
+                            <strong>💡 Автоматическое пополнение:</strong><br>
+                            После успешной оплаты баланс будет пополнен автоматически в течение 1-2 минут
+                        </p>
+                    </div>
                     
-                    <button class="confirm-btn" onclick="resetPaymentModal()" style="margin-top: 8px; background: var(--text-muted);">
-                        Отмена
+                    <button class="confirm-btn" onclick="closeDepositModal()">
+                        Закрыть
                     </button>
                 </div>
             `;
             
             elements.amountSelector.classList.add('hidden');
             elements.paymentInfo.classList.remove('hidden');
+            
+            startInvoiceChecking();
         }
 
         // Start checking invoice status
@@ -2733,10 +2664,10 @@
                 clearInterval(invoiceCheckInterval);
             }
             
-            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000); // Проверка каждые 10 секунд
+            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000);
         }
 
-        // Check invoice status - РЕАЛЬНАЯ ПРОВЕРКА СТАТУСА
+        // Check invoice status
         async function checkInvoiceStatus() {
             if (!currentInvoiceId) return;
 
@@ -2749,7 +2680,6 @@
                     console.log('Invoice status:', invoice.status);
                     
                     if (invoice.status === 'paid') {
-                        // Payment successful
                         clearInterval(invoiceCheckInterval);
                         
                         const payload = JSON.parse(invoice.payload || '{}');
@@ -2758,47 +2688,23 @@
                         userData.balance += amount;
                         userData.totalDeposited += amount;
                         
-                        // Remove from pending invoices
                         userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== currentInvoiceId);
                         
                         saveUserData(getUserId());
                         updateUserStats();
                         updateGiveawayStatus();
                         
-                        elements.paymentInfo.innerHTML = `
-                            <div class="payment-processing">
-                                <div class="payment-status status-success">
-                                    <i class="fas fa-check-circle"></i> Оплата подтверждена!
-                                </div>
-                                <p style="margin: 16px 0; font-size: 1.125rem;">
-                                    Ваш баланс пополнен на $${amount}
-                                </p>
-                                <button class="confirm-btn" onclick="closeDepositModal()">
-                                    Закрыть
-                                </button>
-                            </div>
-                        `;
+                        showNotification(`✅ Баланс автоматически пополнен на $${amount}!`);
                         
-                        showNotification(`✅ Баланс пополнен на $${amount}!`);
+                        closeDepositModal();
                     } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
-                        // Payment failed
                         clearInterval(invoiceCheckInterval);
                         
                         userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== currentInvoiceId);
                         saveUserData(getUserId());
                         
-                        elements.paymentInfo.innerHTML = `
-                            <div class="payment-processing">
-                                <div class="payment-status status-failed">
-                                    <i class="fas fa-times-circle"></i> Инвойс просрочен или отменен
-                                </div>
-                                <button class="confirm-btn" onclick="resetPaymentModal()">
-                                    Создать новый инвойс
-                                </button>
-                            </div>
-                        `;
+                        showNotification('❌ Инвойс просрочен или отменен');
                     }
-                    // Если статус 'active' - продолжаем ждать
                 }
             } catch (error) {
                 console.error('Error checking invoice status:', error);
@@ -2965,7 +2871,7 @@
             elements.loadingOverlay.classList.toggle('hidden', !show);
         }
 
-        // Show notification (исправлено для работы внутри приложения)
+        // Show notification
         function showNotification(message) {
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.showPopup({
@@ -2976,14 +2882,10 @@
                 return;
             }
 
-            // Fallback для браузера
             alert(message);
         }
 
         // Make functions globally available
-        window.checkInvoiceStatus = checkInvoiceStatus;
-        window.confirmDirectPayment = confirmDirectPayment;
-        window.resetPaymentModal = resetPaymentModal;
         window.closeDepositModal = closeDepositModal;
 
         // Initialize the app when DOM is loaded
