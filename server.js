@@ -37,11 +37,48 @@ app.post('/api/create-invoice', async (req, res) => {
     }
 });
 
-// Webhook
+// ==================== ДОБАВЬТЕ ЭТОТ КОД ====================
+// Проверка статуса инвойса
+app.post('/api/check-invoice', async (req, res) => {
+    try {
+        const { invoice_id } = req.body;
+
+        const response = await axios.get(`${CRYPTO_BOT_API_URL}/getInvoices?invoice_ids=${invoice_id}`, {
+            headers: {
+                'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
+            }
+        });
+
+        if (response.data.ok) {
+            res.json({
+                success: true,
+                invoice: response.data.result[0]
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                error: response.data.error
+            });
+        }
+    } catch (error) {
+        console.error('Error checking invoice:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Internal server error'
+        });
+    }
+});
+// ==================== КОНЕЦ ДОБАВЛЕННОГО КОДА ====================
+
+// ==================== УДАЛИТЕ ИЛИ ЗАКОММЕНТИРУЙТЕ WEBHOOK ====================
+// Webhook (пока не используется)
+/*
 app.post('/webhook/crypto-bot', (req, res) => {
     console.log('💰 Платеж получен:', req.body);
     res.sendStatus(200);
 });
+*/
+// ==================== КОНЕЦ УДАЛЕНИЯ WEBHOOK ====================
 
 // Тест
 app.get('/api/test', (req, res) => {
