@@ -2903,6 +2903,98 @@ function startInvoiceStatusCheck() {
             alert(message);
         }
 
+        // ==================== ФУНКЦИИ ПРОВЕРКИ ПЛАТЕЖА ====================
+
+        // Проверка статуса платежа
+        async function checkPaymentStatus(invoiceId) {
+            const result = await window.PaymentHandler.checkInvoice(invoiceId);
+            
+            if (result.success) {
+                const invoice = result.invoice;
+                
+                if (invoice.status === 'paid') {
+                    // Платеж успешен
+                    handleSuccessfulPayment(selectedAmount);
+                    return true;
+                } else if (invoice.status === 'active') {
+                    // Ожидает оплаты
+                    return false;
+                } else {
+                    // Отменен или просрочен
+                    showNotification('Счёт не был оплачен');
+                    return false;
+                }
+            }
+            
+            return false;
+        }
+
+        // Обработка успешного платежа
+        function handleSuccessfulPayment(amount) {
+            userData.balance += parseFloat(amount);
+            userData.totalDeposited += parseFloat(amount);
+            
+            saveUserData(getUserId());
+            updateUserStats();
+            updateGiveawayStatus();
+            
+            showNotification(`✅ Баланс пополнен на $${amount}!`);
+            elements.depositModal.classList.add('hidden');
+            resetPaymentModal();
+            
+            // Показываем успешное сообщение
+            showPaymentSuccess(amount);
+        }
+
+        // Автоматическая проверка статуса
+        function startPaymentStatusCheck(invoiceId) {
+            let checkCount = 0;
+            const maxChecks = 60; // Проверяем 5 минут
+            
+            const checkInterval = setInterval(async () => {
+                checkCount++;
+                const isPaid = await checkPaymentStatus(invoiceId);
+                
+                if (isPaid || checkCount >= maxChecks) {
+                    clearInterval(checkInterval);
+                    if (!isPaid) {
+                        showNotification('Время оплаты истекло');
+                    }
+                }
+            }, 5000); // Проверяем каждые 5 секунд
+        }
+
+        // Показ успешного платежа
+        function showPaymentSuccess(amount) {
+            elements.paymentInfo.innerHTML = `
+                <div class="payment-info">
+                    <div style="text-align: center; color: var(--success-color); margin-bottom: 20px;">
+                        <i class="fas fa-check-circle" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4>✅ Оплата успешно завершена!</h4>
+                    <p>Ваш баланс пополнен на <strong>$${amount}</strong></p>
+                    
+                    <div class="payment-status status-success" style="margin: 20px 0;">
+                        <i class="fas fa-check-circle"></i> Средства зачислены на ваш баланс
+                    </div>
+                    
+                    <button class="confirm-btn" onclick="closeDepositModal()" style="margin-top: 16px;">
+                        Закрыть
+                    </button>
+                </div>
+            `;
+            
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.remove('hidden');
+        }
+
+        // Make functions globally available
+        window.closeDepositModal = closeDepositModal;
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+        
         // Make functions globally available
         window.closeDepositModal = closeDepositModal;
 
@@ -2911,6 +3003,7 @@ function startInvoiceStatusCheck() {
     </script>
 </body>
 </html>
+
 
 
 
