@@ -6,9 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔽🔽🔽 ВСТАВЬТЕ СЮДА ВАШ ТОКЕН ОТ CryptoBot 🔽🔽🔽
-const CRYPTO_BOT_TOKEN = '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE'; // ЗАМЕНИТЕ НА СВОЙ
-// 🔼🔼🔼 ВСТАВЬТЕ СЮДА ВАШ ТОКЕН ОТ CryptoBot 🔼🔼🔼
+// 🔽🔽🔽 ВАШ ТОКЕН ОТ CryptoBot 🔽🔽🔽
+const CRYPTO_BOT_TOKEN = '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE';
+// 🔼🔼🔼 ВАШ ТОКЕН ОТ CryptoBot 🔼🔼🔼
 
 const CRYPTO_BOT_API_URL = 'https://pay.crypt.bot/api';
 
@@ -17,74 +17,95 @@ app.post('/api/create-invoice', async (req, res) => {
     try {
         const { amount, asset, description, user_id } = req.body;
 
+        console.log('Creating invoice:', { amount, asset, user_id });
+
         const response = await axios.post(`${CRYPTO_BOT_API_URL}/createInvoice`, {
             asset: asset || 'USDT',
             amount: amount.toString(),
             description: description || 'Пополнение баланса Stoke Shop',
-            hidden_message: '✅ Баланс пополнен!',
-            payload: JSON.stringify({ user_id: user_id, amount: amount })
+            hidden_message: '✅ Баланс пополнен! Спасибо за покупку!',
+            paid_btn_name: 'return',
+            paid_btn_url: 'https://t.me/cryptosending_bot',
+            payload: JSON.stringify({ user_id: user_id, amount: amount }),
+            allow_comments: true,
+            allow_anonymous: false,
+            expires_in: 3600
         }, {
-            headers: { 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN }
+            headers: { 
+                'Content-Type': 'application/json',
+                'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN 
+            }
         });
 
+        console.log('Crypto Bot response:', response.data);
+
         if (response.data.ok) {
-            res.json({ success: true, invoice: response.data.result });
+            res.json({ 
+                success: true, 
+                invoice: response.data.result 
+            });
         } else {
-            res.status(400).json({ success: false, error: 'Ошибка' });
+            res.status(400).json({ 
+                success: false, 
+                error: response.data.error?.description || 'Ошибка создания счета' 
+            });
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Ошибка сервера' });
+        console.error('Server error creating invoice:', error.response?.data || error.message);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Ошибка сервера: ' + (error.response?.data?.error?.description || error.message) 
+        });
     }
 });
 
-// ==================== ДОБАВЬТЕ ЭТОТ КОД ====================
 // Проверка статуса инвойса
 app.post('/api/check-invoice', async (req, res) => {
     try {
         const { invoice_id } = req.body;
 
-        const response = await axios.get(`${CRYPTO_BOT_API_URL}/getInvoices?invoice_ids=${invoice_id}`, {
+        console.log('Checking invoice:', invoice_id);
+
+        const response = await axios.get(`${CRYPTO_BOT_API_URL}/getInvoices`, {
             headers: {
                 'Crypto-Pay-API-Token': CRYPTO_BOT_TOKEN
+            },
+            params: {
+                invoice_ids: invoice_id
             }
         });
 
-        if (response.data.ok) {
+        console.log('Check invoice response:', response.data);
+
+        if (response.data.ok && response.data.result.items.length > 0) {
             res.json({
                 success: true,
-                invoice: response.data.result[0]
+                invoice: response.data.result.items[0]
             });
         } else {
             res.status(400).json({
                 success: false,
-                error: response.data.error
+                error: 'Инвойс не найден'
             });
         }
     } catch (error) {
-        console.error('Error checking invoice:', error);
+        console.error('Error checking invoice:', error.response?.data || error.message);
         res.status(500).json({
             success: false,
-            error: 'Internal server error'
+            error: 'Ошибка сервера: ' + error.message
         });
     }
 });
-// ==================== КОНЕЦ ДОБАВЛЕННОГО КОДА ====================
-
-// ==================== УДАЛИТЕ ИЛИ ЗАКОММЕНТИРУЙТЕ WEBHOOK ====================
-// Webhook (пока не используется)
-/*
-app.post('/webhook/crypto-bot', (req, res) => {
-    console.log('💰 Платеж получен:', req.body);
-    res.sendStatus(200);
-});
-*/
-// ==================== КОНЕЦ УДАЛЕНИЯ WEBHOOK ====================
 
 // Тест
 app.get('/api/test', (req, res) => {
     res.json({ success: true, message: 'Сервер работает!' });
 });
 
-app.listen(3000, () => {
-    console.log('🚀 Сервер запущен');
+// Обслуживание статических файлов
+app.use(express.static('.'));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log('🚀 Сервер запущен на порту', PORT);
 });
