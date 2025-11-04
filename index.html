@@ -7,7 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Все стили остаются без изменений */
         :root {
             --primary-color: #6366f1;
             --primary-dark: #4f46e5;
@@ -1112,6 +1111,9 @@
                     <button class="theme-switcher" id="themeSwitch">
                         <i class="fas fa-moon"></i>
                     </button>
+                    <button class="theme-switcher" id="testBackendBtn" style="margin-left: 10px;">
+                        <i class="fas fa-wifi"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1446,9 +1448,9 @@
     <script>
         // Конфигурация API
         const API_CONFIG = {
-            BASE_URL: 'https://stoke-shop-backend.onrender.com', // Замените на ваш реальный сервер
-            CREATE_INVOICE: '/create-invoice',
-            CHECK_INVOICE: '/check-invoice',
+            BASE_URL: 'https://stoke-shop-backend.onrender.com',
+            CREATE_INVOICE: 'https://stoke-shop-backend.onrender.com/create-invoice',
+            CHECK_INVOICE: 'https://stoke-shop-backend.onrender.com/check-invoice',
         };
 
         // ВАШИ РЕАЛЬНЫЕ АККАУНТЫ
@@ -1629,6 +1631,7 @@
         const elements = {
             themeSwitch: document.getElementById('themeSwitch'),
             langSwitch: document.getElementById('langSwitch'),
+            testBackendBtn: document.getElementById('testBackendBtn'),
             navItems: document.querySelectorAll('.nav-item'),
             tabContents: document.querySelectorAll('.tab-content'),
             categoriesGrid: document.getElementById('categoriesGrid'),
@@ -1680,7 +1683,6 @@
             expirySelect: document.getElementById('expirySelect'),
             allowComments: document.getElementById('allowComments'),
             allowAnonymous: document.getElementById('allowAnonymous'),
-            // Новые элементы для инвойса
             invoiceConfirmModal: document.getElementById('invoiceConfirmModal'),
             invoiceConfirmInfo: document.getElementById('invoiceConfirmInfo'),
             confirmInvoicePayment: document.getElementById('confirmInvoicePayment'),
@@ -1689,8 +1691,18 @@
         };
 
         // Initialize app
-        function initApp() {
+        async function initApp() {
             console.log('Initializing Stoke Shop with real payment system...');
+            
+            // Тестируем соединение с бэкендом
+            const isBackendConnected = await testBackendConnection();
+            console.log('Backend connection status:', isBackendConnected);
+            
+            if (!isBackendConnected) {
+                console.warn('Backend is not accessible. Some features may not work.');
+                showNotification('Внимание: сервер оплаты временно недоступен. Попробуйте позже.');
+            }
+            
             initTelegramWebApp();
             loadUserData();
             loadCategories();
@@ -2279,84 +2291,109 @@
 
         // ==================== РЕАЛЬНАЯ ОПЛАТА ЧЕРЕЗ CRYPTO BOT ====================
 
+        // Тестовая функция для проверки соединения с бэкендом
+        async function testBackendConnection() {
+            try {
+                console.log('Testing backend connection...');
+                const response = await fetch(API_CONFIG.BASE_URL, {
+                    method: 'GET'
+                });
+                console.log('Backend connection test:', response.status);
+                return response.ok;
+            } catch (error) {
+                console.error('Backend connection test failed:', error);
+                return false;
+            }
+        }
+
         // Создание инвойса через Crypto Bot API
-        // Создание инвойса через Crypto Bot API
-async function createTelegramInvoice() {
-    if (!selectedPaymentMethod) {
-        showNotification('Выберите способ оплаты');
-        return;
-    }
+        async function createTelegramInvoice() {
+            if (!selectedPaymentMethod) {
+                showNotification('Выберите способ оплаты');
+                return;
+            }
 
-    if (selectedAmount < 1) {
-        showNotification('Минимальная сумма $1');
-        return;
-    }
+            if (selectedAmount < 1) {
+                showNotification('Минимальная сумма $1');
+                return;
+            }
 
-    showLoading(true);
+            showLoading(true);
 
-    try {
-        const requestData = {
-            action: 'createInvoice',
-            amount: selectedAmount,
-            asset: elements.assetSelect.value,
-            description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop'
-        };
+            try {
+                // Конвертируем сумму в центы (Crypto Bot работает в центах)
+                const amountInCents = Math.round(selectedAmount * 100);
+                
+                const requestData = {
+                    amount: amountInCents,
+                    asset: elements.assetSelect.value,
+                    description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop'
+                };
 
-        console.log('Sending request:', requestData);
+                console.log('Sending invoice request:', requestData);
 
-        const response = await fetch(API_CONFIG.CREATE_INVOICE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData)
-        });
+                const response = await fetch(API_CONFIG.CREATE_INVOICE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    // Получаем больше информации об ошибке
+                    const errorText = await response.text();
+                    console.error('Server error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+                }
+
+                const result = await response.json();
+                console.log('Server response:', result);
+
+                if (result.success && result.invoice) {
+                    showInvoiceConfirmation(result.invoice);
+                } else {
+                    throw new Error(result.error || 'Неизвестная ошибка при создании счета');
+                }
+            } catch (error) {
+                console.error('Error creating invoice:', error);
+                showNotification('Ошибка при создании счёта: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
         }
 
-        const result = await response.json();
-        console.log('Server response:', result);
+        // Проверка статуса инвойса
+        async function checkInvoiceStatus(invoiceId) {
+            try {
+                console.log('Checking invoice status for:', invoiceId);
+                
+                const response = await fetch(API_CONFIG.CHECK_INVOICE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        invoice_id: invoiceId 
+                    })
+                });
 
-        if (result.success) {
-            showInvoiceConfirmation(result.invoice);
-        } else {
-            throw new Error(result.error || 'Неизвестная ошибка при создании счета');
+                console.log('Check invoice response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Check invoice result:', result);
+                return result;
+            } catch (error) {
+                console.error('Error checking invoice status:', error);
+                return { success: false, error: error.message };
+            }
         }
-    } catch (error) {
-        console.error('Error creating invoice:', error);
-        showNotification('Ошибка при создании счёта: ' + error.message);
-    } finally {
-        showLoading(false);
-    }
-}
-
-// Проверка статуса инвойса
-async function checkInvoiceStatus(invoiceId) {
-    try {
-        const response = await fetch(API_CONFIG.CHECK_INVOICE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                action: 'checkInvoice',
-                invoice_id: invoiceId 
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error('Error checking invoice status:', error);
-        return { success: false, error: error.message };
-    }
-}
 
         // Показать подтверждение реального инвойса
         function showInvoiceConfirmation(invoice) {
@@ -2662,7 +2699,7 @@ async function checkInvoiceStatus(invoiceId) {
         }
 
         // Process deposit based on selected method
-        function processDeposit() {
+        async function processDeposit() {
             if (!selectedPaymentMethod) {
                 showNotification('Выберите способ оплаты');
                 return;
@@ -2677,7 +2714,7 @@ async function checkInvoiceStatus(invoiceId) {
             const paymentType = selectedButton.getAttribute('data-type');
 
             if (paymentType === 'telegram') {
-                createTelegramInvoice();
+                await createTelegramInvoice();
             } else if (paymentType === 'address') {
                 showCryptoAddress();
             }
@@ -2698,6 +2735,12 @@ async function checkInvoiceStatus(invoiceId) {
 
             elements.themeSwitch.addEventListener('click', toggleTheme);
             elements.langSwitch.addEventListener('click', toggleLanguage);
+            elements.testBackendBtn.addEventListener('click', async () => {
+                showLoading(true);
+                const isConnected = await testBackendConnection();
+                showLoading(false);
+                showNotification(isConnected ? '✅ Соединение с сервером установлено' : '❌ Сервер недоступен');
+            });
 
             elements.backToCategories.addEventListener('click', () => {
                 elements.productsSection.classList.add('hidden');
@@ -2951,8 +2994,3 @@ async function checkInvoiceStatus(invoiceId) {
     </script>
 </body>
 </html>
-
-
-
-
-
