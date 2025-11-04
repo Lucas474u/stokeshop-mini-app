@@ -2282,6 +2282,7 @@
 
         // Создание инвойса через Crypto Bot API
 // Создание инвойса через Crypto Bot API
+// Создание инвойса через Crypto Bot
 async function createTelegramInvoice() {
     if (!selectedPaymentMethod) {
         showNotification('Выберите способ оплаты');
@@ -2296,35 +2297,16 @@ async function createTelegramInvoice() {
     showLoading(true);
 
     try {
-        // Реальный запрос к вашему серверу для создания инвойса
-        const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CREATE_INVOICE, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                amount: selectedAmount,
-                asset: elements.assetSelect.value,
-                description: elements.descriptionInput.value,
-                user_id: getUserId(),
-                allow_comments: elements.allowComments.checked,
-                allow_anonymous: elements.allowAnonymous.checked,
-                expires_in: parseInt(elements.expirySelect.value)
-            })
-        });
+        const result = await window.PaymentHandler.createInvoice(
+            selectedAmount,
+            elements.assetSelect.value,
+            elements.descriptionInput.value
+        );
 
-        // Проверяем ответ
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        if (result.success && result.invoice) {
-            // Показываем подтверждение инвойса
+        if (result.success) {
             showInvoiceConfirmation(result.invoice);
         } else {
-            throw new Error(result.error || 'Ошибка создания счёта');
+            throw new Error(result.error);
         }
     } catch (error) {
         console.error('Error creating invoice:', error);
@@ -2929,6 +2911,7 @@ function startInvoiceStatusCheck() {
     </script>
 </body>
 </html>
+
 
 
 
