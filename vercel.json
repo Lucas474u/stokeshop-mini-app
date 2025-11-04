@@ -1,5 +1,15 @@
 {
+  "version": 2,
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "methods": ["GET", "POST", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS, POST",
+        "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+      }
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
