@@ -2280,87 +2280,83 @@
         // ==================== РЕАЛЬНАЯ ОПЛАТА ЧЕРЕЗ CRYPTO BOT ====================
 
         // Создание инвойса через Crypto Bot API
-        async function createTelegramInvoice() {
-            if (!selectedPaymentMethod) {
-                showNotification('Выберите способ оплаты');
-                return;
-            }
+        // Создание инвойса через Crypto Bot API
+async function createTelegramInvoice() {
+    if (!selectedPaymentMethod) {
+        showNotification('Выберите способ оплаты');
+        return;
+    }
 
-            if (selectedAmount < 1) {
-                showNotification('Минимальная сумма $1');
-                return;
-            }
+    if (selectedAmount < 1) {
+        showNotification('Минимальная сумма $1');
+        return;
+    }
 
-            showLoading(true);
+    showLoading(true);
 
-            try {
-                // Параметры для создания инвойса
-                const invoiceData = {
-                    amount: selectedAmount,
-                    asset: elements.assetSelect.value,
-                    description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop',
-                    paid_btn_name: 'check',
-                    paid_btn_url: 'https://t.me/cryptosending_bot',
-                    allow_comments: elements.allowComments.checked,
-                    allow_anonymous: elements.allowAnonymous.checked,
-                    expires_in: parseInt(elements.expirySelect.value)
-                };
+    try {
+        const requestData = {
+            action: 'createInvoice',
+            amount: selectedAmount,
+            asset: elements.assetSelect.value,
+            description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop'
+        };
 
-                console.log('Creating invoice with data:', invoiceData);
+        console.log('Sending request:', requestData);
 
-                // Создаем инвойс через API Crypto Bot
-                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CREATE_INVOICE, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(invoiceData)
-                });
+        const response = await fetch(API_CONFIG.CREATE_INVOICE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log('Invoice creation response:', result);
-
-                if (result.success) {
-                    showInvoiceConfirmation(result.invoice);
-                } else {
-                    throw new Error(result.error || 'Неизвестная ошибка при создании счета');
-                }
-            } catch (error) {
-                console.error('Error creating invoice:', error);
-                showNotification('Ошибка при создании счёта: ' + error.message);
-            } finally {
-                showLoading(false);
-            }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Проверка статуса инвойса
-        async function checkInvoiceStatus(invoiceId) {
-            try {
-                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CHECK_INVOICE, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        invoice_id: invoiceId 
-                    })
-                });
+        const result = await response.json();
+        console.log('Server response:', result);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error checking invoice status:', error);
-                return { success: false, error: error.message };
-            }
+        if (result.success) {
+            showInvoiceConfirmation(result.invoice);
+        } else {
+            throw new Error(result.error || 'Неизвестная ошибка при создании счета');
         }
+    } catch (error) {
+        console.error('Error creating invoice:', error);
+        showNotification('Ошибка при создании счёта: ' + error.message);
+    } finally {
+        showLoading(false);
+    }
+}
+
+// Проверка статуса инвойса
+async function checkInvoiceStatus(invoiceId) {
+    try {
+        const response = await fetch(API_CONFIG.CHECK_INVOICE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                action: 'checkInvoice',
+                invoice_id: invoiceId 
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Error checking invoice status:', error);
+        return { success: false, error: error.message };
+    }
+}
 
         // Показать подтверждение реального инвойса
         function showInvoiceConfirmation(invoice) {
@@ -2955,4 +2951,5 @@
     </script>
 </body>
 </html>
+
 
