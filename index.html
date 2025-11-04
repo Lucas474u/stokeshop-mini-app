@@ -1094,6 +1094,110 @@
     </style>
 </head>
 <body>
+    <script>
+    // ==================== PAYMENT HANDLER ====================
+    class PaymentHandler {
+        constructor() {
+            this.apiUrl = '/api';
+            console.log('✅ PaymentHandler initialized');
+        }
+
+        async createInvoice(amount, asset = 'USDT', description = 'Пополнение баланса') {
+            try {
+                console.log('🔄 Creating invoice:', { amount, asset, description });
+                
+                const response = await fetch(`${this.apiUrl}/create-invoice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: amount,
+                        asset: asset,
+                        description: description,
+                        user_id: this.getUserId()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    console.log('✅ Invoice created successfully:', data.invoice);
+                    return {
+                        success: true,
+                        invoice: data.invoice
+                    };
+                } else {
+                    throw new Error(data.error || 'Ошибка создания счета');
+                }
+            } catch (error) {
+                console.error('❌ Create invoice error:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        async checkInvoice(invoiceId) {
+            try {
+                console.log('🔄 Checking invoice:', invoiceId);
+                
+                const response = await fetch(`${this.apiUrl}/check-invoice`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        invoice_id: invoiceId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    return {
+                        success: true,
+                        invoice: data.invoice
+                    };
+                } else {
+                    throw new Error(data.error || 'Инвойс не найден');
+                }
+            } catch (error) {
+                console.error('❌ Check invoice error:', error);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        getUserId() {
+            if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+                return window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+            }
+            
+            let userId = localStorage.getItem('user_id');
+            if (!userId) {
+                userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('user_id', userId);
+            }
+            return userId;
+        }
+    }
+
+    // Создаем глобальный экземпляр
+    window.PaymentHandler = new PaymentHandler();
+    console.log('✅ PaymentHandler loaded successfully');
+    </script>
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -3002,6 +3106,7 @@ function startInvoiceStatusCheck() {
     </script>
 </body>
 </html>
+
 
 
 
