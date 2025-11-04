@@ -7,6 +7,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Ваши существующие стили остаются без изменений */
         :root {
             --primary-color: #6366f1;
             --primary-dark: #4f46e5;
@@ -1424,187 +1425,6 @@
     </div>
 
     <script>
-        // Crypto Pay API Configuration
-        const CRYPTO_PAY_API = {
-            token: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE',
-            
-            createInvoice: async function(amount, asset = 'USDT', description = 'Пополнение баланса', expiresIn = 3600, allowComments = true, allowAnonymous = true) {
-                try {
-                    console.log('Creating invoice for amount:', amount, 'asset:', asset);
-                    
-                    const amountInCrypto = Math.max(1, Math.round(amount));
-                    
-                    const requestData = {
-                        amount: amountInCrypto,
-                        asset: asset,
-                        description: description,
-                        hidden_message: `Пополнение баланса Stoke Shop на $${amount}`,
-                        paid_btn_name: 'open',
-                        paid_btn_url: 'https://t.me/cryptosending_bot',
-                        payload: JSON.stringify({
-                            userId: getUserId(),
-                            type: 'deposit',
-                            amount: amount,
-                            currency: 'USD',
-                            timestamp: Date.now()
-                        }),
-                        allow_comments: allowComments,
-                        allow_anonymous: allowAnonymous,
-                        expires_in: expiresIn
-                    };
-
-                    console.log('Invoice request data:', requestData);
-
-                    if (window.Telegram && window.Telegram.WebApp) {
-                        return await this.createInvoiceViaTelegram(requestData);
-                    } else {
-                        return await this.createTestInvoice(amount, asset);
-                    }
-                    
-                } catch (error) {
-                    console.error('Error creating invoice:', error);
-                    return await this.createTestInvoice(amount, asset);
-                }
-            },
-            
-            createInvoiceViaTelegram: async function(requestData) {
-                try {
-                    const response = await fetch('https://pay.crypt.bot/api/createInvoice', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Crypto-Pay-API-Token': this.token
-                        },
-                        body: JSON.stringify(requestData)
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    console.log('API response:', data);
-                    
-                    if (data.ok && data.result) {
-                        return data.result;
-                    } else {
-                        throw new Error(data.error?.description || 'Ошибка создания инвойса');
-                    }
-                } catch (error) {
-                    console.error('Telegram request failed:', error);
-                    return await this.createTestInvoice(requestData.amount, requestData.asset);
-                }
-            },
-            
-            createTestInvoice: async function(amount, asset = 'USDT') {
-                const invoiceId = 'test_' + Date.now();
-                return {
-                    invoice_id: invoiceId,
-                    pay_url: `https://t.me/CryptoBot?start=invoice_${invoiceId}`,
-                    amount: amount,
-                    asset: asset,
-                    status: 'active',
-                    pay_url: `https://t.me/CryptoBot?start=invoice_${invoiceId}`,
-                    description: `Тестовый инвойс на ${amount} ${asset}`
-                };
-            },
-            
-            getInvoices: async function(invoice_ids = []) {
-                try {
-                    if (window.Telegram && window.Telegram.WebApp) {
-                        const response = await fetch('https://pay.crypt.bot/api/getInvoices', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Crypto-Pay-API-Token': this.token
-                            },
-                            body: JSON.stringify({
-                                invoice_ids: invoice_ids
-                            })
-                        });
-                        
-                        const data = await response.json();
-                        return data.ok ? data.result : null;
-                    } else {
-                        return {
-                            items: invoice_ids.map(id => ({
-                                invoice_id: id,
-                                status: 'paid',
-                                amount: 10,
-                                payload: JSON.stringify({
-                                    userId: getUserId(),
-                                    type: 'deposit',
-                                    amount: 10,
-                                    currency: 'USD'
-                                })
-                            }))
-                        };
-                    }
-                } catch (error) {
-                    console.error('Error getting invoices:', error);
-                    return null;
-                }
-            }
-        };
-
-        // Адреса крипто-кошельков для разных сетей
-        const CRYPTO_ADDRESSES = {
-            'USDT_TRC20': {
-                address: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
-                network: 'TRC20',
-                asset: 'USDT',
-                name: 'Tether (TRC20)'
-            },
-            'USDT_ERC20': {
-                address: '0x291754537797Ac70C0159ABF1701E773502f8CcB',
-                network: 'ERC20',
-                asset: 'USDT',
-                name: 'Tether (ERC20)'
-            },
-            'BTC': {
-                address: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq',
-                network: 'Bitcoin',
-                asset: 'BTC',
-                name: 'Bitcoin'
-            },
-            'ETH': {
-                address: '0x291754537797Ac70C0159ABF1701E773502f8CcB',
-                network: 'Ethereum',
-                asset: 'ETH',
-                name: 'Ethereum'
-            },
-            'TON': {
-                address: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
-                network: 'TON',
-                asset: 'TON',
-                name: 'TON Coin'
-            },
-            'LTC': {
-                address: 'ltc1qkg69x5vtd7rl2whu8ush45xch0q3vk3f34mvhv',
-                network: 'Litecoin',
-                asset: 'LTC',
-                name: 'Litecoin'
-            },
-            'BNB': {
-                address: 'bnb1qkg69x5vtd7rl2whu8ush45xch0q3vk3f34mvhv',
-                network: 'BEP20',
-                asset: 'BNB',
-                name: 'BNB'
-            },
-            'TRX': {
-                address: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
-                network: 'TRON',
-                asset: 'TRX',
-                name: 'TRON'
-            },
-            'SOL': {
-                address: '6GpxJvee9DUm3ej6KSAmpTns6664ZQSpFZqde5aNCo7g',
-                network: 'Solana',
-                asset: 'SOL',
-                name: 'Solana'
-            }
-        };
-
         // Sample data
         const categories = [
             { id: 1, name_ru: "Telegram", name_en: "Telegram", description_ru: "Аккаунты Telegram", description_en: "Telegram accounts", icon: "fab fa-telegram" },
@@ -1848,8 +1668,6 @@
             updateUI();
             startGiveawayTimer();
             updateReferralLink();
-            
-            checkPendingInvoices();
         }
 
         // Initialize Telegram WebApp
@@ -2042,7 +1860,7 @@
         // Load crypto payment methods
         function loadCryptoMethods() {
             const cryptoMethods = [
-                { method: 'crypto_bot', name: 'Crypto Bot', icon: 'fas fa-robot', type: 'invoice' },
+                { method: 'crypto_bot', name: 'Crypto Bot', icon: 'fas fa-robot', type: 'telegram' },
                 { method: 'USDT_TRC20', name: 'USDT TRC20', icon: 'fas fa-coins', type: 'address' },
                 { method: 'USDT_ERC20', name: 'USDT ERC20', icon: 'fas fa-coins', type: 'address' },
                 { method: 'BTC', name: 'Bitcoin', icon: 'fab fa-bitcoin', type: 'address' },
@@ -2081,42 +1899,6 @@
                 });
                 elements.cryptoMethodsGrid.appendChild(methodBtn);
             });
-        }
-
-        // Check pending invoices on startup
-        async function checkPendingInvoices() {
-            if (userData.pendingInvoices.length > 0) {
-                console.log('Checking pending invoices:', userData.pendingInvoices);
-                showLoading(true);
-                
-                try {
-                    const invoices = await CRYPTO_PAY_API.getInvoices(userData.pendingInvoices);
-                    if (invoices && invoices.items) {
-                        for (const invoice of invoices.items) {
-                            if (invoice.status === 'paid') {
-                                const payload = JSON.parse(invoice.payload || '{}');
-                                const amount = payload.amount || invoice.amount;
-                                
-                                userData.balance += amount;
-                                userData.totalDeposited += amount;
-                                userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== invoice.invoice_id);
-                                
-                                showNotification(`✅ Баланс пополнен на $${amount}!`);
-                            } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
-                                userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== invoice.invoice_id);
-                            }
-                        }
-                        
-                        saveUserData(getUserId());
-                        updateUserStats();
-                        updateGiveawayStatus();
-                    }
-                } catch (error) {
-                    console.error('Error checking pending invoices:', error);
-                }
-                
-                showLoading(false);
-            }
         }
 
         // Start giveaway timer
@@ -2561,57 +2343,102 @@
             const selectedButton = document.querySelector(`.method-btn[data-method="${selectedPaymentMethod}"]`);
             const paymentType = selectedButton.getAttribute('data-type');
 
-            if (paymentType === 'invoice') {
-                createCryptoInvoice();
+            if (paymentType === 'telegram') {
+                createTelegramInvoice();
             } else if (paymentType === 'address') {
                 showCryptoAddress();
             }
         }
 
-        // Create crypto invoice using Crypto Pay API
-        async function createCryptoInvoice() {
+        // Create invoice through Telegram bot
+        function createTelegramInvoice() {
+            if (!window.Telegram || !window.Telegram.WebApp) {
+                showNotification('Для создания инвойса откройте приложение через Telegram бота');
+                return;
+            }
+
             showLoading(true);
 
-            try {
-                console.log('Creating invoice for amount:', selectedAmount);
-                
-                const asset = elements.assetSelect.value;
-                const description = elements.descriptionInput.value;
-                const expiresIn = parseInt(elements.expirySelect.value);
-                const allowComments = elements.allowComments.checked;
-                const allowAnonymous = elements.allowAnonymous.checked;
-                
-                const invoice = await CRYPTO_PAY_API.createInvoice(
-                    selectedAmount,
-                    asset,
-                    description,
-                    expiresIn,
-                    allowComments,
-                    allowAnonymous
-                );
+            // Отправляем данные в бота для создания инвойса
+            const tg = window.Telegram.WebApp;
+            tg.sendData(JSON.stringify({
+                type: 'create_invoice',
+                amount: selectedAmount,
+                asset: elements.assetSelect.value,
+                description: elements.descriptionInput.value,
+                expires_in: parseInt(elements.expirySelect.value),
+                allow_comments: elements.allowComments.checked,
+                allow_anonymous: elements.allowAnonymous.checked
+            }));
 
+            // Показываем сообщение об ожидании
+            setTimeout(() => {
                 showLoading(false);
-
-                if (invoice) {
-                    currentInvoiceId = invoice.invoice_id;
-                    userData.pendingInvoices.push(invoice.invoice_id);
-                    saveUserData(getUserId());
-                    
-                    showInvoicePayment(invoice);
-                    startInvoiceChecking();
-                } else {
-                    showNotification('Ошибка при создании инвойса. Попробуйте позже.');
-                }
-            } catch (error) {
-                showLoading(false);
-                console.error('Invoice creation error:', error);
-                showNotification('Ошибка подключения к Crypto Pay. Пожалуйста, используйте прямой перевод на наши кошельки.');
-            }
+                showNotification('Запрос на создание инвойса отправлен. Проверьте чат с ботом.');
+                closeDepositModal();
+            }, 2000);
         }
 
         // Show crypto address for direct payment
         function showCryptoAddress() {
-            const cryptoInfo = CRYPTO_ADDRESSES[selectedPaymentMethod];
+            const cryptoAddresses = {
+                'USDT_TRC20': {
+                    address: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
+                    network: 'TRC20',
+                    asset: 'USDT',
+                    name: 'Tether (TRC20)'
+                },
+                'USDT_ERC20': {
+                    address: '0x291754537797Ac70C0159ABF1701E773502f8CcB',
+                    network: 'ERC20',
+                    asset: 'USDT',
+                    name: 'Tether (ERC20)'
+                },
+                'BTC': {
+                    address: 'bc1q25ehtjq7k2crfvujr9dyhk640dj6tynlycjhvq',
+                    network: 'Bitcoin',
+                    asset: 'BTC',
+                    name: 'Bitcoin'
+                },
+                'ETH': {
+                    address: '0x291754537797Ac70C0159ABF1701E773502f8CcB',
+                    network: 'Ethereum',
+                    asset: 'ETH',
+                    name: 'Ethereum'
+                },
+                'TON': {
+                    address: 'UQBvrPItSxKL-U2ikxdIYz3zWRCPlxMBaz3zVCHrLmD2OPOR',
+                    network: 'TON',
+                    asset: 'TON',
+                    name: 'TON Coin'
+                },
+                'LTC': {
+                    address: 'ltc1qkg69x5vtd7rl2whu8ush45xch0q3vk3f34mvhv',
+                    network: 'Litecoin',
+                    asset: 'LTC',
+                    name: 'Litecoin'
+                },
+                'BNB': {
+                    address: 'bnb1qkg69x5vtd7rl2whu8ush45xch0q3vk3f34mvhv',
+                    network: 'BEP20',
+                    asset: 'BNB',
+                    name: 'BNB'
+                },
+                'TRX': {
+                    address: 'TXdf14ohPHQsysio6VGQCdFyP9nVdYcbbt',
+                    network: 'TRON',
+                    asset: 'TRX',
+                    name: 'TRON'
+                },
+                'SOL': {
+                    address: '6GpxJvee9DUm3ej6KSAmpTns6664ZQSpFZqde5aNCo7g',
+                    network: 'Solana',
+                    asset: 'SOL',
+                    name: 'Solana'
+                }
+            };
+
+            const cryptoInfo = cryptoAddresses[selectedPaymentMethod];
             if (!cryptoInfo) {
                 showNotification('Ошибка: информация о выбранной криптовалюте не найдена');
                 return;
@@ -2674,100 +2501,6 @@
             
             elements.amountSelector.classList.add('hidden');
             elements.paymentInfo.classList.remove('hidden');
-        }
-
-        // Show invoice payment details
-        function showInvoicePayment(invoice) {
-            elements.paymentInfo.innerHTML = `
-                <div class="payment-processing">
-                    <h4>Оплата через Crypto Pay</h4>
-                    <p>Для оплаты используйте ссылку ниже:</p>
-                    
-                    <div style="margin: 20px 0;">
-                        <a href="${invoice.pay_url}" target="_blank" style="display: block; padding: 14px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); color: white; text-align: center; border-radius: 8px; text-decoration: none; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);">
-                            Перейти к оплате
-                        </a>
-                    </div>
-                    
-                    <div class="payment-status status-pending">
-                        <i class="fas fa-clock"></i> Ожидание оплаты...
-                    </div>
-                    
-                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 16px;">
-                        Сумма к оплате: <strong>${invoice.amount} ${invoice.asset}</strong><br>
-                        Баланс пополнится <strong>автоматически</strong> после оплаты
-                    </p>
-                    
-                    <div style="background: var(--surface-dark); padding: 12px; border-radius: 8px; margin: 16px 0;">
-                        <p style="margin: 0; font-size: 0.875rem;">
-                            <strong>💡 Автоматическое пополнение:</strong><br>
-                            После успешной оплаты баланс будет пополнен автоматически в течение 1-2 минут
-                        </p>
-                    </div>
-                    
-                    <button class="confirm-btn" onclick="closeDepositModal()">
-                        Закрыть
-                    </button>
-                </div>
-            `;
-            
-            elements.amountSelector.classList.add('hidden');
-            elements.paymentInfo.classList.remove('hidden');
-            
-            startInvoiceChecking();
-        }
-
-        // Start checking invoice status
-        function startInvoiceChecking() {
-            if (invoiceCheckInterval) {
-                clearInterval(invoiceCheckInterval);
-            }
-            
-            invoiceCheckInterval = setInterval(checkInvoiceStatus, 10000);
-        }
-
-        // Check invoice status
-        async function checkInvoiceStatus() {
-            if (!currentInvoiceId) return;
-
-            try {
-                const invoices = await CRYPTO_PAY_API.getInvoices([currentInvoiceId]);
-                
-                if (invoices && invoices.items && invoices.items.length > 0) {
-                    const invoice = invoices.items[0];
-                    
-                    console.log('Invoice status:', invoice.status);
-                    
-                    if (invoice.status === 'paid') {
-                        clearInterval(invoiceCheckInterval);
-                        
-                        const payload = JSON.parse(invoice.payload || '{}');
-                        const amount = payload.amount || selectedAmount;
-                        
-                        userData.balance += amount;
-                        userData.totalDeposited += amount;
-                        
-                        userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== currentInvoiceId);
-                        
-                        saveUserData(getUserId());
-                        updateUserStats();
-                        updateGiveawayStatus();
-                        
-                        showNotification(`✅ Баланс автоматически пополнен на $${amount}!`);
-                        
-                        closeDepositModal();
-                    } else if (invoice.status === 'expired' || invoice.status === 'cancelled') {
-                        clearInterval(invoiceCheckInterval);
-                        
-                        userData.pendingInvoices = userData.pendingInvoices.filter(id => id !== currentInvoiceId);
-                        saveUserData(getUserId());
-                        
-                        showNotification('❌ Инвойс просрочен или отменен');
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking invoice status:', error);
-            }
         }
 
         // Handle search
@@ -2911,10 +2644,6 @@
             elements.amountSelector.classList.add('hidden');
             elements.paymentInfo.classList.add('hidden');
             elements.invoiceSettings.classList.add('hidden');
-            
-            if (invoiceCheckInterval) {
-                clearInterval(invoiceCheckInterval);
-            }
         }
 
         // Close deposit modal
