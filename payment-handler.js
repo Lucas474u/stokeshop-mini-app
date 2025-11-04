@@ -1,44 +1,38 @@
-// payment-handler.js - Вебхук для обработки платежей
+// payment-handler.js - Клиент для работы с платежами
 class PaymentHandler {
     constructor() {
-        this.apiUrl = 'https://pay.crypt.bot/api';
-        this.token = '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE'; // ЗАМЕНИТЕ на реальный токен
+        this.apiUrl = '/api'; // Используем относительные пути к вашему серверу
     }
 
-    // Создание инвойса
+    // Создание инвойса через ваш сервер
     async createInvoice(amount, asset = 'USDT', description = 'Пополнение баланса') {
         try {
-            const response = await fetch(`${this.apiUrl}/createInvoice`, {
+            const response = await fetch(`${this.apiUrl}/create-invoice`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Crypto-Pay-API-Token': this.token
                 },
                 body: JSON.stringify({
+                    amount: amount,
                     asset: asset,
-                    amount: amount.toString(),
                     description: description,
-                    paid_btn_name: 'view_item',
-                    paid_btn_url: window.location.href,
-                    payload: JSON.stringify({
-                        user_id: this.getUserId(),
-                        amount: amount
-                    }),
-                    allow_comments: true,
-                    allow_anonymous: false,
-                    expires_in: 3600
+                    user_id: this.getUserId()
                 })
             });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
             
-            if (data.ok) {
+            if (data.success) {
                 return {
                     success: true,
-                    invoice: data.result
+                    invoice: data.invoice
                 };
             } else {
-                throw new Error(data.error?.description || 'Ошибка создания счета');
+                throw new Error(data.error || 'Ошибка создания счета');
             }
         } catch (error) {
             console.error('Create invoice error:', error);
@@ -49,24 +43,32 @@ class PaymentHandler {
         }
     }
 
-    // Проверка статуса инвойса
+    // Проверка статуса инвойса через ваш сервер
     async checkInvoice(invoiceId) {
         try {
-            const response = await fetch(`${this.apiUrl}/getInvoices?invoice_ids=${invoiceId}`, {
+            const response = await fetch(`${this.apiUrl}/check-invoice`, {
+                method: 'POST',
                 headers: {
-                    'Crypto-Pay-API-Token': this.token
-                }
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    invoice_id: invoiceId
+                })
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
             const data = await response.json();
             
-            if (data.ok && data.result.items.length > 0) {
+            if (data.success) {
                 return {
                     success: true,
-                    invoice: data.result.items[0]
+                    invoice: data.invoice
                 };
             } else {
-                throw new Error('Инвойс не найден');
+                throw new Error(data.error || 'Инвойс не найден');
             }
         } catch (error) {
             console.error('Check invoice error:', error);
@@ -78,12 +80,10 @@ class PaymentHandler {
     }
 
     getUserId() {
-        // Генерируем ID пользователя на основе Telegram Web App или создаем временный
         if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
             return window.Telegram.WebApp.initDataUnsafe.user.id.toString();
         }
         
-        // Если нет Telegram, используем localStorage
         let userId = localStorage.getItem('user_id');
         if (!userId) {
             userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
