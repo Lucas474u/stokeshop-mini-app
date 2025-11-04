@@ -1446,10 +1446,9 @@
     <script>
         // Конфигурация API
         const API_CONFIG = {
-            BASE_URL: 'https://your-server.com/api', // Замените на ваш сервер
+            BASE_URL: 'https://stokeshop-mini-app.vercel.app', // Замените на ваш сервер
             CREATE_INVOICE: '/create-invoice',
             CHECK_INVOICE: '/check-invoice',
-            WEBHOOK_URL: 'https://your-server.com/webhook'
         };
 
         // ВАШИ РЕАЛЬНЫЕ АККАУНТЫ
@@ -2438,54 +2437,75 @@
         }
 
         // Подтверждение оплаты инвойса
-        async function confirmInvoicePayment() {
-            showLoading(true);
+async function confirmInvoicePayment() {
+    showLoading(true);
+    
+    try {
+        // Создаем инвойс
+        const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CREATE_INVOICE, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                amount: selectedAmount,
+                asset: elements.assetSelect.value,
+                description: elements.descriptionInput.value,
+                user_id: getUserId()
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success && result.invoice) {
+            // Сохраняем invoice_id для проверки статуса
+            currentInvoiceId = result.invoice.invoice_id;
             
-            try {
-                // В реальном приложении здесь будет открытие ссылки на оплату
-                if (window.Telegram && window.Telegram.WebApp) {
-                    const tg = window.Telegram.WebApp;
-                    
-                    // Находим pending invoice
-                    const pendingInvoice = userData.pendingInvoices.find(inv => inv.id === currentInvoiceId);
-                    
-                    if (pendingInvoice && pendingInvoice.pay_url) {
-                        // Открываем ссылку на оплату в Crypto Bot
-                        tg.openInvoice(pendingInvoice.pay_url, (status) => {
-                            if (status === 'paid') {
-                                handleSuccessfulPayment();
-                            } else {
-                                showNotification('Оплата не была завершена');
-                            }
-                        });
-                    } else {
-                        // Демо-режим: имитируем успешную оплату
-                        setTimeout(() => {
-                            handleSuccessfulPayment();
-                        }, 3000);
-                    }
-                } else {
-                    // Для браузерной версии
-                    const pendingInvoice = userData.pendingInvoices.find(inv => inv.id === currentInvoiceId);
-                    if (pendingInvoice && pendingInvoice.pay_url) {
-                        window.open(pendingInvoice.pay_url, '_blank');
-                        showNotification('Открыта страница оплаты. После оплаты баланс пополнится автоматически.');
-                    } else {
-                        // Демо-режим
-                        setTimeout(() => {
-                            handleSuccessfulPayment();
-                        }, 3000);
-                    }
-                }
-            } catch (error) {
-                console.error('Error processing payment:', error);
-                showNotification('Ошибка при обработке платежа');
-            } finally {
-                showLoading(false);
-                elements.invoiceConfirmModal.classList.add('hidden');
+            // Открываем ссылку на оплату
+            if (result.invoice.pay_url) {
+                window.open(result.invoice.pay_url, '_blank');
+                
+                // Начинаем проверять статус оплаты
+                checkInvoiceStatus();
             }
         }
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Ошибка при создании счёта');
+    } finally {
+        showLoading(false);
+        elements.invoiceConfirmModal.classList.add('hidden');
+    }
+}
 
+// Функция проверки статуса инвойса
+async function checkInvoiceStatus() {
+    if (!currentInvoiceId) return;
+    
+    try {
+        const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CHECK_INVOICE, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ invoice_id: currentInvoiceId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success && result.invoice) {
+            if (result.invoice.status === 'paid') {
+                // Оплата прошла успешно
+                handleSuccessfulPayment();
+            } else if (result.invoice.status === 'active') {
+                // Инвойс еще не оплачен, проверяем снова через 5 секунд
+                setTimeout(checkInvoiceStatus, 5000);
+            } else {
+                // Инвойс просрочен или отменен
+                showNotification('Счёт не был оплачен');
+            }
+        }
+    } catch (error) {
+        // При ошибке проверяем снова через 10 секунд
+        setTimeout(checkInvoiceStatus, 10000);
+    }
+}
         // Обработка успешной оплаты
         function handleSuccessfulPayment() {
             // Обновляем баланс пользователя
@@ -2947,3 +2967,4 @@
     </script>
 </body>
 </html>
+
