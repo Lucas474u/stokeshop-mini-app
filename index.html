@@ -1446,7 +1446,7 @@
     <script>
         // Конфигурация API
         const API_CONFIG = {
-            BASE_URL: 'https://stokeshop-mini-app.vercel.app', // Замените на ваш сервер
+            BASE_URL: 'https://stokeshop-mini-app.vercel.app', // Замените на ваш реальный сервер
             CREATE_INVOICE: '/create-invoice',
             CHECK_INVOICE: '/check-invoice',
         };
@@ -2280,175 +2280,220 @@
         // ==================== РЕАЛЬНАЯ ОПЛАТА ЧЕРЕЗ CRYPTO BOT ====================
 
         // Создание инвойса через Crypto Bot API
-// Создание инвойса через Crypto Bot API
-// Создание инвойса через Crypto Bot
-async function createTelegramInvoice() {
-    if (!selectedPaymentMethod) {
-        showNotification('Выберите способ оплаты');
-        return;
-    }
-
-    if (selectedAmount < 1) {
-        showNotification('Минимальная сумма $1');
-        return;
-    }
-
-    showLoading(true);
-
-    try {
-        const result = await window.PaymentHandler.createInvoice(
-            selectedAmount,
-            elements.assetSelect.value,
-            elements.descriptionInput.value
-        );
-
-        if (result.success) {
-            showInvoiceConfirmation(result.invoice);
-        } else {
-            throw new Error(result.error);
-        }
-    } catch (error) {
-        console.error('Error creating invoice:', error);
-        showNotification('Ошибка при создании счёта: ' + error.message);
-    } finally {
-        showLoading(false);
-    }
-}
-
-// Показать подтверждение реального инвойса
-function showInvoiceConfirmation(invoice) {
-    elements.invoiceConfirmInfo.innerHTML = `
-        <div style="text-align: center;">
-            <div style="font-size: 1.1rem; font-weight: bold; margin-bottom: 15px;">
-                Счёт #${invoice.invoice_id}
-            </div>
-            
-            <div style="background: var(--surface-dark); padding: 15px; border-radius: 10px; margin: 15px 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span>Отправляете:</span>
-                    <span style="font-weight: bold;">${invoice.amount} ${invoice.asset} ($${selectedAmount})</span>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span>Получатель:</span>
-                    <span style="font-weight: bold; color: var(--primary-color);">Stoke Shop</span>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between;">
-                    <span>Статус:</span>
-                    <span style="color: var(--secondary-color); font-weight: bold;">Ожидает оплаты</span>
-                </div>
-            </div>
-            
-            <div style="background: var(--surface); border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin: 15px 0;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                    <i class="fas fa-receipt" style="color: var(--primary-color);"></i>
-                    <span>🧾 ${invoice.description}</span>
-                </div>
-            </div>
-            
-            ${invoice.pay_url ? `
-            <div style="background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 8px; margin: 15px 0;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <i class="fas fa-external-link-alt" style="color: #22c55e;"></i>
-                    <span>Готов к оплате!</span>
-                </div>
-                <a href="${invoice.pay_url}" target="_blank" style="display: inline-block; width: 100%; padding: 12px; background: #22c55e; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                    💳 Перейти к оплате
-                </a>
-            </div>
-            ` : ''}
-            
-            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px;">
-                Счёт действителен в течение 1 часа
-            </div>
-        </div>
-    `;
-    
-    // Сохраняем информацию об инвойсе
-    currentInvoiceId = invoice.invoice_id;
-    userData.pendingInvoices.push({
-        id: invoice.invoice_id,
-        amount: selectedAmount,
-        asset: invoice.asset,
-        pay_url: invoice.pay_url,
-        created_at: new Date().toISOString()
-    });
-    saveUserData(getUserId());
-    
-    // Показываем модальное окно подтверждения
-    elements.invoiceConfirmModal.classList.remove('hidden');
-}
-
-// Подтверждение оплаты инвойса - ОТКРЫВАЕМ ССЫЛКУ НА ОПЛАТУ
-async function confirmInvoicePayment() {
-    if (currentInvoiceId) {
-        // Находим инвойс в pending
-        const pendingInvoice = userData.pendingInvoices.find(inv => inv.id === currentInvoiceId);
-        
-        if (pendingInvoice && pendingInvoice.pay_url) {
-            // Открываем ссылку на оплату в новом окне
-            window.open(pendingInvoice.pay_url, '_blank');
-            
-            // Показываем сообщение об ожидании
-            showNotification('Открыта страница оплаты. После оплаты баланс пополнится автоматически.');
-            
-            // Начинаем проверять статус оплаты
-            startInvoiceStatusCheck();
-        } else {
-            showNotification('Ошибка: ссылка на оплату не найдена');
-        }
-    }
-    
-    elements.invoiceConfirmModal.classList.add('hidden');
-}
-
-// Начать проверку статуса инвойса
-function startInvoiceStatusCheck() {
-    if (!currentInvoiceId) return;
-    
-    // Проверяем статус каждые 10 секунд
-    const checkInterval = setInterval(async () => {
-        try {
-            const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CHECK_INVOICE, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    invoice_id: currentInvoiceId 
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+        async function createTelegramInvoice() {
+            if (!selectedPaymentMethod) {
+                showNotification('Выберите способ оплаты');
+                return;
             }
 
-            const result = await response.json();
+            if (selectedAmount < 1) {
+                showNotification('Минимальная сумма $1');
+                return;
+            }
 
-            if (result.success && result.invoice) {
-                if (result.invoice.status === 'paid') {
-                    // Оплата прошла успешно
-                    clearInterval(checkInterval);
-                    handleSuccessfulPayment();
-                } else if (result.invoice.status === 'expired' || result.invoice.status === 'cancelled') {
-                    // Инвойс просрочен или отменен
-                    clearInterval(checkInterval);
-                    showNotification('Счёт не был оплачен');
+            showLoading(true);
+
+            try {
+                // Параметры для создания инвойса
+                const invoiceData = {
+                    amount: selectedAmount,
+                    asset: elements.assetSelect.value,
+                    description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop',
+                    paid_btn_name: 'check',
+                    paid_btn_url: 'https://t.me/cryptosending_bot',
+                    allow_comments: elements.allowComments.checked,
+                    allow_anonymous: elements.allowAnonymous.checked,
+                    expires_in: parseInt(elements.expirySelect.value)
+                };
+
+                console.log('Creating invoice with data:', invoiceData);
+
+                // Создаем инвойс через API Crypto Bot
+                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CREATE_INVOICE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(invoiceData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                // Если статус 'active', продолжаем проверять
-            }
-        } catch (error) {
-            console.error('Error checking invoice status:', error);
-            // При ошибке продолжаем проверять
-        }
-    }, 10000); // Проверяем каждые 10 секунд
 
-    // Останавливаем проверку через 1 час (время жизни инвойса)
-    setTimeout(() => {
-        clearInterval(checkInterval);
-    }, 3600000);
-}
+                const result = await response.json();
+                console.log('Invoice creation response:', result);
+
+                if (result.success) {
+                    showInvoiceConfirmation(result.invoice);
+                } else {
+                    throw new Error(result.error || 'Неизвестная ошибка при создании счета');
+                }
+            } catch (error) {
+                console.error('Error creating invoice:', error);
+                showNotification('Ошибка при создании счёта: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Проверка статуса инвойса
+        async function checkInvoiceStatus(invoiceId) {
+            try {
+                const response = await fetch(API_CONFIG.BASE_URL + API_CONFIG.CHECK_INVOICE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        invoice_id: invoiceId 
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Error checking invoice status:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Показать подтверждение реального инвойса
+        function showInvoiceConfirmation(invoice) {
+            elements.invoiceConfirmInfo.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 1.1rem; font-weight: bold; margin-bottom: 15px;">
+                        Счёт #${invoice.invoice_id}
+                    </div>
+                    
+                    <div style="background: var(--surface-dark); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Отправляете:</span>
+                            <span style="font-weight: bold;">${invoice.amount} ${invoice.asset} ($${selectedAmount})</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Получатель:</span>
+                            <span style="font-weight: bold; color: var(--primary-color);">Stoke Shop</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Статус:</span>
+                            <span style="color: var(--secondary-color); font-weight: bold;">Ожидает оплаты</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--surface); border: 1px solid var(--border); padding: 12px; border-radius: 8px; margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-receipt" style="color: var(--primary-color);"></i>
+                            <span>🧾 ${invoice.description}</span>
+                        </div>
+                    </div>
+                    
+                    ${invoice.pay_url ? `
+                    <div style="background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 8px; margin: 15px 0;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="fas fa-external-link-alt" style="color: #22c55e;"></i>
+                            <span>Готов к оплате!</span>
+                        </div>
+                        <a href="${invoice.pay_url}" target="_blank" style="display: inline-block; width: 100%; padding: 12px; background: #22c55e; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                            💳 Перейти к оплате
+                        </a>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px;">
+                        Счёт действителен в течение 1 часа
+                    </div>
+                </div>
+            `;
+            
+            // Сохраняем информацию об инвойсе
+            currentInvoiceId = invoice.invoice_id;
+            userData.pendingInvoices.push({
+                id: invoice.invoice_id,
+                amount: selectedAmount,
+                asset: invoice.asset,
+                pay_url: invoice.pay_url,
+                created_at: new Date().toISOString()
+            });
+            saveUserData(getUserId());
+            
+            // Показываем модальное окно подтверждения
+            elements.invoiceConfirmModal.classList.remove('hidden');
+        }
+
+        // Подтверждение оплаты инвойса - ОТКРЫВАЕМ ССЫЛКУ НА ОПЛАТУ
+        async function confirmInvoicePayment() {
+            if (currentInvoiceId) {
+                // Находим инвойс в pending
+                const pendingInvoice = userData.pendingInvoices.find(inv => inv.id === currentInvoiceId);
+                
+                if (pendingInvoice && pendingInvoice.pay_url) {
+                    // Открываем ссылку на оплату в новом окне
+                    window.open(pendingInvoice.pay_url, '_blank');
+                    
+                    // Показываем сообщение об ожидании
+                    showNotification('Открыта страница оплаты. После оплаты баланс пополнится автоматически.');
+                    
+                    // Начинаем проверять статус оплаты
+                    startInvoiceStatusCheck();
+                } else {
+                    showNotification('Ошибка: ссылка на оплату не найдена');
+                }
+            }
+            
+            elements.invoiceConfirmModal.classList.add('hidden');
+        }
+
+        // Начать проверку статуса инвойса
+        function startInvoiceStatusCheck() {
+            if (!currentInvoiceId) return;
+            
+            let checkCount = 0;
+            const maxChecks = 360; // Максимум 1 час проверок (360 * 10 секунд)
+            
+            // Проверяем статус каждые 10 секунд
+            const checkInterval = setInterval(async () => {
+                checkCount++;
+                
+                try {
+                    const result = await checkInvoiceStatus(currentInvoiceId);
+
+                    if (result.success && result.invoice) {
+                        if (result.invoice.status === 'paid') {
+                            // Оплата прошла успешно
+                            clearInterval(checkInterval);
+                            handleSuccessfulPayment();
+                            showNotification('✅ Оплата подтверждена! Баланс пополнен.');
+                        } else if (result.invoice.status === 'expired' || result.invoice.status === 'cancelled') {
+                            // Инвойс просрочен или отменен
+                            clearInterval(checkInterval);
+                            showNotification('Счёт не был оплачен');
+                            
+                            // Удаляем инвойс из pending
+                            userData.pendingInvoices = userData.pendingInvoices.filter(inv => inv.id !== currentInvoiceId);
+                            saveUserData(getUserId());
+                        }
+                        // Если статус 'active', продолжаем проверять
+                    }
+                } catch (error) {
+                    console.error('Error checking invoice status:', error);
+                    // При ошибке продолжаем проверять
+                }
+                
+                // Останавливаем проверку после максимального количества попыток
+                if (checkCount >= maxChecks) {
+                    clearInterval(checkInterval);
+                    showNotification('Время проверки платежа истекло');
+                }
+            }, 10000); // Проверяем каждые 10 секунд
+        }
+
         // Обработка успешной оплаты
         function handleSuccessfulPayment() {
             // Обновляем баланс пользователя
@@ -2902,98 +2947,6 @@ function startInvoiceStatusCheck() {
             alert(message);
         }
 
-        // ==================== ФУНКЦИИ ПРОВЕРКИ ПЛАТЕЖА ====================
-
-        // Проверка статуса платежа
-        async function checkPaymentStatus(invoiceId) {
-            const result = await window.PaymentHandler.checkInvoice(invoiceId);
-            
-            if (result.success) {
-                const invoice = result.invoice;
-                
-                if (invoice.status === 'paid') {
-                    // Платеж успешен
-                    handleSuccessfulPayment(selectedAmount);
-                    return true;
-                } else if (invoice.status === 'active') {
-                    // Ожидает оплаты
-                    return false;
-                } else {
-                    // Отменен или просрочен
-                    showNotification('Счёт не был оплачен');
-                    return false;
-                }
-            }
-            
-            return false;
-        }
-
-        // Обработка успешного платежа
-        function handleSuccessfulPayment(amount) {
-            userData.balance += parseFloat(amount);
-            userData.totalDeposited += parseFloat(amount);
-            
-            saveUserData(getUserId());
-            updateUserStats();
-            updateGiveawayStatus();
-            
-            showNotification(`✅ Баланс пополнен на $${amount}!`);
-            elements.depositModal.classList.add('hidden');
-            resetPaymentModal();
-            
-            // Показываем успешное сообщение
-            showPaymentSuccess(amount);
-        }
-
-        // Автоматическая проверка статуса
-        function startPaymentStatusCheck(invoiceId) {
-            let checkCount = 0;
-            const maxChecks = 60; // Проверяем 5 минут
-            
-            const checkInterval = setInterval(async () => {
-                checkCount++;
-                const isPaid = await checkPaymentStatus(invoiceId);
-                
-                if (isPaid || checkCount >= maxChecks) {
-                    clearInterval(checkInterval);
-                    if (!isPaid) {
-                        showNotification('Время оплаты истекло');
-                    }
-                }
-            }, 5000); // Проверяем каждые 5 секунд
-        }
-
-        // Показ успешного платежа
-        function showPaymentSuccess(amount) {
-            elements.paymentInfo.innerHTML = `
-                <div class="payment-info">
-                    <div style="text-align: center; color: var(--success-color); margin-bottom: 20px;">
-                        <i class="fas fa-check-circle" style="font-size: 3rem;"></i>
-                    </div>
-                    <h4>✅ Оплата успешно завершена!</h4>
-                    <p>Ваш баланс пополнен на <strong>$${amount}</strong></p>
-                    
-                    <div class="payment-status status-success" style="margin: 20px 0;">
-                        <i class="fas fa-check-circle"></i> Средства зачислены на ваш баланс
-                    </div>
-                    
-                    <button class="confirm-btn" onclick="closeDepositModal()" style="margin-top: 16px;">
-                        Закрыть
-                    </button>
-                </div>
-            `;
-            
-            elements.amountSelector.classList.add('hidden');
-            elements.paymentInfo.classList.remove('hidden');
-        }
-
-        // Make functions globally available
-        window.closeDepositModal = closeDepositModal;
-
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
-        
         // Make functions globally available
         window.closeDepositModal = closeDepositModal;
 
@@ -3002,12 +2955,3 @@ function startInvoiceStatusCheck() {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
