@@ -7,7 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Стили остаются без изменений */
         :root {
             --primary-color: #6366f1;
             --primary-dark: #4f46e5;
@@ -1423,10 +1422,11 @@
     </div>
 
     <script>
-        // Упрощенная конфигурация - используем локальную симуляцию платежей
-        const PAYMENT_CONFIG = {
-            SIMULATE_PAYMENTS: true, // Переключите на false когда бэкенд будет готов
-            SIMULATED_DELAY: 2000
+        // РЕАЛЬНАЯ КОНФИГУРАЦИЯ CRYPTO BOT
+        const CRYPTO_BOT_CONFIG = {
+            API_TOKEN: '477613:AAJXN238rLjxk7pP2L6DA7tNnnrYQ8V4BBE', // ЗАМЕНИ НА СВОЙ ТОКЕН
+            CREATE_INVOICE_URL: 'https://pay.crypt.bot/api/createInvoice',
+            CHECK_INVOICE_URL: 'https://pay.crypt.bot/api/getInvoices'
         };
 
         // ВАШИ РЕАЛЬНЫЕ АККАУНТЫ
@@ -1445,7 +1445,7 @@
         ];
 
         const products = {
-           1: [
+            1: [
                 { id: 1, name_ru: "НОВОРЕГ", name_en: "NEWREG", price: 4.0, stock: 25, description_ru: "Новый аккаунт Telegram", description_en: "New Telegram account" },
                 { id: 2, name_ru: "ФИЗ СИМ US", name_en: "PHYSICAL SIM US", price: 5.0, stock: 15, description_ru: "Аккаунт с US сим-картой", description_en: "Account with US SIM card" },
                 { id: 3, name_ru: "ФИЗ СИМ EU", name_en: "PHYSICAL SIM EU", price: 5.5, stock: 12, description_ru: "Аккаунт с EU сим-картой", description_en: "Account with EU SIM card" },
@@ -1577,6 +1577,7 @@
         let selectedProduct = null;
         let giveawayTimerInterval = null;
         let currentInvoiceId = null;
+        let invoiceCheckInterval = null;
         
         // Real user data
         let userData = {
@@ -1586,7 +1587,8 @@
             referralCount: 0,
             referralEarnings: 0,
             totalDeposited: 0,
-            giveawayParticipating: false
+            giveawayParticipating: false,
+            pendingInvoices: []
         };
 
         // Giveaway data
@@ -1662,7 +1664,7 @@
 
         // Initialize app
         function initApp() {
-            console.log('Initializing Stoke Shop with simulated payments...');
+            console.log('Initializing Stoke Shop with REAL Crypto Bot payments...');
             initTelegramWebApp();
             loadUserData();
             loadCategories();
@@ -1814,7 +1816,8 @@
                 referralCount: 0,
                 referralEarnings: 0,
                 totalDeposited: 0,
-                giveawayParticipating: false
+                giveawayParticipating: false,
+                pendingInvoices: []
             };
         }
 
@@ -2248,9 +2251,9 @@
             return 'test_user_123';
         }
 
-        // ==================== СИМУЛЯЦИЯ ПЛАТЕЖЕЙ ====================
+        // ==================== РЕАЛЬНЫЙ CRYPTO BOT API ====================
 
-        // Создание инвойса через симуляцию
+        // Создание инвойса через реальный Crypto Bot API
         async function createTelegramInvoice() {
             if (!selectedPaymentMethod) {
                 showNotification('Выберите способ оплаты');
@@ -2265,53 +2268,99 @@
             showLoading(true);
 
             try {
-                // Симуляция задержки сети
-                await new Promise(resolve => setTimeout(resolve, PAYMENT_CONFIG.SIMULATED_DELAY));
-
-                // Генерируем тестовый инвойс
-                const simulatedInvoice = {
-                    invoice_id: 'inv_' + Date.now(),
-                    amount: selectedAmount,
-                    asset: elements.assetSelect.value,
+                // Конвертируем сумму в выбранную валюту
+                const asset = elements.assetSelect.value;
+                const amount = await convertToCryptoAmount(selectedAmount, asset);
+                
+                const requestData = {
+                    asset: asset,
+                    amount: amount.toString(),
                     description: elements.descriptionInput.value || 'Пополнение баланса Stoke Shop',
-                    pay_url: `https://t.me/CryptoBot?start=invoice_${Date.now()}`,
-                    status: 'active'
+                    paid_btn_name: 'callback',
+                    paid_btn_url: 'https://t.me/stokeshop_bot',
+                    allow_comments: true,
+                    allow_anonymous: true,
+                    expires_in: 3600
                 };
 
-                console.log('Simulated invoice created:', simulatedInvoice);
-                showInvoiceConfirmation(simulatedInvoice);
+                console.log('Creating real invoice:', requestData);
 
+                const response = await fetch(CRYPTO_BOT_CONFIG.CREATE_INVOICE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Crypto-Pay-API-Token': CRYPTO_BOT_CONFIG.API_TOKEN
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                console.log('Crypto Bot response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Crypto Bot error:', errorText);
+                    throw new Error(`Crypto Bot error: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Crypto Bot result:', result);
+
+                if (result.ok && result.result) {
+                    showInvoiceConfirmation(result.result);
+                } else {
+                    throw new Error(result.error || 'Unknown error from Crypto Bot');
+                }
             } catch (error) {
-                console.error('Error creating invoice:', error);
+                console.error('Error creating real invoice:', error);
                 showNotification('Ошибка при создании счёта: ' + error.message);
+                
+                // Fallback: показываем адрес для ручной оплаты
+                showManualPaymentOption();
             } finally {
                 showLoading(false);
             }
         }
 
-        // Проверка статуса инвойса (симуляция)
+        // Конвертация суммы в криптовалюту
+        async function convertToCryptoAmount(usdAmount, asset) {
+            // Здесь должна быть реальная логика конвертации через API курсов
+            // Пока используем примерные курсы
+            const rates = {
+                'USDT': 1,
+                'TON': 0.05, // примерный курс
+                'BTC': 0.000025,
+                'ETH': 0.0005,
+                'BNB': 0.003,
+                'TRX': 8.5
+            };
+
+            const rate = rates[asset] || 1;
+            return (usdAmount / rate).toFixed(8);
+        }
+
+        // Проверка статуса инвойса
         async function checkInvoiceStatus(invoiceId) {
             try {
-                // Симуляция проверки статуса
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // В симуляции всегда возвращаем успешный статус
-                return {
-                    success: true,
-                    invoice: {
-                        invoice_id: invoiceId,
-                        status: 'paid',
-                        amount: selectedAmount,
-                        asset: elements.assetSelect.value
+                const response = await fetch(`${CRYPTO_BOT_CONFIG.CHECK_INVOICE_URL}?invoice_ids=${invoiceId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Crypto-Pay-API-Token': CRYPTO_BOT_CONFIG.API_TOKEN
                     }
-                };
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                return result;
             } catch (error) {
                 console.error('Error checking invoice status:', error);
-                return { success: false, error: error.message };
+                return { ok: false, error: error.message };
             }
         }
 
-        // Показать подтверждение инвойса
+        // Показать подтверждение реального инвойса
         function showInvoiceConfirmation(invoice) {
             elements.invoiceConfirmInfo.innerHTML = `
                 <div style="text-align: center;">
@@ -2321,13 +2370,13 @@
                     
                     <div style="background: var(--surface-dark); padding: 15px; border-radius: 10px; margin: 15px 0;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span>Отправляете:</span>
-                            <span style="font-weight: bold;">${invoice.amount} ${invoice.asset} ($${selectedAmount})</span>
+                            <span>Сумма:</span>
+                            <span style="font-weight: bold;">${invoice.amount} ${invoice.asset}</span>
                         </div>
                         
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span>Получатель:</span>
-                            <span style="font-weight: bold; color: var(--primary-color);">Stoke Shop</span>
+                            <span>В долларах:</span>
+                            <span style="font-weight: bold;">$${selectedAmount}</span>
                         </div>
                         
                         <div style="display: flex; justify-content: space-between;">
@@ -2349,9 +2398,17 @@
                             <i class="fas fa-external-link-alt" style="color: #22c55e;"></i>
                             <span>Готов к оплате!</span>
                         </div>
-                        <button onclick="simulatePayment()" style="display: inline-block; width: 100%; padding: 12px; background: #22c55e; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer;">
-                            💳 Симулировать оплату
-                        </button>
+                        <a href="${invoice.pay_url}" target="_blank" style="display: inline-block; width: 100%; padding: 12px; background: #22c55e; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center;">
+                            💳 Перейти к оплате в Crypto Bot
+                        </a>
+                    </div>
+                    ` : ''}
+                    
+                    ${invoice.bot_invoice_url ? `
+                    <div style="margin-top: 15px;">
+                        <a href="${invoice.bot_invoice_url}" target="_blank" style="display: inline-block; width: 100%; padding: 12px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center;">
+                            📱 Открыть в Telegram
+                        </a>
                     </div>
                     ` : ''}
                     
@@ -2361,51 +2418,104 @@
                 </div>
             `;
             
-            // Сохраняем информацию об инвойсе
             currentInvoiceId = invoice.invoice_id;
+            userData.pendingInvoices.push({
+                id: invoice.invoice_id,
+                amount: selectedAmount,
+                asset: invoice.asset,
+                pay_url: invoice.pay_url,
+                created_at: new Date().toISOString()
+            });
+            saveUserData(getUserId());
             
-            // Показываем модальное окно подтверждения
             elements.invoiceConfirmModal.classList.remove('hidden');
+            
+            // Начинаем проверять статус
+            startRealInvoiceStatusCheck();
         }
 
-        // Симуляция оплаты
-        async function simulatePayment() {
-            showNotification('💳 Симулируем оплату...');
+        // Запуск проверки статуса реального инвойса
+        function startRealInvoiceStatusCheck() {
+            if (!currentInvoiceId) return;
             
-            // Закрываем модальное окно
-            elements.invoiceConfirmModal.classList.add('hidden');
+            let checkCount = 0;
+            const maxChecks = 180; // 30 минут проверок (180 * 10 секунд)
             
-            // Показываем загрузку
-            showLoading(true);
-            
-            // Симулируем обработку платежа
-            setTimeout(() => {
-                showLoading(false);
+            const checkInterval = setInterval(async () => {
+                checkCount++;
                 
-                // Обновляем баланс пользователя
-                userData.balance += selectedAmount;
-                userData.totalDeposited += selectedAmount;
+                try {
+                    const result = await checkInvoiceStatus(currentInvoiceId);
+
+                    if (result.ok && result.result && result.result.items) {
+                        const invoice = result.result.items[0];
+                        
+                        if (invoice.status === 'paid') {
+                            clearInterval(checkInterval);
+                            handleSuccessfulPayment();
+                            showNotification('✅ Оплата подтверждена! Баланс пополнен.');
+                        } else if (invoice.status === 'expired') {
+                            clearInterval(checkInterval);
+                            showNotification('❌ Время оплаты истекло');
+                            userData.pendingInvoices = userData.pendingInvoices.filter(inv => inv.id !== currentInvoiceId);
+                            saveUserData(getUserId());
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error checking invoice status:', error);
+                }
                 
-                saveUserData(getUserId());
-                updateUserStats();
-                updateGiveawayStatus();
-                
-                showNotification(`✅ Баланс успешно пополнен на $${selectedAmount}!`);
-                
-                // Закрываем модальные окна
-                elements.depositModal.classList.add('hidden');
-                resetPaymentModal();
-            }, 3000);
+                if (checkCount >= maxChecks) {
+                    clearInterval(checkInterval);
+                    showNotification('Время проверки платежа истекло');
+                }
+            }, 10000);
         }
 
-        // Подтверждение оплаты инвойса
-        async function confirmInvoicePayment() {
-            if (currentInvoiceId) {
-                // В симуляции просто запускаем процесс оплаты
-                await simulatePayment();
-            }
+        // Обработка успешной оплаты
+        function handleSuccessfulPayment() {
+            userData.balance += selectedAmount;
+            userData.totalDeposited += selectedAmount;
             
-            elements.invoiceConfirmModal.classList.add('hidden');
+            userData.pendingInvoices = userData.pendingInvoices.filter(inv => inv.id !== currentInvoiceId);
+            
+            saveUserData(getUserId());
+            updateUserStats();
+            updateGiveawayStatus();
+            
+            showNotification(`✅ Баланс успешно пополнен на $${selectedAmount}!`);
+            
+            elements.depositModal.classList.add('hidden');
+            resetPaymentModal();
+        }
+
+        // Fallback: ручная оплата если API не работает
+        function showManualPaymentOption() {
+            elements.paymentInfo.innerHTML = `
+                <div class="payment-info">
+                    <h4>⚡ Альтернативный способ оплаты</h4>
+                    <p>Используйте прямой перевод через Crypto Bot:</p>
+                    
+                    <div style="background: var(--surface-dark); padding: 16px; border-radius: 8px; margin: 16px 0;">
+                        <strong>Инструкция:</strong>
+                        <ol style="text-align: left; padding-left: 20px; margin: 8px 0;">
+                            <li>Откройте <a href="https://t.me/CryptoBot" target="_blank">@CryptoBot</a></li>
+                            <li>Отправьте команду: <code>/start</code></li>
+                            <li>Выберите "Wallet" → "Send"</li>
+                            <li>Отправьте на адрес: <code>YOUR_WALLET_ADDRESS</code></li>
+                            <li>Сумма: <strong>$${selectedAmount}</strong> в USDT</li>
+                            <li>После отправки напишите нам @stokeshop_support</li>
+                        </ol>
+                    </div>
+                    
+                    <button class="confirm-btn" onclick="closeDepositModal()">
+                        Понятно
+                    </button>
+                </div>
+            `;
+            
+            elements.amountSelector.classList.add('hidden');
+            elements.paymentInfo.classList.remove('hidden');
         }
 
         // Показать адрес для прямой оплаты криптовалютой
@@ -2508,8 +2618,8 @@
                         <i class="fas fa-info-circle"></i> Баланс пополнится автоматически после зачисления средств
                     </div>
                     
-                    <button class="confirm-btn" onclick="simulateCryptoPayment()" style="margin-top: 16px;">
-                        Симулировать оплату
+                    <button class="confirm-btn" onclick="closeDepositModal()" style="margin-top: 16px;">
+                        Закрыть
                     </button>
                 </div>
             `;
@@ -2532,29 +2642,6 @@
             elements.paymentInfo.classList.remove('hidden');
         }
 
-        // Симуляция крипто-платежа
-        function simulateCryptoPayment() {
-            showLoading(true);
-            
-            setTimeout(() => {
-                showLoading(false);
-                
-                // Обновляем баланс пользователя
-                userData.balance += selectedAmount;
-                userData.totalDeposited += selectedAmount;
-                
-                saveUserData(getUserId());
-                updateUserStats();
-                updateGiveawayStatus();
-                
-                showNotification(`✅ Баланс успешно пополнен на $${selectedAmount}!`);
-                
-                // Закрываем модальные окна
-                elements.depositModal.classList.add('hidden');
-                resetPaymentModal();
-            }, 3000);
-        }
-
         // Process deposit based on selected method
         async function processDeposit() {
             if (!selectedPaymentMethod) {
@@ -2575,6 +2662,26 @@
             } else if (paymentType === 'address') {
                 showCryptoAddress();
             }
+        }
+
+        // Подтверждение оплаты инвойса
+        async function confirmInvoicePayment() {
+            if (currentInvoiceId) {
+                // Находим инвойс в pending
+                const pendingInvoice = userData.pendingInvoices.find(inv => inv.id === currentInvoiceId);
+                
+                if (pendingInvoice && pendingInvoice.pay_url) {
+                    // Открываем ссылку на оплату в новом окне
+                    window.open(pendingInvoice.pay_url, '_blank');
+                    
+                    // Показываем сообщение об ожидании
+                    showNotification('Открыта страница оплаты. После оплаты баланс пополнится автоматически.');
+                } else {
+                    showNotification('Ошибка: ссылка на оплату не найдена');
+                }
+            }
+            
+            elements.invoiceConfirmModal.classList.add('hidden');
         }
 
         // Setup event listeners
@@ -2839,8 +2946,6 @@
 
         // Make functions globally available
         window.closeDepositModal = closeDepositModal;
-        window.simulatePayment = simulatePayment;
-        window.simulateCryptoPayment = simulateCryptoPayment;
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
